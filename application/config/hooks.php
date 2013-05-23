@@ -9,7 +9,26 @@
 |	http://codeigniter.com/user_guide/general/hooks.html
 |
 */
+$hook['post_controller_constructor'][] = array(
+    'class' => 'acl',
+    'function' => 'hasPermission',
+    'filename' => 'acl.php',
+    'filepath' => 'hooks'
+);
 
+$hook['post_controller'][] = array(
+    'class' => 'menu',
+    'function' => 'menuOptions',
+    'filename' => 'menu.php',
+    'filepath' => 'hooks'
+);
+
+$hook['post_controller'][] = array(
+	'class' => 'Layout',
+	'function' => 'index',
+	'filename' => 'layout.php',
+	'filepath' => 'hooks'
+);
 
 
 /* End of file hooks.php */
