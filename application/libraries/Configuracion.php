@@ -50,14 +50,6 @@ class Configuracion {
         return $this->CI->db->get($this->tbl, $limit, $offset);
     }
     
-    public function set_valor( $id = null, $datos = null ){
-        if(!empty($datos) && !empty($id)){
-            $this->CI->db->where('id', $id);
-            $this->CI->db->update($this->tbl, $datos);
-            return $this->CI->db->affected_rows();
-        }
-    }
-    
     public function save( $parametro ){
         $this->CI->db->insert($this->tbl, $parametro);
         return $this->CI->db->insert_id();
@@ -67,6 +59,34 @@ class Configuracion {
         $this->CI->db->where('id', $id);
         $this->CI->db->delete($this->tbl);
     }
+    
+    public function get_data( $key ){
+        if(!empty($key)){
+            $this->CI->db->where('key', $key);
+            $resultado = $this->CI->db->get($this->tbl)->row();
+            if($resultado)
+                return $resultado->data;
+            else
+                return false;
+        }
+    }
+    
+    public function update( $id = null, $datos = null ){
+        if(!empty($datos) && !empty($id)){
+            $this->CI->db->where('id', $id);
+            $this->CI->db->update($this->tbl, $datos);
+            return $this->CI->db->affected_rows();
+        }
+    }
+    
+    public function update_by_key( $key = null, $datos = null ){
+        if(!empty($datos) && !empty($key)){
+            $this->CI->db->where('key', $key);
+            $this->CI->db->update($this->tbl, $datos);
+            return $this->CI->db->affected_rows();
+        }
+    }
+    
 }
 
 ?>
