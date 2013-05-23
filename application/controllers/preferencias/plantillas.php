@@ -21,9 +21,9 @@ class Plantillas extends CI_Controller{
         $data['action'] = site_url('preferencias/plantillas/ordenes_compra');
         $data['mensaje'] = '';
         
-        if (($path = $this->configuracion->get_valor('template_path')) && (($file = $this->configuracion->get_valor('template_orden_compra')))){
+        if ($this->configuracion->get_valor('template_orden_compra')){
         
-            if(!file_exists($path)){
+            /*if(!file_exists($path)){
                 mkdir($path, 0777, true);
             }elseif(!is_writable($path)){
                 chmod($path, 0777);
@@ -33,16 +33,18 @@ class Plantillas extends CI_Controller{
                 touch($path.$file);
             }elseif(!is_writable($path.$file)){
                 chmod($path.$file, 0777);
-            }
+            }*/
 
-            $this->load->helper('file');
+            //$this->load->helper('file');
             if( ($datos = $this->input->post()) ){
                 if(strlen($datos['plantilla']) > 0){
-                    write_file($path.$file, $datos['plantilla']);
+                    $this->configuracion->update_by_key('template_orden_compra', array('data' => $datos['plantilla']));
+                    //write_file($path.$file, $datos['plantilla']);
                     $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
                 }
             }
-            $data['plantilla'] = read_file($path.$file);
+            //$data['plantilla'] = read_file($path.$file);
+            $data['plantilla'] = $this->configuracion->get_data('template_orden_compra');
             
         }else{
             $data['mensaje'] = '<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Aviso!</strong> No hay configuración para esta plantilla (template_orden_compra).</div>';
