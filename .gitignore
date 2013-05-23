@@ -1,0 +1,9 @@
+/nbproject/private/
+nbproject
+application/config/database.php
+user_guide
+assets/adjuntos/*
+assets/tmp/*
+application/libraries/mpdf/ttfontdata/*
+application/libraries/mpdf/tmp/*
+application/libraries/mpdf/graph_cache/*
