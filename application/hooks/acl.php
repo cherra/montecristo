@@ -207,7 +207,8 @@ class acl
                         if($class == 'login' && $method == 'index')
                             redirect('home');
 
-                        if($class == 'home' && $method == 'index')
+                        // Todos los usuario tienen acceso al home y a hacer logout
+                        if(($class == 'home' && $method == 'index') or ($class == 'login' && $method == 'do_logout') )
                             return false;
                             
                         if($this->ci->session->userdata('userid')){
