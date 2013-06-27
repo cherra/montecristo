@@ -40,7 +40,7 @@ class Preferencias extends CI_Controller{
         $this->table->set_empty('&nbsp;');
         $tmpl = array ( 'table_open'  => '<table class="' . $this->config->item('tabla_css') . '">' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('Key', 'Valor ó MIME type', 'Descripcion');
+        $this->table->set_heading('Key', 'Valor', 'Descripcion');
         foreach ($parametros as $parametro) {
                 $this->table->add_row(
                         $parametro->key, 
@@ -52,13 +52,14 @@ class Preferencias extends CI_Controller{
         }
         $data['table'] = $this->table->generate();
 
-        $data['titulo'] = $this->titulo . ' - Lista';
+        $data['link_add'] = anchor('preferencias/preferencias/configuracion_add/','<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        $data['titulo'] = $this->titulo . ' <small>Lista</small>';
 
         $this->load->view('preferencias/configuracion/lista', $data);
     }
     
     public function configuracion_add(){
-        $data['titulo'] = 'Configuración - Agregar';
+        $data['titulo'] = 'Configuración <small>Agregar</small>';
         $data['link_back'] = anchor('preferencias/preferencias/configuracion_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
         $data['action'] = site_url('preferencias/preferencias/configuracion_add');
@@ -97,7 +98,7 @@ class Preferencias extends CI_Controller{
                 'descripcion' => $this->input->post('descripcion')
             );
             
-            $this->configuracion->update($id, $parametro);
+            $this->configuracion->set_valor($id, $parametro);
             $data['parametro'] = (object)$parametro;
             $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro modificado</div>';
         }

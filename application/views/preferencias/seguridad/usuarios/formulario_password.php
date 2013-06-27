@@ -8,19 +8,16 @@
   <div class="span12">
     <form name="form" id="form" action="<?php echo $action; ?>" class="form-horizontal" method="post">
       <div class="control-group">
-        <label class="control-label">Nombre</label>
+        <label class="control-label" for="password">Nueva contraseña</label>
         <div class="controls">
-          <label class="control-label"><?php echo $rol->nombre; ?></label>
+          <input type="password" id="password" name="password" value="" placeholder="Contraseña" autocomplete="off">
         </div>
       </div>
       <div class="control-group">
-          <label class="control-label">Marcar todos</label>
-          <div class="control-label">
-              <input type="checkbox" id="marcar_todos"/>
-          </div>
-      </div>
-      <div class="control-group">
-          <?php echo $table; ?>
+        <label class="control-label" for="confirmar_password">Confirmar contraseña</label>
+        <div class="controls">
+          <input type="password" id="confirmar_password" name="confirmar_password" value="" placeholder="Confirmar contraseña" autocomplete="off">
+        </div>
       </div>
       <div class="control-group">
         <div class="controls">
@@ -35,12 +32,3 @@
     <?php echo $mensaje ?>
   </div>
 </div>
-<script>
-    $(document).ready(function(){
-        $('#marcar_todos').change(function(){
-            if($(this).is(':checked')){
-                $('table input[type="checkbox"]').attr('checked','checked');
-            }
-        });
-    });
-</script>

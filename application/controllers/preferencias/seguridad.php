@@ -22,7 +22,7 @@ class Seguridad extends CI_Controller{
     
     public function permisos_lista( $offset = '0' ){
         
-        $this->load->model('preferencias/permiso','p');
+        $this->load->model('permiso','p');
         $this->titulo = "Permisos";
         
         // Si se registró la variable flash 'pdf' en la sesión se omite la paginación
@@ -61,7 +61,7 @@ class Seguridad extends CI_Controller{
         }
         $data['table'] = $this->table->generate();
 
-        $data['titulo'] = $this->titulo . ' - Lista';
+        $data['titulo'] = $this->titulo . ' <small>Lista</small>';
 
         $uri = $this->uri->segment_array();
         if( in_array('imprimir', $uri) ){ // Si en el url hay 'imprimir' se renderea como pdf
@@ -79,7 +79,7 @@ class Seguridad extends CI_Controller{
 	*/
     public function permiso_update() {
 
-        $this->load->model('preferencias/permiso','p');
+        $this->load->model('permiso','p');
         $this->titulo = "Permisos";
 
         if (!$this->uri->segment(4)) {
@@ -89,7 +89,7 @@ class Seguridad extends CI_Controller{
                 $id = $this->uri->segment(4);
         }
 
-        $data['titulo'] = $this->titulo . ' - Modificar';
+        $data['titulo'] = $this->titulo . ' <small>Modificar</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/permisos_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
 
@@ -122,14 +122,14 @@ class Seguridad extends CI_Controller{
         
         $id = floatval($id);
         
-        $this->load->model('preferencias/permiso', 'p');
+        $this->load->model('permiso', 'p');
         $this->p->delete($id);
         redirect(site_url('preferencias/seguridad/permisos_lista/'));
     }
     
     public function roles_lista(){
         
-        $this->load->model('preferencias/rol','c');
+        $this->load->model('rol','c');
         $this->titulo = "Roles";
         
         // obtener offset
@@ -157,22 +157,22 @@ class Seguridad extends CI_Controller{
         $this->table->set_heading('Nombre', 'Descripción', '', '', '');
         foreach ($roles as $rol) {
                 $this->table->add_row(
-                        strtoupper($rol->nombre), 
-                        strtoupper($rol->descripcion),
+                        $rol->nombre,
+                        $rol->descripcion,
                         anchor('preferencias/seguridad/rol_permisos/' . $rol->id_rol, '<i class="icon-lock"></i>', array('class' => 'btn btn-small')),
                         anchor('preferencias/seguridad/rol_update/' . $rol->id_rol, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')),
                         anchor('preferencias/seguridad/rol_delete/' . $rol->id_rol, '<i class="icon-remove"></i>', array('class' => 'btn btn-small'))
                 );
         }
         $data['table'] = $this->table->generate();
-        $data['link_add'] = anchor('preferencias/seguridad/rol_add/','<li class="icon-plus"></li> Agregar', array('class' => 'btn'));
-        $data['titulo'] = $this->titulo . ' - Lista';
+        $data['link_add'] = anchor('preferencias/seguridad/rol_add/','<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        $data['titulo'] = $this->titulo . ' <small>Lista</small>';
 
         $this->load->view('preferencias/seguridad/roles/lista', $data);
     }
     
     public function rol_add() {
-        $data['titulo'] = 'Roles - Agregar';
+        $data['titulo'] = 'Roles <small>Agregar</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/roles_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
@@ -187,7 +187,7 @@ class Seguridad extends CI_Controller{
                 'descripcion' => $this->input->post('descripcion', true)
             );
             
-            $this->load->model('preferencias/rol', 'r');
+            $this->load->model('rol', 'r');
             $this->r->save($rol);
             
             $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro nuevo</div>';
@@ -197,14 +197,14 @@ class Seguridad extends CI_Controller{
     
     public function rol_update( $id ) {
 
-        $this->load->model('preferencias/rol','r');
+        $this->load->model('rol','r');
         $this->titulo = "Roles";
         
         if (empty($id)) {
                 redirect(site_url('preferencias/seguridad/roles_lista'));
         }
 
-        $data['titulo'] = $this->titulo . ' - Modificar';
+        $data['titulo'] = $this->titulo . ' <small>Modificar</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/roles_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
 
@@ -236,22 +236,22 @@ class Seguridad extends CI_Controller{
         
         $id = floatval($id);
         
-        $this->load->model('preferencias/rol', 'r');
+        $this->load->model('rol', 'r');
         $this->r->delete($id);
         redirect(site_url('preferencias/seguridad/roles_lista/'));
     }
     
     public function rol_permisos( $id ) {
 
-        $this->load->model('preferencias/rol','r');
-        $this->load->model('preferencias/permiso','p');
+        $this->load->model('rol','r');
+        $this->load->model('permiso','p');
         $this->titulo = "Roles";
         
         if (empty($id)) {
                 redirect(site_url('preferencias/seguridad/roles_lista'));
         }
 
-        $data['titulo'] = $this->titulo . ' - Permisos';
+        $data['titulo'] = $this->titulo . ' <small>Permisos</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/roles_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
 
@@ -285,7 +285,7 @@ class Seguridad extends CI_Controller{
         $this->table->set_empty('&nbsp;');
         $tmpl = array ( 'table_open'  => '<table class="' . $this->config->item('tabla_css') . '">' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('Menú','Nombre', 'Ruta', 'Activo');
+        $this->table->set_heading('Menú','Acción', 'Ruta', 'Activo');
         foreach ($permisos as $permiso) {
             $this->table->add_row(
                     strtoupper($permiso->folder), 
@@ -303,7 +303,7 @@ class Seguridad extends CI_Controller{
     
     public function usuarios_lista(){
         
-        $this->load->model('preferencias/usuario','u');
+        $this->load->model('usuario','u');
         $this->titulo = "Usuarios";
         
         // obtener offset
@@ -333,25 +333,26 @@ class Seguridad extends CI_Controller{
         $i = 0 + $offset;
         foreach ($usuarios as $usuario) {
                 $this->table->add_row(
-                        strtoupper($usuario->nombre), 
-                        strtoupper($usuario->username),
+                        $usuario->nombre,
+                        $usuario->username,
                         $usuario->activo == 's' ? '<i class="icon-ok"></i>' : '',
                         anchor('preferencias/seguridad/usuario_permisos/' . $usuario->id_usuario, '<i class="icon-lock"></i>', array('class' => 'btn btn-small')),
+                        anchor('preferencias/seguridad/usuario_roles/' . $usuario->id_usuario, '<i class="icon-user"></i>', array('class' => 'btn btn-small')),
                         anchor('preferencias/seguridad/usuario_update/' . $usuario->id_usuario, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')),
                         anchor('preferencias/seguridad/usuario_delete/' . $usuario->id_usuario, '<i class="icon-remove"></i>', array('class' => 'btn btn-small'))
                 );
         }
         
         $data['table'] = $this->table->generate();
-        $data['link_add'] = anchor('preferencias/seguridad/usuario_add','<li class="icon-plus"></li> Agregar', array('class' => 'btn'));
-        $data['titulo'] = $this->titulo . ' - Lista';
+        $data['link_add'] = anchor('preferencias/seguridad/usuario_add','<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        $data['titulo'] = $this->titulo . ' <small>Lista</small>';
 
         $this->load->view('preferencias/seguridad/usuarios/lista', $data);
     }
     
     public function usuario_update() {
 
-        $this->load->model('preferencias/usuario','u');
+        $this->load->model('usuario','u');
         $this->titulo = "Usuarios";
 
         if (!$this->uri->segment(4)) {
@@ -361,7 +362,7 @@ class Seguridad extends CI_Controller{
                 $id = $this->uri->segment(4);
         }
 
-        $data['titulo'] = $this->titulo . ' - Modificar';
+        $data['titulo'] = $this->titulo . ' <small>Modificar</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/usuarios_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
 
@@ -397,7 +398,7 @@ class Seguridad extends CI_Controller{
     }
     
     public function usuario_add() {
-        $data['titulo'] = 'Usuarios - Agregar';
+        $data['titulo'] = 'Usuarios <small>Agregar</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/usuarios_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
@@ -414,7 +415,7 @@ class Seguridad extends CI_Controller{
                 'activo' => $this->input->post('activo', true)
             );
             
-            $this->load->model('preferencias/usuario', 'u');
+            $this->load->model('usuario', 'u');
             $this->u->save($usuario);
             
             $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro nuevo</div>';
@@ -429,22 +430,22 @@ class Seguridad extends CI_Controller{
         
         $id = floatval($id);
         
-        $this->load->model('preferencias/usuario', 'u');
+        $this->load->model('usuario', 'u');
         $this->u->delete($id);
         redirect(site_url('preferencias/seguridad/usuarios_lista/'));
     }
     
     public function usuario_permisos( $id ) {
 
-        $this->load->model('preferencias/usuario','u');
-        $this->load->model('preferencias/permiso','p');
-        $this->titulo = "Permisos";
+        $this->load->model('usuario','u');
+        $this->load->model('permiso','p');
+        $this->titulo = "Usuarios";
         
         if (empty($id)) {
                 redirect(site_url('preferencias/seguridad/usuarios_lista'));
         }
 
-        $data['titulo'] = $this->titulo . ' - Permisos';
+        $data['titulo'] = $this->titulo . ' <small>Permisos</small>';
         $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
         $data['link_back'] = anchor('preferencias/seguridad/usuarios_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
 
@@ -478,7 +479,7 @@ class Seguridad extends CI_Controller{
         $this->table->set_empty('&nbsp;');
         $tmpl = array ( 'table_open'  => '<table class="' . $this->config->item('tabla_css') . '">' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('Menú','Nombre', 'Ruta', 'Activo');
+        $this->table->set_heading('Menú','Acción', 'Ruta', 'Activo');
         foreach ($permisos as $permiso) {
             $this->table->add_row(
                     strtoupper($permiso->folder), 
@@ -491,6 +492,93 @@ class Seguridad extends CI_Controller{
         
         $this->load->view('preferencias/seguridad/usuarios/permisos', $data);
 
+    }
+    
+    public function usuario_roles( $id ) {
+
+        $this->load->model('usuario','u');
+        $this->load->model('rol','r');
+        $this->titulo = "Usuario";
+        
+        if (empty($id)) {
+                redirect(site_url('preferencias/seguridad/usuarios_lista'));
+        }
+
+        $data['titulo'] = $this->titulo . ' <small>Roles</small>';
+        $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
+        $data['link_back'] = anchor('preferencias/seguridad/usuarios_lista/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+
+        $data['mensaje'] = '';
+        $data['action'] = site_url('preferencias/seguridad/usuario_roles') . '/' . $id;
+
+        
+        
+        /* Si llegan datos por POST, se insertan en la base de datos*/
+        if ($this->input->post()) {
+            $roles = array();
+            if($this->input->post('roles')){
+                foreach ($this->input->post('roles') as $rol){
+                    $roles[] = array(
+                        'id_usuario' => $id,
+                        'id_rol' => $rol
+                    );
+                }
+            }
+            $this->u->update_roles($id, $roles);
+            $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Roles actualizados</div>';
+        }
+        
+        $usuario = $this->u->get_by_id($id)->row();
+        $data['usuario'] = $usuario;
+        
+        // Obtener todos los permisos
+        $roles = $this->r->get_all()->result();
+        
+        // generar tabla con permisos
+        $this->load->library('table');
+        $this->table->set_empty('&nbsp;');
+        $tmpl = array ( 'table_open'  => '<table class="' . $this->config->item('tabla_css') . '">' );
+        $this->table->set_template($tmpl);
+        $this->table->set_heading('Nombre', 'Descripción');
+        foreach ($roles as $rol) {
+            $this->table->add_row(
+                    $rol->nombre, 
+                    $rol->descripcion, 
+                    '<input type="checkbox" name="roles[]" value="'.$rol->id_rol.'" '.($this->u->get_rol_by_id($rol->id_rol, $id)->num_rows() > 0 ? 'checked' : '').'/>'
+            );
+        }
+        $data['table'] = $this->table->generate();
+        
+        $this->load->view('preferencias/seguridad/usuarios/roles', $data);
+
+    }
+    
+    public function usuario_password( ) {
+
+        $this->load->model('usuario','u');
+        $this->titulo = "Usuarios";
+        
+        $id = $this->session->userdata('userid');
+
+        if (empty($id)) {
+            redirect(site_url('preferencias/preferencias'));
+        }
+
+        $data['titulo'] = $this->titulo . ' <small>Cambiar contraseña</small>';
+        $data['atributos_form'] = array('id' => 'form', 'class' => 'form-horizontal');
+        $data['link_back'] = anchor('preferencias/preferencias','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+
+        $data['mensaje'] = '';
+        $data['action'] = site_url('preferencias/seguridad/usuario_password') . '/' . $id;
+
+        if ( $this->input->post() ) {
+            $usuario = array('password' => sha1($this->input->post('password')));
+            $this->u->update($id, $usuario);
+            $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Constraseña actualizada</div>';
+        }
+
+        $data['usuario'] = $this->u->get_by_id($id)->row();
+        $this->load->view('preferencias/seguridad/usuarios/formulario_password', $data);
     }
 }
 
