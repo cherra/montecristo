@@ -1,18 +1,24 @@
 <?php
 
 /**
- * Modelo de datos para las categorías de Productos
+ * Description of producto
  *
  * @author cherra
  */
-class Categoria extends CI_Model {
+class Producto extends CI_Model {
     
-    private $tbl = 'Categorias';
+    private $tbl = 'Productos';
     
+    /*
+     * Cuenta todos los registros de la tabla
+     */
     function count_all() {
         return $this->db->count_all($this->tbl);
     }
     
+    /*
+     * Cuenta todos los registros utilizando un filtro de busqueda
+     */
     function count_all_filtro( $filtro = NULL ) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
@@ -24,15 +30,15 @@ class Categoria extends CI_Model {
         return $query->num_rows();
     }
     
+    /**
+     *  Obtiene todos los registros de la tabla
+     */
     function get_all() {
-        $this->db->order_by('nombre');
         return $this->db->get($this->tbl);
     }
     
     /**
-    * ***********************************************************************
     * Cantidad de registros por pagina
-    * ***********************************************************************
     */
     function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL) {
         if(!empty($filtro)){
@@ -46,9 +52,7 @@ class Categoria extends CI_Model {
     }
     
     /**
-    * ***********************************************************************
     * Obtener por id
-    * ***********************************************************************
     */
     function get_by_id($id) {
         $this->db->where('id', $id);
@@ -56,9 +60,7 @@ class Categoria extends CI_Model {
     }
     
     /**
-    * ***********************************************************************
     * Alta
-    * ***********************************************************************
     */
     function save( $datos ) {
         $this->db->insert($this->tbl, $datos);
@@ -66,9 +68,7 @@ class Categoria extends CI_Model {
     }
 
     /**
-    * ***********************************************************************
     * Actualizar por id
-    * ***********************************************************************
     */
     function update($id, $datos) {
         $this->db->where('id', $id);
@@ -76,9 +76,7 @@ class Categoria extends CI_Model {
     }
 
     /**
-    * ***********************************************************************
     * Eliminar por id
-    * ***********************************************************************
     */
     function delete($id) {
         $this->db->where('id', $id);
