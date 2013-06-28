@@ -173,7 +173,6 @@ class acl
                 'permKey' => $perm,
                 'nombre' => $perm,
                 'folder' => $folders[0] ? $folders[0] : '',
-                'submenu' => $folders[1] ? $folders[1] : '',
                 'method' => $method,
                 'class' => $class
             );

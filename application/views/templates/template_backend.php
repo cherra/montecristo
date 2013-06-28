@@ -227,6 +227,11 @@
                 confirmar_password: {
                     equalTo: "#password"
                 }
+            },
+            highlight: function(element, errorClass) {
+                $(element).fadeOut(function() {
+                  $(element).fadeIn();
+                });
             }
         });
         
