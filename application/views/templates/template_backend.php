@@ -108,13 +108,15 @@
         <ul class="nav">
           <?php
             // Se obtienen los folders de los métodos para mostrarlos en la barra superior.
-            $folders = $this->session->userdata('folders');
+            $folders = $this->menu->get_folders();
             foreach($folders as $folder){ ?>
             <li <?php 
             // Si el primer segmento del URI es igual al folder quiere decir que es la opción seleccionada
             // y se marca como activa para resaltarla
-            if( $this->uri->segment(1) == $folder->folder) 
+            if( $this->uri->segment(1) == $folder->folder){
+                $folder_activo = $folder->folder;
                 echo 'class="active"'; 
+            }
             ?>><?php 
             echo anchor($folder->folder.'/'.$folder->folder, strtoupper($folder->folder), 'class="navbar-link"'); ?></li>
             <?php } ?>
@@ -132,7 +134,7 @@
         <ul class="nav nav-list">
             <?php
             $clase = '';
-            $metodos = $this->session->userdata('submenu');
+            $metodos = $this->menu->get_metodos($folder_activo);
             foreach ( $metodos as $metodo ){
                 if($clase != $metodo->class){
                     $clase = $metodo->class;

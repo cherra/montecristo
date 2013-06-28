@@ -24,13 +24,6 @@ $hook['post_controller_constructor'][] = array(
 );
 
 $hook['post_controller'][] = array(
-    'class' => 'menu',
-    'function' => 'menuOptions',
-    'filename' => 'menu.php',
-    'filepath' => 'hooks'
-);
-
-$hook['post_controller'][] = array(
 	'class' => 'Layout',
 	'function' => 'index',
 	'filename' => 'layout.php',
