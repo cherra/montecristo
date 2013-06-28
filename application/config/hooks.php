@@ -16,6 +16,13 @@ $hook['post_controller_constructor'][] = array(
     'filepath' => 'hooks'
 );
 
+$hook['post_controller_constructor'][] = array(
+    'class' => 'Busqueda',
+    'function' => 'index',
+    'filename' => 'busqueda.php',
+    'filepath' => 'hooks'
+);
+
 $hook['post_controller'][] = array(
     'class' => 'menu',
     'function' => 'menuOptions',
