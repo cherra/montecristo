@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Description of producto
+ * Description of presentacion
  *
  * @author cherra
  */
-class Producto extends CI_Model {
+class Presentacion extends CI_Model {
     
-    private $tbl = 'Productos';
-    private $tbl_pp = 'ProductoPresentaciones';
+    private $tbl = 'Presentaciones';
     
     /*
      * Cuenta todos los registros de la tabla
@@ -20,7 +19,7 @@ class Producto extends CI_Model {
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
      */
-    function count_all_filtro( $filtro = NULL ) {
+    function count_all_filtro( $filtro = null ) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
@@ -35,13 +34,14 @@ class Producto extends CI_Model {
      *  Obtiene todos los registros de la tabla
      */
     function get_all() {
+        $this->db->order_by('nombre','asc');
         return $this->db->get($this->tbl);
     }
     
     /**
     * Cantidad de registros por pagina
     */
-    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL) {
+    function get_paged_list($limit = null, $offset = 0, $filtro = null) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
@@ -50,21 +50,6 @@ class Producto extends CI_Model {
         }
         $this->db->order_by('nombre','asc');
         return $this->db->get($this->tbl, $limit, $offset);
-    }
-    
-    function get_paged_list_presentaciones($limit = NULL, $offset = 0, $filtro = NULL) {
-        $this->db->select('p.*, GROUP_CONCAT(DISTINCT pr.nombre ORDER BY pr.nombre ASC SEPARATOR ",") AS presentacion, pp.sku, pp.peso', FALSE);
-        $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
-        $this->db->join('Presentaciones pr','pp.id_presentacion = pr.id','left');
-        if(!empty($filtro)){
-            $filtro = explode(' ', $filtro);
-            foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
-            }
-        }
-        $this->db->group_by('p.id');
-        $this->db->order_by('nombre','asc');
-        return $this->db->get($this->tbl.' p', $limit, $offset);
     }
     
     /**
@@ -82,7 +67,7 @@ class Producto extends CI_Model {
         $this->db->insert($this->tbl, $datos);
         return $this->db->insert_id();
     }
-    
+
     /**
     * Actualizar por id
     */
@@ -97,7 +82,6 @@ class Producto extends CI_Model {
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete($this->tbl);
-        return $this->db->affected_rows();
     } 
 }
 ?>
