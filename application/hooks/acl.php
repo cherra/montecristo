@@ -197,7 +197,7 @@ class acl
                 $folder = strstr(uri_string(), $class, TRUE);
                 
                 //$permKey = $this->ci->uri->uri_string();
-                $permKey = $class;
+                $permKey = $folder.$class;
                 $permKey .= $method != "index" ? "/".$method : "";
                 $permKey = strtolower($permKey);
                 
