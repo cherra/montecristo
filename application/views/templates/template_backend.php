@@ -130,7 +130,7 @@
 <div class="container contenedor-principal">
   <div class="row">
       <!-- Menú lateral para tablets y escritorio -->
-    <div class="span3 hidden-phone">
+    <div class="span2 hidden-phone">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
             <?php
@@ -158,7 +158,7 @@
         </ul>
       </div>
     </div>
-    <div class="span9">
+    <div class="span10">
       <!-- contenido --------------------------------------------------------------- -->
       {contenido_vista}
     </div>
@@ -234,6 +234,14 @@
                   $(element).fadeIn();
                 });
             }
+        });
+        
+        $('tbody').on('mouseover','tr[onclick]',function(){
+            document.body.style.cursor = 'pointer';  
+        });
+        
+        $('tbody').on('mouseout','tr[onclick]',function(){
+            document.body.style.cursor = 'default';  
         });
         
         // Widget para los input donde se debe ingresar una hora (ej. 14:00)

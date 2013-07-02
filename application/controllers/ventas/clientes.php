@@ -1,0 +1,435 @@
+<?php
+
+/**
+ * Description of clientes
+ *
+ * @author cherra
+ */
+class Clientes extends CI_Controller{
+    
+    private $folder = 'ventas/';
+    private $clase = 'clientes/';
+    
+    /*
+     * Grupos de clientes
+     */
+    public function grupos( $offset = 0 ){
+        $this->load->model('grupo','g');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Grupos <small>Lista</small>';
+    	$data['link_add'] = anchor($this->folder.$this->clase.'grupos_agregar','<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'grupos';
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $page_limit = $this->config->item("per_page");
+    	$datos = $this->g->get_paged_list($page_limit, $offset, $filtro)->result();
+    	
+        // generar paginacion
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'index');
+    	$config['total_rows'] = $this->g->count_all_filtro($filtro);
+    	$config['per_page'] = $page_limit;
+    	$config['uri_segment'] = 4;
+    	$this->pagination->initialize($config);
+    	$data['pagination'] = $this->pagination->create_links();
+    	
+    	// generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Nombre', 'Descripción', '');
+    	foreach ($datos as $d) {
+            $this->table->add_row(
+                    $d->nombre,
+                    $d->descripcion,
+                    array('data' => anchor($this->folder.$this->clase.'grupos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;')
+            );
+    	}
+    	$data['table'] = $this->table->generate();
+    	
+    	$this->load->view('ventas/lista', $data);
+    }
+    
+    /*
+     * Agregar un grupo
+     */
+    public function grupos_agregar() {
+    	$this->load->model('grupo', 'g');
+        
+    	$data['titulo'] = 'Grupos <small>Registro nuevo</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'grupos','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    
+    	$data['action'] = $this->folder.$this->clase.'grupos_agregar';
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->g->save($datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
+    	}
+        $this->load->view('ventas/clientes/grupos_formulario', $data);
+    }
+    
+    /*
+     * Editar grupo
+     */
+    public function grupos_editar( $id = NULL ) {
+    	$this->load->model('grupo', 'g');
+        $grupo = $this->g->get_by_id($id);
+        if ( empty($id) OR $grupo->num_rows() <= 0) {
+    		redirect($this->folder.$this->clase.'grupos');
+    	}
+    	
+    	$data['titulo'] = 'Grupos <small>Editar registro</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'grupos','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    	$data['mensaje'] = '';
+    	$data['action'] = $this->folder.$this->clase.'grupos_editar/' . $id;
+    	 
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->g->update($id, $datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+    	}
+
+    	$data['datos'] = $this->g->get_by_id($id)->row();
+        
+        $this->load->view('ventas/clientes/grupos_formulario', $data);
+    }
+    
+    /*
+     * Listado de clientes
+     */
+    
+    public function index( $offset = 0 ){
+        $this->load->model('cliente','c');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Clientes <small>Lista</small>';
+    	$data['link_add'] = anchor($this->folder.$this->clase.'clientes_agregar','<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'index';
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $page_limit = $this->config->item("per_page");
+    	$datos = $this->c->get_paged_list($page_limit, $offset, $filtro)->result();
+    	
+        // generar paginacion
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'index');
+    	$config['total_rows'] = $this->c->count_all_filtro($filtro);
+    	$config['per_page'] = $page_limit;
+    	$config['uri_segment'] = 4;
+    	$this->pagination->initialize($config);
+    	$data['pagination'] = $this->pagination->create_links();
+    	
+    	// generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', '', '');
+    	foreach ($datos as $d) {
+            $this->table->add_row(
+                    $d->nombre,
+                    $d->poblacion,
+                    $d->municipio,
+                    $d->estado,
+                    $d->telefono,
+                    array('data' => anchor($this->folder.$this->clase.'sucursales/' . $d->id, '<i class="icon-building"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;'),
+                    array('data' => anchor($this->folder.$this->clase.'clientes_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;')
+            );
+    	}
+    	$data['table'] = $this->table->generate();
+    	
+    	$this->load->view('ventas/lista', $data);
+    }
+    
+    /*
+     * Agregar un cliente
+     */
+    public function clientes_agregar() {
+    	$this->load->model('grupo', 'g');
+        $this->load->model('cliente','c');
+        
+    	$data['titulo'] = 'Clientes <small>Registro nuevo</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    
+    	$data['action'] = $this->folder.$this->clase.'clientes_agregar';
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->c->save($datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
+    	}
+        $data['grupos'] = $this->g->get_all()->result();
+        $this->load->view('ventas/clientes/clientes_formulario', $data);
+    }
+    
+    /*
+     * Editar un cliente
+     */
+    public function clientes_editar( $id = NULL ) {
+    	$this->load->model('cliente', 'c');
+        $this->load->model('grupo', 'g');
+        $cliente = $this->c->get_by_id($id);
+        if ( empty($id) OR $cliente->num_rows() <= 0) {
+    		redirect($this->folder.$this->clase.'index');
+    	}
+    	
+    	$data['titulo'] = 'Clientes <small>Editar registro</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    	$data['mensaje'] = '';
+    	$data['action'] = $this->folder.$this->clase.'clientes_editar/' . $id;
+    	 
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->c->update($id, $datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+    	}
+
+        $data['grupos'] = $this->g->get_all()->result();
+    	$data['datos'] = $this->c->get_by_id($id)->row();
+        
+        $this->load->view('ventas/clientes/clientes_formulario', $data);
+    }
+    
+    /*
+     * Sucursales por cliente
+     */
+    public function sucursales($id = NULL, $offset = 0) {
+        $this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+        $data['clientes'] = $this->c->get_all()->result();
+        
+        $data['titulo'] = 'Sucursales <small>Listado</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Clientes',array('class'=>'btn'));
+        $data['action'] = $this->folder.$this->clase.'sucursales/'.$id;
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        if (!empty($id)) {
+            $data['cliente'] = $this->c->get_by_id($id)->row();
+            
+            // obtener datos
+            $this->config->load("pagination");
+            //$this->load->model('fraccionamientos/manzana', 'm');
+            $page_limit = $this->config->item("per_page");
+            $sucursales = $this->s->get_paged_list($page_limit, $offset, $filtro, $id)->result();
+
+            // generar paginacion
+            $this->load->library('pagination');
+            $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id);
+            $config['total_rows'] = $this->s->count_all($filtro, $id);
+            $config['uri_segment'] = 5;
+            $this->pagination->initialize($config);
+            $data['pagination'] = $this->pagination->create_links();
+
+            // generar tabla
+            $this->load->library('table');
+            $this->table->set_empty('&nbsp;');
+            $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
+            $this->table->set_template($tmpl);
+            $this->table->set_heading('Núm', 'Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', array('data' => 'E-mail', 'class' => 'hidden-phone'), '','');
+            foreach ($sucursales as $sucursal) {
+                $this->table->add_row(
+                        $sucursal->numero, 
+                        $sucursal->nombre,
+                        $sucursal->poblacion,
+                        $sucursal->municipio,
+                        $sucursal->estado,
+                        $sucursal->telefono,
+                        array('data' => $sucursal->email, 'class' => 'hidden-phone'),
+                        array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$sucursal->id, '<i class="icon-group"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
+                        array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                );
+            }
+
+            $data['table'] = $this->table->generate();
+            $data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        }
+        
+        $this->load->view('ventas/clientes/sucursales_lista', $data);
+    }
+    
+    /*
+     * Agregar una sucursal
+     */
+    public function sucursales_agregar( $id = NULL ) {
+        if (empty($id)) {
+            redirect($this->folder.$this->clase.'sucursales');
+        }
+
+        $this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+        $data['cliente'] = $this->c->get_by_id($id)->row();
+        $data['titulo'] = 'Sucursales <small>Registro nuevo</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'sucursales/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['mensaje'] = '';
+        $data['action'] = $this->folder.$this->clase.'sucursales_agregar/' . $id;
+	
+        if ( ( $sucursal = $this->input->post() ) ) {
+            $sucursal['id_cliente'] = $id;
+            if( $this->s->save($sucursal) > 0 )
+                $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
+            else
+                $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
+        }
+        $this->load->view('ventas/clientes/sucursales_formulario', $data);
+    }
+    
+    /*
+     * Editar datos de sucursal
+     */
+    public function sucursales_editar( $id = NULL ) {
+    	$this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+
+        $sucursal = $this->s->get_by_id($id);
+        if ( empty($id) OR $sucursal->num_rows() <= 0) {
+    		redirect($this->folder.$this->clase.'sucursales');
+    	}
+    	
+    	$data['titulo'] = 'Sucursales <small>Editar registro</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'sucursales/'.$id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    	$data['mensaje'] = '';
+    	$data['action'] = $this->folder.$this->clase.'sucursales_editar/' . $id;
+    	 
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->s->update($id, $datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+    	}
+
+        //$data['grupos'] = $this->g->get_all()->result();
+    	$data['datos'] = $this->s->get_by_id($id)->row();
+        $data['cliente'] = $this->c->get_by_id($sucursal->row()->id_cliente)->row();
+        
+        $this->load->view('ventas/clientes/sucursales_formulario', $data);
+    }
+    
+    /*
+     * Contactos por sucursal
+     */
+    public function contactos( $id_cliente = NULL, $id_sucursal = NULL, $offset = 0) {
+       
+        $this->load->model('cliente', 'cl');
+        $this->load->model('sucursal', 's');
+        $this->load->model('contacto','c');
+        
+        $data['titulo'] = 'Contactos <small>Listado</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'sucursales/'.$id_cliente,'<i class="icon-arrow-left"></i> Sucursales',array('class'=>'btn'));
+        $data['action'] = $this->folder.$this->clase.'contactos/'.$id_sucursal;
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $data['clientes'] = $this->cl->get_all()->result();
+        if(!empty($id_cliente)){
+            $data['cliente'] = $this->cl->get_by_id($id_cliente)->row();
+            $data['sucursales'] = $this->s->get_by_id_cliente($id_cliente)->result();
+            
+            if(!empty($id_sucursal)){
+                $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
+
+                // obtener datos
+                $this->config->load("pagination");
+                //$this->load->model('fraccionamientos/manzana', 'm');
+                $page_limit = $this->config->item("per_page");
+                $contactos = $this->c->get_paged_list($page_limit, $offset, $filtro, $id_sucursal)->result();
+
+                // generar paginacion
+                $this->load->library('pagination');
+                $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id_sucursal);
+                $config['total_rows'] = $this->c->count_all($filtro, $id_sucursal);
+                $config['uri_segment'] = 5;
+                $this->pagination->initialize($config);
+                $data['pagination'] = $this->pagination->create_links();
+
+                // generar tabla
+                $this->load->library('table');
+                $this->table->set_empty('&nbsp;');
+                $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
+                $this->table->set_template($tmpl);
+                $this->table->set_heading('Nombre', 'Puesto', 'Teléfono', 'Celular', 'E-mail', '','');
+                foreach ($contactos as $contacto) {
+                    $this->table->add_row(
+                            $contacto->nombre,
+                            $contacto->puesto,
+                            $contacto->telefono,
+                            $contacto->celular,
+                            $contacto->email,
+                            array('data' => anchor('ventas/clientes/contactos_editar/' . $contacto->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                    );
+                }
+
+                $data['table'] = $this->table->generate();
+            }
+        }
+        $data['link_add'] = anchor('ventas/clientes/contactos_agregar/' . $id_cliente.'/'. $id_sucursal,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        
+        $this->load->view('ventas/clientes/contactos_lista', $data);
+    }
+    
+    public function contactos_agregar( $id_cliente = NULL, $id_sucursal = NULL ) {
+        if (empty($id_cliente) OR empty($id_sucursal)) {
+            redirect($this->folder.$this->clase.'contactos');
+        }
+
+        $this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+        $this->load->model('contacto','co');
+        $data['cliente'] = $this->c->get_by_id($id_cliente)->row();
+        $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
+        
+        $data['titulo'] = 'Contactos <small>Registro nuevo</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['mensaje'] = '';
+        $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal;
+	
+        if ( ( $contacto = $this->input->post() ) ) {
+            $contacto['id_cliente_sucursal'] = $id_sucursal;
+            if( $this->co->save($contacto) > 0 )
+                $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
+            else
+                $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
+        }
+        $this->load->view('ventas/clientes/contactos_formulario', $data);
+    }
+    
+    public function contactos_editar( $id = NULL ) {
+        $this->load->model('contacto','co');
+        
+        $contacto = $this->co->get_by_id($id);
+        if (empty($id) OR $contacto->num_rows() <= 0) {
+            redirect($this->folder.$this->clase.'contactos');
+        }
+        
+    	$this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+        $data['sucursal'] = $this->s->get_by_id($contacto->row()->id_cliente_sucursal)->row();
+        $data['cliente'] = $this->c->get_by_id($data['sucursal']->id_cliente)->row();
+        
+    	$data['titulo'] = 'Sucursales <small>Editar registro</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'contactos/'.$data['cliente']->id.'/'.$data['sucursal']->id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    	$data['mensaje'] = '';
+    	$data['action'] = $this->folder.$this->clase.'contactos_editar/' . $id;
+    	 
+    	if ( ($datos = $this->input->post()) ) {
+    		$this->co->update($id, $datos);
+    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+    	}
+
+    	$data['datos'] = $this->co->get_by_id($id)->row();        
+        $this->load->view('ventas/clientes/contactos_formulario', $data);
+    }
+}
+
+?>
