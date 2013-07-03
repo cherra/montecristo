@@ -154,8 +154,8 @@ class Precios extends CI_Controller{
                         $producto->nombre,
                         $presentacion->nombre,
                         '<div class="input-append" style="margin-bottom: 0;">
-                            <input type="text" name="'.$p->id.'" id="'.$p->id.'" class="input-mini" disabled value="'. number_format((empty($precio->precio) ? 0 : $precio->precio),2) .'" />
-                            <button class="btn" type="button" id_producto_presentacion="'.$p->id.'"><i class="icon-edit"></i></button>
+                            <input type="text" disabled name="'.$p->id.'" id="'.$p->id.'" class="input-mini" value="'. number_format((empty($precio->precio) ? 0 : $precio->precio),2) .'" style="padding: 2px 6px;" />
+                            <button class="btn btn-small" type="button" id_producto_presentacion="'.$p->id.'"><i class="icon-edit"></i></button>
                          </div>'
                         //array('data' => anchor($this->folder.$this->clase.'precios_editar/' . $p->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                 );
