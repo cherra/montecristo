@@ -37,14 +37,16 @@ class Producto_presentacion extends CI_Model {
     function get_paged_list($limit = null, $offset = 0, $filtro = null) {
         $this->db->select('pp.*');
         $this->db->join('Productos p','pp.id_producto = p.id');
+        $this->db->join('Presentaciones pr','pp.id_presentacion = pr.id');
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
                 $this->db->or_like('pp.sku',$f);
                 $this->db->or_like('p.nombre',$f);
+                $this->db->or_like('pr.nombre',$f);
             }
         }
-        $this->db->order_by('p.nombre','asc');
+        $this->db->order_by('p.nombre, pr.nombre','asc');
         return $this->db->get($this->tbl.' pp', $limit, $offset);
     }
     

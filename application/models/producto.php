@@ -59,7 +59,8 @@ class Producto extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
+                $this->db->or_like('p.nombre',$f);
+                $this->db->or_like('pr.nombre',$f);
             }
         }
         $this->db->group_by('p.id');

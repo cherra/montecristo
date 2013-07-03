@@ -221,6 +221,7 @@
 <script>
     $(document).ready(function(){
         
+        $('#filtro').focus();
         //$('input[type="text"]').attr('autocomplete', 'off');
         
         $('form').validate({
