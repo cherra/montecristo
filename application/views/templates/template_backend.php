@@ -41,6 +41,10 @@
       .navbar-fixed-top{
         margin-bottom: 10px;
       }
+      
+      .control-group{
+          margin-bottom: 10px !important;
+      }
 
       /* Tablets y mobiles*/
       @media (max-width: 980px) {
