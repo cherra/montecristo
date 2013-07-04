@@ -105,6 +105,7 @@ class Clientes extends CI_Controller{
     
     public function index( $offset = 0 ){
         $this->load->model('cliente','c');
+        $this->load->model('lista','l');
         
         $this->config->load("pagination");
     	
@@ -134,11 +135,12 @@ class Clientes extends CI_Controller{
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', '', '');
+    	$this->table->set_heading('Nombre', 'Lista', 'Municipio', 'Estado', 'Teléfono', '', '');
     	foreach ($datos as $d) {
+            $lista = $this->l->get_by_id($d->id_lista)->row();
             $this->table->add_row(
                     $d->nombre,
-                    $d->poblacion,
+                    (!empty($lista->nombre) ? $lista->nombre : ''),
                     $d->municipio,
                     $d->estado,
                     $d->telefono,
@@ -157,6 +159,7 @@ class Clientes extends CI_Controller{
     public function clientes_agregar() {
     	$this->load->model('grupo', 'g');
         $this->load->model('cliente','c');
+        $this->load->model('lista','l');
         
     	$data['titulo'] = 'Clientes <small>Registro nuevo</small>';
     	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
@@ -167,6 +170,7 @@ class Clientes extends CI_Controller{
     		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
     	}
         $data['grupos'] = $this->g->get_all()->result();
+        $data['listas'] = $this->l->get_all()->result();
         $this->load->view('ventas/clientes/clientes_formulario', $data);
     }
     
@@ -176,6 +180,8 @@ class Clientes extends CI_Controller{
     public function clientes_editar( $id = NULL ) {
     	$this->load->model('cliente', 'c');
         $this->load->model('grupo', 'g');
+        $this->load->model('lista','l');
+        
         $cliente = $this->c->get_by_id($id);
         if ( empty($id) OR $cliente->num_rows() <= 0) {
     		redirect($this->folder.$this->clase.'index');
@@ -192,6 +198,7 @@ class Clientes extends CI_Controller{
     	}
 
         $data['grupos'] = $this->g->get_all()->result();
+        $data['listas'] = $this->l->get_all()->result();
     	$data['datos'] = $this->c->get_by_id($id)->row();
         
         $this->load->view('ventas/clientes/clientes_formulario', $data);

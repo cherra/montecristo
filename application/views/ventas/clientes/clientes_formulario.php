@@ -28,6 +28,17 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="id_lista">Lista de precios</label>
+            <div class="controls">
+                <select id="grupo" name="id_lista" class="required">
+                    <option value="">Selecciona una lista...</option>
+                    <?php foreach ($listas as $lista){?>
+                        <option value="<?php echo $lista->id; ?>" <?php echo (isset($datos->id_lista) && $datos->id_lista == $lista->id ? 'selected' : ''); ?>><?php echo $lista->nombre; ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label hidden-phone" for="nombre">Nombre</label>
             <div class="controls">
               <input type="text" name="nombre" id="nombre" class="required" placeholder="Nombre" value="<?php echo (isset($datos->nombre) ? $datos->nombre : ''); ?>">
