@@ -5,7 +5,7 @@
   <title><?php echo $this->config->item('nombre_proyecto'); ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <!-- css -------------------------------------------------------------------- -->
-  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
       body{
