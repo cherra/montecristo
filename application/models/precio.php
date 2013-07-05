@@ -72,12 +72,18 @@ class Precio extends CI_Model {
         $this->db->where('id_lista', $id_lista);
         $this->db->where('id_producto_presentacion', $id_producto_presentacion);
         $registro = $this->db->get($this->tbl);
-        if($registro->num_rows() > 0){
+        if($precio > 0){
+            if($registro->num_rows() > 0){
+                $this->db->where('id_lista', $id_lista);
+                $this->db->where('id_producto_presentacion', $id_producto_presentacion);
+                $this->db->update($this->tbl, array('id_lista' => $id_lista, 'id_producto_presentacion' => $id_producto_presentacion, 'precio' => $precio));
+            }else{
+                $this->db->insert($this->tbl, array('id_lista' => $id_lista, 'id_producto_presentacion' => $id_producto_presentacion, 'precio' => $precio));
+            }
+        }else{
             $this->db->where('id_lista', $id_lista);
             $this->db->where('id_producto_presentacion', $id_producto_presentacion);
-            $this->db->update($this->tbl, array('id_lista' => $id_lista, 'id_producto_presentacion' => $id_producto_presentacion, 'precio' => $precio));
-        }else{
-            $this->db->insert($this->tbl, array('id_lista' => $id_lista, 'id_producto_presentacion' => $id_producto_presentacion, 'precio' => $precio));
+            $this->db->delete($this->tbl);
         }
         $this->db->trans_complete();
         return $this->db->affected_rows();

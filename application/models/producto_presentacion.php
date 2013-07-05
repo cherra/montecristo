@@ -82,6 +82,48 @@ class Producto_presentacion extends CI_Model {
     }
     
     /*
+     * Obtener presentaciones por lista de precios
+     */
+    
+    function count_all_by_lista( $filtro = NULL, $id_lista = NULL ) {
+        $this->db->select('p.nombre AS producto, pr.nombre AS presentacion, pp.*, pre.precio');
+        $this->db->join('Productos p','pp.id_producto = p.id');
+        $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id');
+        $this->db->join('Precios pre','pp.id = pre.id_producto_presentacion');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->or_like('pp.sku',$f);
+                $this->db->or_like('p.nombre',$f);
+                $this->db->or_like('pr.nombre',$f);
+            }
+        }
+        if(!empty($id_lista))
+            $this->db->where('pre.id_lista',$id_lista);
+        $query = $this->db->get($this->tbl.' pp');
+        return $query->num_rows();
+    }
+    
+    function get_paged_list_by_lista( $limit = null, $offset = 0, $filtro = null, $id_lista = NULL) {
+        $this->db->select('p.nombre AS producto, pr.nombre AS presentacion, pp.*, pre.precio');
+        $this->db->join('Productos p','pp.id_producto = p.id');
+        $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id');
+        $this->db->join('Precios pre','pp.id = pre.id_producto_presentacion');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->or_like('pp.sku',$f);
+                $this->db->or_like('p.nombre',$f);
+                $this->db->or_like('pr.nombre',$f);
+            }
+        }
+        if(!empty($id_lista))
+            $this->db->where('pre.id_lista',$id_lista);
+        $this->db->order_by('pre.precio, p.nombre, pr.nombre','asc');
+        return $this->db->get($this->tbl.' pp', $limit, $offset);
+    }
+    
+    /*
      * Valida la disponibilidad de un SKU
      */
     function sku_disponible( $sku ){
