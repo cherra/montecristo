@@ -437,6 +437,110 @@ class Clientes extends CI_Controller{
     	$data['datos'] = $this->co->get_by_id($id)->row();        
         $this->load->view('ventas/clientes/contactos_formulario', $data);
     }
+    
+    
+    public function productos( $id = NULL, $offset = 0 ){
+        $this->load->model('cliente', 'c');
+        $this->load->model('cliente_presentacion', 'cp');
+        $this->load->model('precio','p');
+        
+        $data['clientes'] = $this->c->get_all()->result();
+        
+        $data['titulo'] = 'Productos por cliente <small>Listado</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Clientes',array('class'=>'btn'));
+        $data['action'] = $this->folder.$this->clase.'productos/'.$id;
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        if (!empty($id)) {
+            $data['cliente'] = $this->c->get_by_id($id)->row();
+            
+            // obtener datos
+            $this->config->load("pagination");
+            //$this->load->model('fraccionamientos/manzana', 'm');
+            $page_limit = $this->config->item("per_page");
+            $productos = $this->cp->get_paged_list($page_limit, $offset, $filtro, $id)->result();
+            //echo $this->db->last_query();
+            //die();
+            
+            // generar paginacion
+            $this->load->library('pagination');
+            $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id);
+            $config['total_rows'] = $this->cp->count_all($filtro, $id);
+            $config['uri_segment'] = 5;
+            $this->pagination->initialize($config);
+            $data['pagination'] = $this->pagination->create_links();
+
+            // generar tabla
+            $this->load->library('table');
+            $this->table->set_empty('&nbsp;');
+            $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
+            $this->table->set_template($tmpl);
+            $this->table->set_heading('SKU', 'Producto', 'Presentación', 'Precio', '');
+            foreach ($productos as $p) {
+                $precio = $this->p->get_by_lista_producto_presentacion($data['cliente']->id_lista, $p->id_producto_presentacion)->row();
+                if($precio){ // Si el producto tiene precio se agrega a la lista
+                    $this->table->add_row(
+                            $p->codigo, 
+                            $p->producto,
+                            $p->presentacion,
+                            $precio->precio,
+                            array('data' => anchor($this->folder.$this->clase.'productos_editar/' . $p->id_producto_presentacion.'/'.$id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                    );
+                }
+            }
+
+            $data['table'] = $this->table->generate();
+            //$data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
+        }
+        
+        $this->load->view('ventas/clientes/productos_lista', $data);
+    }
+    
+    /*
+     * Editar Alias de los productos por cliente
+     */
+    public function productos_editar( $id = NULL, $id_cliente = NULL ) {
+        if(empty($id) OR empty($id_cliente)){
+            redirect($this->folder.$this->clase.'productos');
+        }
+    	$this->load->model('cliente', 'c');
+        $this->load->model('cliente_presentacion', 'cp');
+        //$this->load->model('precio','p');
+        $this->load->model('producto_presentacion','pp');
+        $this->load->model('producto','p');
+        $this->load->model('presentacion','pr');
+
+    	$data['titulo'] = 'Productos por cliente <small>Editar registro</small>';
+    	$data['link_back'] = anchor($this->folder.$this->clase.'productos/'.$id_cliente,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+    	$data['mensaje'] = '';
+    	$data['action'] = $this->folder.$this->clase.'productos_editar/' . $id.'/'.$id_cliente;
+    	 
+    	if ( ($datos = $this->input->post()) ) {
+            $alias = $this->cp->get_by_producto_cliente($id, $id_cliente);
+            if($alias->num_rows() > 0)
+    		$this->cp->update($alias->row()->id, $datos);
+            else{
+                $datos['id_producto_presentacion'] = $id;
+                $datos['id_cliente'] = $id_cliente;
+                $this->cp->save($datos);
+            }
+            $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+    	}
+
+        $producto_presentacion = $this->pp->get_by_id($id)->row();
+        $data['producto_presentacion'] = $producto_presentacion;
+        $data['producto'] = $this->p->get_by_id($producto_presentacion->id_producto)->row();
+        $data['presentacion'] = $this->pr->get_by_id($producto_presentacion->id_presentacion)->row();
+    	$data['datos'] = $this->cp->get_by_producto_cliente($id, $id_cliente)->row();
+        $data['cliente'] = $this->c->get_by_id($id_cliente)->row();
+        
+        $this->load->view('ventas/clientes/productos_formulario', $data);
+    }
+    
 }
 
 ?>
