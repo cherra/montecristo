@@ -442,7 +442,6 @@ class Clientes extends CI_Controller{
     public function productos( $id = NULL, $offset = 0 ){
         $this->load->model('cliente', 'c');
         $this->load->model('cliente_presentacion', 'cp');
-        $this->load->model('precio','p');
         
         $data['clientes'] = $this->c->get_all()->result();
         
@@ -463,8 +462,6 @@ class Clientes extends CI_Controller{
             //$this->load->model('fraccionamientos/manzana', 'm');
             $page_limit = $this->config->item("per_page");
             $productos = $this->cp->get_paged_list($page_limit, $offset, $filtro, $id)->result();
-            //echo $this->db->last_query();
-            //die();
             
             // generar paginacion
             $this->load->library('pagination');
@@ -481,16 +478,13 @@ class Clientes extends CI_Controller{
             $this->table->set_template($tmpl);
             $this->table->set_heading('SKU', 'Producto', 'Presentación', 'Precio', '');
             foreach ($productos as $p) {
-                $precio = $this->p->get_by_lista_producto_presentacion($data['cliente']->id_lista, $p->id_producto_presentacion)->row();
-                if($precio){ // Si el producto tiene precio se agrega a la lista
                     $this->table->add_row(
                             $p->codigo, 
                             $p->producto,
                             $p->presentacion,
-                            $precio->precio,
+                            $p->precio,
                             array('data' => anchor($this->folder.$this->clase.'productos_editar/' . $p->id_producto_presentacion.'/'.$id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                     );
-                }
             }
 
             $data['table'] = $this->table->generate();
@@ -541,6 +535,164 @@ class Clientes extends CI_Controller{
         $this->load->view('ventas/clientes/productos_formulario', $data);
     }
     
+    
+    /****************************
+     * Métodos Ajax
+     */
+    
+    public function get_clientes( $filtro = NULL ){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($filtro = $this->input->get('filtro')) ){
+                $this->load->model('cliente','c');
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $query = $this->c->get_paged_list($limit, 0, $filtro);
+                
+                if($query->num_rows() > 0){
+                    $clientes = $query->result();
+                    echo json_encode($clientes);
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_sucursales( $filtro = NULL ){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_cliente = $this->input->get('id_cliente')) ){
+                $this->load->model('sucursal','s');
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+                if($id_cliente){
+                    $query = $this->s->get_paged_list($limit, 0, $filtro, $id_cliente);
+
+                    if($query->num_rows() > 0){
+                        $sucursales = $query->result();
+                        echo json_encode($sucursales);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_contactos( $filtro = NULL ){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_sucursal = $this->input->get('id_sucursal')) ){
+                $this->load->model('contacto','c');
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+                if($id_sucursal){
+                    $query = $this->c->get_paged_list($limit, 0, $filtro, $id_sucursal);
+
+                    if($query->num_rows() > 0){
+                        $contactos = $query->result();
+                        echo json_encode($contactos);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_productos(){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_cliente = $this->input->get('id_cliente')) ){
+                $this->load->model('cliente_presentacion', 'cp');
+                
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+                if($id_cliente){
+                    $query = $this->cp->get_productos($limit, 0, $filtro, $id_cliente);
+                    
+                    if($query->num_rows() > 0){
+                        $productos = $query->result();
+                        echo json_encode($productos);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_presentaciones(){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_cliente = $this->input->get('id_cliente')) && ($id_producto = $this->input->get('id_producto')) ){
+                $this->load->model('cliente_presentacion', 'cp');
+                
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+                if($id_cliente && $id_producto){
+                    $query = $this->cp->get_presentaciones($limit, 0, $filtro, $id_cliente, $id_producto);
+                    //echo $this->db->last_query();
+                    //die();
+                    if($query->num_rows() > 0){
+                        $presentaciones = $query->result();
+                        echo json_encode($presentaciones);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_precio_presentacion(){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_cliente = $this->input->get('id_cliente')) && ($id_producto_presentacion = $this->input->get('id_producto_presentacion')) ){
+                $this->load->model('cliente', 'c');
+                $this->load->model('cliente_presentacion', 'cp');
+                $this->load->model('precio','p');
+                
+                if($id_cliente && $id_producto_presentacion){
+                    $cliente = $this->c->get_by_id($id_cliente)->row();
+                    $query = $this->p->get_by_lista_producto_presentacion($cliente->id_lista, $id_producto_presentacion);
+
+                    if($query->num_rows() > 0){
+                        $precio = $query->row();
+                        /*$alias = $this->cp->get_presentacion( $id_cliente, $id_producto_presentacion)->row();
+                        
+                        $precio['codigo'] = $alias->codigo;
+                        $precio['nombre'] = $alias->presentacion;*/
+                        echo json_encode($precio);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
 }
 
 ?>

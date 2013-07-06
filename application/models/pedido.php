@@ -1,26 +1,23 @@
 <?php
 
 /**
- * Description of sucursal
+ * Description of pedido
  *
  * @author cherra
  */
-class Sucursal extends CI_Model {
+class Pedido extends CI_Model {
     
-    private $tbl = 'ClienteSucursales';
+    private $tbl = 'Pedidos';
     
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
      */
-    function count_all( $filtro = NULL, $id_cliente = NULL ) {
+    function count_all( $filtro = NULL ) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->like('nombre',$f);
+                $this->db->or_like('numero',$f);
             }
-        }
-        if(!empty($id_cliente)){
-            $this->db->where('id_cliente', $id_cliente);
         }
         $query = $this->db->get($this->tbl);
         return $query->num_rows();
@@ -30,24 +27,21 @@ class Sucursal extends CI_Model {
      *  Obtiene todos los registros de la tabla
      */
     function get_all() {
-        $this->db->order_by('numero','asc');
+        $this->db->order_by('id','desc');
         return $this->db->get($this->tbl);
     }
     
     /**
     * Cantidad de registros por pagina
     */
-    function get_paged_list($limit = null, $offset = 0, $filtro = null, $id_cliente = null) {
+    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->like('nombre',$f);
+                $this->db->or_like('numero',$f);
             }
         }
-        if(!empty($id_cliente)){
-            $this->db->where('id_cliente', $id_cliente);
-        }
-        $this->db->order_by('numero','asc');
+        $this->db->order_by('id','desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
@@ -56,12 +50,6 @@ class Sucursal extends CI_Model {
     */
     function get_by_id($id) {
         $this->db->where('id', $id);
-        return $this->db->get($this->tbl);
-    }
-    
-    function get_by_id_cliente($id){
-        $this->db->where('id_cliente',$id);
-        $this->db->order_by('numero','asc');
         return $this->db->get($this->tbl);
     }
     

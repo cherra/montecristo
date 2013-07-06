@@ -16,7 +16,7 @@ class Contacto extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
+                $this->db->like('nombre',$f);
             }
         }
         if(!empty($id_sucursal))
@@ -40,7 +40,7 @@ class Contacto extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
+                $this->db->like('nombre',$f);
             }
         }
         if(!empty($id_sucursal))

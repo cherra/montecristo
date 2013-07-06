@@ -24,7 +24,7 @@ class Cliente extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
+                $this->db->like('nombre',$f);
             }
         }
         $query = $this->db->get($this->tbl);
@@ -46,7 +46,7 @@ class Cliente extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->or_like('nombre',$f);
+                $this->db->like('nombre',$f);
             }
         }
         $this->db->order_by('nombre','asc');
