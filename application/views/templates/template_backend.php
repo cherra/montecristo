@@ -45,6 +45,14 @@
       .control-group{
           margin-bottom: 10px !important;
       }
+      
+      address{
+          margin-bottom: 0;
+      }
+      
+      hr{
+          margin: 10px 0;
+      }
 
       /* Tablets y mobiles*/
       @media (max-width: 980px) {

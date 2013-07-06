@@ -34,7 +34,7 @@ class Rutas extends CI_Controller {
     	
         // generar paginacion
     	$this->load->library('pagination');
-    	$config['base_url'] = site_url($this->folder.$this->clase.'categorias');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'rutas');
     	$config['total_rows'] = $this->r->count_all($filtro);
     	$config['per_page'] = $page_limit;
     	$config['uri_segment'] = 4;
