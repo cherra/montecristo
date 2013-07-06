@@ -68,7 +68,7 @@ CREATE TABLE `Categorias` (
 
 LOCK TABLES `Categorias` WRITE;
 /*!40000 ALTER TABLE `Categorias` DISABLE KEYS */;
-INSERT INTO `Categorias` VALUES (1,'Soriana',''),(2,'Walmart',''),(3,'Lowes',''),(4,'Varios','');
+INSERT INTO `Categorias` VALUES (1,'Especie 2',''),(2,'Insumos',''),(3,'Especie 1',''),(4,'Varios','');
 /*!40000 ALTER TABLE `Categorias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,11 +83,12 @@ CREATE TABLE `ClientePresentaciones` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_cliente` int(11) NOT NULL,
   `id_producto_presentacion` int(11) NOT NULL,
-  `nombre` varchar(128) NOT NULL,
-  `codigo` varchar(32) NOT NULL,
+  `producto` varchar(128) DEFAULT NULL,
+  `codigo` varchar(32) DEFAULT NULL,
+  `presentacion` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_cliente` (`id_cliente`,`id_producto_presentacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Registro de "Alias" de productos por cliente';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,13 +101,43 @@ LOCK TABLES `ClientePresentaciones` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `ClienteSucursal`
+-- Table structure for table `ClienteSucursalContactos`
 --
 
-DROP TABLE IF EXISTS `ClienteSucursal`;
+DROP TABLE IF EXISTS `ClienteSucursalContactos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ClienteSucursal` (
+CREATE TABLE `ClienteSucursalContactos` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_cliente_sucursal` int(11) NOT NULL,
+  `nombre` varchar(128) NOT NULL,
+  `puesto` varchar(128) NOT NULL,
+  `telefono` varchar(10) NOT NULL,
+  `celular` varchar(10) NOT NULL,
+  `email` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_cliente_sucursal` (`id_cliente_sucursal`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ClienteSucursalContactos`
+--
+
+LOCK TABLES `ClienteSucursalContactos` WRITE;
+/*!40000 ALTER TABLE `ClienteSucursalContactos` DISABLE KEYS */;
+INSERT INTO `ClienteSucursalContactos` VALUES (1,1,'Jorge Isaías González Becerra','Gerente','3121361900','3123013565','jorge@matica.mx'),(2,1,'Ana Sofía González','Gte. Marketing','3121361900','3123013565','cherra@mac.com');
+/*!40000 ALTER TABLE `ClienteSucursalContactos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ClienteSucursales`
+--
+
+DROP TABLE IF EXISTS `ClienteSucursales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ClienteSucursales` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_cliente` int(11) NOT NULL,
   `numero` varchar(32) NOT NULL,
@@ -114,6 +145,7 @@ CREATE TABLE `ClienteSucursal` (
   `calle` varchar(128) NOT NULL,
   `numero_exterior` varchar(8) NOT NULL,
   `numero_interior` varchar(4) NOT NULL,
+  `colonia` varchar(128) NOT NULL,
   `poblacion` varchar(128) NOT NULL,
   `municipio` varchar(128) NOT NULL,
   `estado` varchar(128) NOT NULL,
@@ -123,16 +155,17 @@ CREATE TABLE `ClienteSucursal` (
   `email` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_cliente` (`id_cliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ClienteSucursal`
+-- Dumping data for table `ClienteSucursales`
 --
 
-LOCK TABLES `ClienteSucursal` WRITE;
-/*!40000 ALTER TABLE `ClienteSucursal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ClienteSucursal` ENABLE KEYS */;
+LOCK TABLES `ClienteSucursales` WRITE;
+/*!40000 ALTER TABLE `ClienteSucursales` DISABLE KEYS */;
+INSERT INTO `ClienteSucursales` VALUES (1,1,'1','Sucursal 1 de Soriana','','','','','Colima','','','','','',''),(2,1,'2','Otra sucursal','','','','','','','','','','',''),(3,2,'1','Walmart Tecnológico','Av. Tecnológico','100','','','Colima','Colima','Colima','','','',''),(4,1,'3','Sucursal 3','','','','','','','','','','',''),(5,2,'2','Walmart Calzada','Calzada Galván','200','','','','','','','','','');
+/*!40000 ALTER TABLE `ClienteSucursales` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -161,7 +194,7 @@ CREATE TABLE `Clientes` (
   `email` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_grupo` (`id_grupo`,`id_lista`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,6 +203,7 @@ CREATE TABLE `Clientes` (
 
 LOCK TABLES `Clientes` WRITE;
 /*!40000 ALTER TABLE `Clientes` DISABLE KEYS */;
+INSERT INTO `Clientes` VALUES (1,1,1,'Soriana S.A. de C.V.','GOBJ7903253XA','Leon Felipe','37','','Lomas Verdes','Colima','Colima','Colima','28017','3121361900','3123013565','cherra@mac.com'),(2,2,2,'Walmart de México','','','','','','Distrito Federal','Distrito Federal','Distrito Federal','','','','');
 /*!40000 ALTER TABLE `Clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,35 +297,6 @@ INSERT INTO `Configuracion` VALUES (7,'asset_path','assets/','Carpeta de Assets'
 UNLOCK TABLES;
 
 --
--- Table structure for table `ContactoSucursal`
---
-
-DROP TABLE IF EXISTS `ContactoSucursal`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ContactoSucursal` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_cliente_sucursal` int(11) NOT NULL,
-  `nombre` varchar(128) NOT NULL,
-  `puesto` varchar(128) NOT NULL,
-  `telefono` varchar(10) NOT NULL,
-  `celular` varchar(10) NOT NULL,
-  `email` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_cliente_sucursal` (`id_cliente_sucursal`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ContactoSucursal`
---
-
-LOCK TABLES `ContactoSucursal` WRITE;
-/*!40000 ALTER TABLE `ContactoSucursal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ContactoSucursal` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `FacturaLinea`
 --
 
@@ -363,7 +368,7 @@ CREATE TABLE `Grupos` (
   `nombre` varchar(128) NOT NULL,
   `descripcion` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -372,6 +377,7 @@ CREATE TABLE `Grupos` (
 
 LOCK TABLES `Grupos` WRITE;
 /*!40000 ALTER TABLE `Grupos` DISABLE KEYS */;
+INSERT INTO `Grupos` VALUES (1,'Soriana','Cadena de tiendas Soriana'),(2,'Walmart','Cadena de tiendas Walmart');
 /*!40000 ALTER TABLE `Grupos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +393,7 @@ CREATE TABLE `Listas` (
   `nombre` varchar(128) NOT NULL,
   `descripcion` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,6 +402,7 @@ CREATE TABLE `Listas` (
 
 LOCK TABLES `Listas` WRITE;
 /*!40000 ALTER TABLE `Listas` DISABLE KEYS */;
+INSERT INTO `Listas` VALUES (1,'Soriana','Lista de precios para toda la cadena Soriana'),(2,'Walmart',''),(3,'Varios','');
 /*!40000 ALTER TABLE `Listas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -709,7 +716,7 @@ CREATE TABLE `Permisos` (
   `icon` varchar(32) NOT NULL,
   PRIMARY KEY (`id_permiso`),
   UNIQUE KEY `permKey` (`permKey`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -718,7 +725,7 @@ CREATE TABLE `Permisos` (
 
 LOCK TABLES `Permisos` WRITE;
 /*!40000 ALTER TABLE `Permisos` DISABLE KEYS */;
-INSERT INTO `Permisos` VALUES (2,'preferencias','preferencias','preferencias','','preferencias','index',0,''),(3,'seguridad/permisos_lista','Permisos','preferencias','','seguridad','permisos_lista',1,'icon-list'),(4,'seguridad/permiso_delete','seguridad/permiso_delete','preferencias','','seguridad','permiso_delete',0,''),(5,'seguridad/permiso_update','seguridad/permiso_update','preferencias','','seguridad','permiso_update',0,''),(6,'seguridad/roles_lista','Roles','preferencias','','seguridad','roles_lista',1,'icon-list'),(7,'seguridad/rol_update','seguridad/rol_update','preferencias','','seguridad','rol_update',0,''),(8,'seguridad/rol_delete','seguridad/rol_delete','preferencias','','seguridad','rol_delete',0,''),(9,'seguridad/usuarios_lista','Usuarios','preferencias','','seguridad','usuarios_lista',1,'icon-list'),(10,'seguridad/usuario_update','seguridad/usuario_update','preferencias','','seguridad','usuario_update',0,''),(11,'seguridad/usuario_permisos','seguridad/usuario_permisos','preferencias','','seguridad','usuario_permisos',0,''),(12,'seguridad/usuario_delete','seguridad/usuario_delete','preferencias','','seguridad','usuario_delete',0,''),(13,'seguridad/rol_permisos','seguridad/rol_permisos','preferencias','','seguridad','rol_permisos',0,''),(14,'preferencias/configuracion_lista','Parámetros de configuración','preferencias','','preferencias','configuracion_lista',1,'icon-cog'),(15,'preferencias/configuracion_add','preferencias/configuracion_add','preferencias','','preferencias','configuracion_add',0,''),(16,'preferencias/configuracion_delete','preferencias/configuracion_delete','preferencias','','preferencias','configuracion_delete',0,''),(17,'preferencias/configuracion_update','preferencias/configuracion_update','preferencias','','preferencias','configuracion_update',0,''),(21,'ventas','Ventas','ventas','','ventas','index',0,''),(26,'productos/categorias','Categorías','ventas','','productos','categorias',1,'icon-list'),(27,'productos/categorias_agregar','Categorias - Agregar','ventas','','productos','categorias_agregar',0,''),(28,'productos/categorias_editar','Categorias - Editar','ventas','','productos','categorias_editar',0,''),(30,'productos','productos','ventas','','productos','index',1,'');
+INSERT INTO `Permisos` VALUES (2,'preferencias','preferencias','preferencias','','preferencias','index',0,''),(14,'preferencias/configuracion_lista','Parámetros de configuración','preferencias','','preferencias','configuracion_lista',1,'icon-cog'),(15,'preferencias/configuracion_add','preferencias/configuracion_add','preferencias','','preferencias','configuracion_add',0,''),(16,'preferencias/configuracion_delete','preferencias/configuracion_delete','preferencias','','preferencias','configuracion_delete',0,''),(17,'preferencias/configuracion_update','preferencias/configuracion_update','preferencias','','preferencias','configuracion_update',0,''),(21,'ventas','Ventas','ventas','','ventas','index',0,''),(35,'compras/productos','Productos','compras','','productos','index',1,'icon-archive'),(36,'ventas/productos/categorias','Categorías','ventas','','productos','categorias',1,'icon-sitemap'),(37,'ventas/productos','Productos','ventas','','productos','index',1,'icon-archive'),(41,'preferencias/seguridad/permisos_lista','Permisos','preferencias','','seguridad','permisos_lista',1,'icon-list'),(42,'preferencias/seguridad/permiso_delete','preferencias/seguridad/permiso_delete','preferencias','','seguridad','permiso_delete',0,''),(43,'preferencias/seguridad/permiso_update','preferencias/seguridad/permiso_update','preferencias','','seguridad','permiso_update',0,''),(44,'preferencias/seguridad/roles_lista','Roles','preferencias','','seguridad','roles_lista',1,'icon-list'),(45,'preferencias/seguridad/rol_permisos','preferencias/seguridad/rol_permisos','preferencias','','seguridad','rol_permisos',0,''),(46,'preferencias/seguridad/rol_update','preferencias/seguridad/rol_update','preferencias','','seguridad','rol_update',0,''),(47,'preferencias/seguridad/rol_add','preferencias/seguridad/rol_add','preferencias','','seguridad','rol_add',0,''),(48,'preferencias/seguridad/rol_delete','preferencias/seguridad/rol_delete','preferencias','','seguridad','rol_delete',0,''),(49,'preferencias/seguridad/usuarios_lista','Usuarios','preferencias','','seguridad','usuarios_lista',1,'icon-list'),(50,'preferencias/seguridad/usuario_add','preferencias/seguridad/usuario_add','preferencias','','seguridad','usuario_add',0,''),(51,'preferencias/seguridad/usuario_permisos','preferencias/seguridad/usuario_permisos','preferencias','','seguridad','usuario_permisos',0,''),(52,'preferencias/seguridad/usuario_roles','preferencias/seguridad/usuario_roles','preferencias','','seguridad','usuario_roles',0,''),(53,'preferencias/seguridad/usuario_update','preferencias/seguridad/usuario_update','preferencias','','seguridad','usuario_update',0,''),(54,'preferencias/seguridad/usuario_delete','preferencias/seguridad/usuario_delete','preferencias','','seguridad','usuario_delete',0,''),(55,'compras','compras','compras','','compras','index',0,''),(56,'compras/productos/productos_agregar','compras/productos/productos_agregar','compras','','productos','productos_agregar',0,''),(57,'compras/productos/productos_editar','compras/productos/productos_editar','compras','','productos','productos_editar',0,''),(58,'compras/productos/categorias','Categorías','compras','','productos','categorias',1,'icon-sitemap'),(59,'compras/productos/categorias_agregar','compras/productos/categorias_agregar','compras','','productos','categorias_agregar',0,''),(60,'compras/productos/categorias_editar','compras/productos/categorias_editar','compras','','productos','categorias_editar',0,''),(61,'compras/productos/presentaciones','Presentaciones','compras','','productos','presentaciones',1,'icon-bitbucket'),(62,'compras/productos/presentaciones_editar','compras/productos/presentaciones_editar','compras','','productos','presentaciones_editar',0,''),(63,'compras/productos/presentaciones_agregar','compras/productos/presentaciones_agregar','compras','','productos','presentaciones_agregar',0,''),(64,'compras/productos/productos_presentaciones','compras/productos/productos_presentaciones','compras','','productos','productos_presentaciones',0,''),(65,'compras/productos/productos_delete_presentacion','compras/productos/productos_delete_presentacion','compras','','productos','productos_delete_presentacion',0,''),(66,'compras/productos/productos_add_presentacion','compras/productos/productos_add_presentacion','compras','','productos','productos_add_presentacion',0,''),(67,'ventas/clientes','Listado','ventas','','clientes','index',1,'icon-user'),(68,'ventas/clientes/clientes_agregar','ventas/clientes/clientes_agregar','ventas','','clientes','clientes_agregar',0,''),(69,'ventas/clientes/grupos','Grupos','ventas','','clientes','grupos',1,'icon-group'),(70,'ventas/clientes/grupos_agregar','ventas/clientes/grupos_agregar','ventas','','clientes','grupos_agregar',0,''),(71,'ventas/clientes/grupos_editar','ventas/clientes/grupos_editar','ventas','','clientes','grupos_editar',0,''),(72,'ventas/clientes/clientes_editar','ventas/clientes/clientes_editar','ventas','','clientes','clientes_editar',0,''),(75,'ventas/clientes/sucursales','Sucursales','ventas','','clientes','sucursales',1,'icon-building'),(76,'ventas/clientes/sucursales_editar','ventas/clientes/sucursales_editar','ventas','','clientes','sucursales_editar',0,''),(77,'ventas/clientes/sucursales_agregar','ventas/clientes/sucursales_agregar','ventas','','clientes','sucursales_agregar',0,''),(78,'ventas/clientes/clientes_ver','ventas/clientes/clientes_ver','ventas','','clientes','clientes_ver',0,''),(81,'ventas/clientes/contactos','Contactos','ventas','','clientes','contactos',1,'icon-phone'),(82,'ventas/clientes/contactos_agregar','ventas/clientes/contactos_agregar','ventas','','clientes','contactos_agregar',0,''),(83,'ventas/clientes/contactos_editar','ventas/clientes/contactos_editar','ventas','','clientes','contactos_editar',0,''),(84,'ventas/precios/listas','Listas','ventas','','precios','listas',1,'icon-list'),(85,'ventas/precios/listas_agregar','ventas/precios/listas_agregar','ventas','','precios','listas_agregar',0,''),(86,'ventas/precios/listas_editar','ventas/precios/listas_editar','ventas','','precios','listas_editar',0,''),(87,'ventas/precios','Precios','ventas','','precios','index',1,'icon-usd'),(88,'ventas/clientes/productos','Productos','ventas','','clientes','productos',1,'icon-archive'),(89,'ventas/clientes/productos_editar','ventas/clientes/productos_editar','ventas','','clientes','productos_editar',0,''),(90,'ventas/rutas','Rutas','ventas','','rutas','index',1,'icon-truck'),(91,'ventas/rutas/rutas_agregar','ventas/rutas/rutas_agregar','ventas','','rutas','rutas_agregar',0,''),(92,'ventas/rutas/rutas_editar','ventas/rutas/rutas_editar','ventas','','rutas','rutas_editar',0,''),(93,'ventas/pedidos','Pedidos','ventas','','pedidos','index',1,'icon-shopping-cart'),(94,'ventas/pedidos/pedidos_agregar','ventas/pedidos/pedidos_agregar','ventas','','pedidos','pedidos_agregar',0,'');
 /*!40000 ALTER TABLE `Permisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -790,7 +797,7 @@ CREATE TABLE `Precios` (
   `precio` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_lista` (`id_lista`,`id_producto_presentacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -799,6 +806,7 @@ CREATE TABLE `Precios` (
 
 LOCK TABLES `Precios` WRITE;
 /*!40000 ALTER TABLE `Precios` DISABLE KEYS */;
+INSERT INTO `Precios` VALUES (1,1,16,55.00),(2,1,17,210.00),(4,1,18,60.00),(5,1,14,285.00),(6,1,13,142.00),(7,2,17,31.35),(9,2,22,31.35),(10,2,23,37.05),(11,2,21,31.35),(12,2,19,31.35),(13,2,20,42.18),(14,2,13,57.00);
 /*!40000 ALTER TABLE `Precios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -813,7 +821,7 @@ CREATE TABLE `Presentaciones` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -822,6 +830,7 @@ CREATE TABLE `Presentaciones` (
 
 LOCK TABLES `Presentaciones` WRITE;
 /*!40000 ALTER TABLE `Presentaciones` DISABLE KEYS */;
+INSERT INTO `Presentaciones` VALUES (1,'M-3'),(2,'M-4'),(3,'M-6'),(4,'Colgante');
 /*!40000 ALTER TABLE `Presentaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -841,7 +850,7 @@ CREATE TABLE `ProductoPresentaciones` (
   `peso` decimal(6,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_producto` (`id_producto`,`id_presentacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -850,6 +859,7 @@ CREATE TABLE `ProductoPresentaciones` (
 
 LOCK TABLES `ProductoPresentaciones` WRITE;
 /*!40000 ALTER TABLE `ProductoPresentaciones` DISABLE KEYS */;
+INSERT INTO `ProductoPresentaciones` VALUES (13,2,4,'234','',1.00),(14,2,3,'456','',3.00),(16,1,1,'123','',1.00),(17,1,2,'124','',2.00),(18,1,3,'345','',3.00),(19,5,2,'548','',1.00),(20,5,3,'547','',1.50),(21,4,2,'587','',1.00),(22,3,2,'879','',1.00),(23,3,3,'698','',1.50),(24,6,4,'457','',2.00),(25,6,1,'354','',0.80);
 /*!40000 ALTER TABLE `ProductoPresentaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -870,7 +880,7 @@ CREATE TABLE `Productos` (
   `control_stock` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id_categoria` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -879,7 +889,33 @@ CREATE TABLE `Productos` (
 
 LOCK TABLES `Productos` WRITE;
 /*!40000 ALTER TABLE `Productos` DISABLE KEYS */;
+INSERT INTO `Productos` VALUES (1,'Helecho Boston','100',3,1,1,1),(2,'Teléfono dorado','101',1,1,1,1),(3,'Croto Petra','321',3,1,1,1),(4,'Cuna de Moises','461',3,1,1,1),(5,'Ficus Raqueta','143',3,1,1,1),(6,'Helecho Canguro','198',3,1,1,1);
 /*!40000 ALTER TABLE `Productos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ProveedorPresentaciones`
+--
+
+DROP TABLE IF EXISTS `ProveedorPresentaciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ProveedorPresentaciones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_proveedor` int(11) NOT NULL,
+  `id_producto_presentacion` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_proveedor` (`id_proveedor`,`id_producto_presentacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ProveedorPresentaciones`
+--
+
+LOCK TABLES `ProveedorPresentaciones` WRITE;
+/*!40000 ALTER TABLE `ProveedorPresentaciones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ProveedorPresentaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -915,31 +951,6 @@ CREATE TABLE `Proveedores` (
 LOCK TABLES `Proveedores` WRITE;
 /*!40000 ALTER TABLE `Proveedores` DISABLE KEYS */;
 /*!40000 ALTER TABLE `Proveedores` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ProveedoresPresentaciones`
---
-
-DROP TABLE IF EXISTS `ProveedoresPresentaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ProveedoresPresentaciones` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_proveedor` int(11) NOT NULL,
-  `id_producto_presentacion` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_proveedor` (`id_proveedor`,`id_producto_presentacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ProveedoresPresentaciones`
---
-
-LOCK TABLES `ProveedoresPresentaciones` WRITE;
-/*!40000 ALTER TABLE `ProveedoresPresentaciones` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ProveedoresPresentaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1007,7 +1018,7 @@ CREATE TABLE `Rutas` (
   `nombre` varchar(128) NOT NULL,
   `descripcion` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1016,6 +1027,7 @@ CREATE TABLE `Rutas` (
 
 LOCK TABLES `Rutas` WRITE;
 /*!40000 ALTER TABLE `Rutas` DISABLE KEYS */;
+INSERT INTO `Rutas` VALUES (1,'1','Ruta Pacífico',''),(2,'2','Ruta Norte',''),(3,'4','Prueba',''),(4,'3','Prueba','');
 /*!40000 ALTER TABLE `Rutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1112,4 +1124,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-06-27 21:33:13
+-- Dump completed on 2013-07-06 15:19:20
