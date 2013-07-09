@@ -171,6 +171,16 @@
       </div>
     </div>
     <div class="span10">
+        <?php
+            if( ($mensaje = $this->session->flashdata('mensaje')) ){
+        ?>
+            <div class="span9 alert <?php echo $mensaje['tipo']; ?>" style="position: fixed; display: none; top: 50px; z-index: 1031;" id="mensaje">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong><i class="icon-ok"></i> </strong> <?php echo $mensaje['texto']; ?>
+            </div>
+        <?php
+            }
+        ?>
       <!-- contenido --------------------------------------------------------------- -->
       {contenido_vista}
     </div>
@@ -231,7 +241,10 @@
 </div>
 
 <script>
+    //var modal = document.getElementById('loader');
     $(document).ready(function(){
+        
+        $('#mensaje').slideDown(500).delay(2000).slideUp(500);
         
         $('#filtro').focus();
         //$('input[type="text"]').attr('autocomplete', 'off');
@@ -312,6 +325,7 @@
         // Los input con la clase "hora" se utilizan para seleccionar la hora
         $('.hora').timespinner();
         $('.hora').val(hora);
+        
     });
 </script>
 

@@ -108,7 +108,8 @@ class Cliente_presentacion extends CI_Model {
         $this->db->select('IF(LENGTH(cp.presentacion) > 0, cp.presentacion, pr.nombre) AS presentacion, 
             cp.id,
             pp.id AS id_producto_presentacion,
-            MAX(pre.precio) AS precio', FALSE);
+            MAX(pre.precio) AS precio,
+            pp.sku', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
         $this->db->join('ClientePresentaciones cp', 'cp.id_producto_presentacion = pp.id AND cp.id_cliente = '.$id_cliente,'left');

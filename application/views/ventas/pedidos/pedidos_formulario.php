@@ -4,24 +4,80 @@
         <?php echo $link_back; ?>
     </div>
 </div>
+<?php
+if(isset($pedido)){
+?>
 <div class="row-fluid">
-    <form class="no-submit">
+    <div class="span1">
+        <p class="lead text-right" style="margin-bottom: 10px;"><strong>Pedido:</strong></p>
+    </div>
+    <div class="span2">
+        <p class="lead text-info text-right" style="margin-bottom: 10px;"><strong><?php echo $pedido->id; ?></strong></p>
+    </div>
+</div>
+<?php
+}
+?>
+<div class="row-fluid">
+    <form>
         <div class="span3">
             <label><strong>Buscar cliente</strong></label>
-            <input type="text" id="cliente" class="required input-block-level" placeholder="Cliente" value="<?php echo (isset($datos->cliente) ? $datos->cliente : ''); ?>">
-            <input type="text" id="sucursal" class="required input-block-level" placeholder="Sucursal" value="<?php echo (isset($datos->sucursal) ? $datos->sucursal : ''); ?>" disabled>
-            <input type="text" id="contacto" class="required input-block-level" placeholder="Contacto" value="<?php echo (isset($datos->contacto) ? $datos->contacto : ''); ?>" disabled>
+            <input type="text" id="cliente" class="input-block-level" placeholder="Cliente" value="<?php echo (isset($cliente) ? $cliente->nombre : ''); ?>" <?php if(isset($cliente)) echo "disabled"; ?>>
+            <input type="text" id="sucursal" class="input-block-level" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" disabled>
+            <input type="text" id="contacto" class="input-block-level" placeholder="Contacto" value="<?php echo (isset($contacto) ? $contacto->nombre : ''); ?>" disabled>
         </div>
         <div class="span3">
-            <address id="datos_cliente"><br><br><br><br><br></address>
+            <address id="datos_cliente">
+                <?php
+                if(isset($cliente)){
+                    echo '<strong>'.$cliente->nombre.'</strong><br>'.
+                            $cliente->rfc.'<br>'.
+                            $cliente->calle.' '.$cliente->numero_exterior.' '.$cliente->numero_interior.'<br>'.
+                            $cliente->colonia.'<br>'.
+                            $cliente->poblacion.', '.$cliente->municipio.', '.$cliente->estado.'<br>';
+                }else{
+                ?>
+                <br><br><br><br><br>
+                <?php
+                }
+                ?>
+            </address>
             <button class="btn btn-small">Editar</button>
         </div>
         <div class="span3">
-            <address id="datos_sucursal"><br><br><br><br><br></address>
+            <address id="datos_sucursal">
+                <?php
+                if(isset($sucursal)){
+                    echo '<strong>'.$sucursal->numero.' '.$sucursal->nombre.'</strong><br>'.
+                            $sucursal->calle.' '.$sucursal->numero_exterior.' '.$sucursal->numero_interior.'<br>'.
+                            $sucursal->colonia.'<br>'.
+                            $sucursal->poblacion.', '.$sucursal->municipio.', '.$sucursal->estado.'<br>'.
+                            $sucursal->telefono.'<br>';
+                }else{
+                ?>
+                <br><br><br><br><br>
+                <?php
+                }
+                ?>
+            </address>
             <button class="btn btn-small">Editar</button>
         </div>
         <div class="span3">
-            <address id="datos_contacto"><br><br><br><br><br></address>
+            <address id="datos_contacto">
+                <?php
+                if(isset($contacto)){
+                    echo '<strong>'.$contacto->nombre.'</strong><br>'.
+                            $contacto->puesto.'<br>'.
+                            $contacto->telefono.'<br>'.
+                            $contacto->celular.'<br>'.
+                            $contacto->email.'<br>';
+                }else{
+                ?>
+                <br><br><br><br><br>
+                <?php
+                }
+                ?>
+            </address>
             <button class="btn btn-small">Editar</button>
         </div>
     </form>
@@ -31,16 +87,16 @@
         <hr>
     </div>
 </div>
-<form id="llenado" class="no-submit">
+<form id="llenado">
 <div class="row-fluid">
     
         <div class="span1">
                 <label for="cantidad">Cantidad</label>
-                <input type="text" id="cantidad" placeholder="Cantidad" class="input-block-level" disabled>
+                <input type="text" id="cantidad" placeholder="Cantidad" class="input-block-level" <?php if(empty($pedido)) echo "disabled"; ?>>
         </div>
         <div class="span4">
                 <label for="producto">Producto</label>
-                <input type="text" id="producto" placeholder="Producto" class="input-block-level" disabled>
+                <input type="text" id="producto" placeholder="Producto" class="input-block-level" <?php if(empty($pedido)) echo "disabled"; ?>>
                 <input type="hidden" id="id_producto"/>
         </div>
         <div class="span2">
@@ -59,7 +115,7 @@
         </div>
         <div class="span3">
                 <label for="comentarios">Comentarios</label>
-                <textarea id="comentarios" placeholder="Comentarios" rows="2" class="input-block-level" disabled></textarea>
+                <textarea id="comentarios" placeholder="Comentarios" rows="2" class="input-block-level" <?php if(empty($pedido)) echo "disabled"; ?>></textarea>
         </div>
 </div>
 <div class="row-fluid">
@@ -71,8 +127,8 @@
 </div>
 </form>
 <div class="row-fluid">
-    <div class="span12" style="height: 220px; overflow-y: auto; overflow-x: hidden;">
-        <table class="table table-condensed table-bordered table-hover table-striped">
+    <div class="span12" style="height: 220px; overflow-y: auto; overflow-x: hidden;" id="tabla_container">
+        <table class="table table-condensed table-bordered table-hover table-striped" id="productos">
             <thead>
                 <tr>
                     <th class="span1">Cant.</th>
@@ -84,20 +140,15 @@
                 </th>
             </thead>
             <tbody id="lineas">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td colspan="6">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td colspan="6">&nbsp;</td>
-                </tr>
+                <?php
+                if(isset($presentaciones)){
+                    foreach($presentaciones as $p){
+                        echo '<tr id_producto_presentacion="'.$p->id_producto_presentacion.'" cantidad="'.$p->cantidad.'" precio="'.$p->precio.'" observaciones="'.$p->observaciones.'" producto="'.$p->producto.'" id_producto="'.$p->id_producto.'" title="Click= editar
+Doble click= borrar">'.
+                                '<td style="text-align: right;">'.$p->cantidad.'</td><td>&nbsp</td><td>'.$p->producto.'</td><td>'.$p->presentacion.'</td><td style="text-align: right;">'.$p->precio.'</td><td style="text-align: right;">'.number_format($p->cantidad*$p->precio,2).'</td></tr>';
+                    }
+                }
+                ?>
             </tbody>
         </table>
     </div>
@@ -107,30 +158,42 @@
         <table class="table table-condensed">
             <thead>
                 <tr>
-                    <th class="span1" style="text-align: right;">0.00</th>
+                    <th class="span1" style="text-align: right;"><div id="total_cantidad">0.00</div></th>
                     <th class="span2">&nbsp;</th>
                     <th class="span3">&nbsp;</th>
                     <th class="span2">&nbsp;</th>
                     <th class="span2">&nbsp;</th>
-                    <th class="span2" style="text-align: right;">0.00</th>
+                    <th class="span2" style="text-align: right;"><div id="total">0.00</div></th>
                 </th>
             </thead>
         </table>
     </div>
 </div>
-<form class="form-inline">
-    <input type="hidden" id="id_cliente" />
-    <input type="hidden" id="id_sucursal" />
-    <input type="hidden" id="id_contacto" />
+<form class="form-inline" id="final">
+    <!-- Cuando se edita el pedido se le asigna el id al input id_pedido -->
+    <input type="hidden" id="id_pedido" value="<?php if(isset($pedido)) echo $pedido->id; ?>" />
+    <input type="hidden" id="id_cliente" value="<?php if(isset($cliente)) echo $cliente->id; ?>" />
+    <input type="hidden" id="id_sucursal" value="<?php if(isset($sucursal)) echo $sucursal->id; ?>" />
+    <input type="hidden" id="id_contacto" value="<?php if(isset($contacto)) echo $contacto->id; ?>" />
     <div class="row-fluid">
-                <div class="span4">
-                    <label for="ruta">Ruta</label>
-                    <input type="text" id="ruta" placeholder="Ruta" class="input-block-level" disabled>
-                </div>
-                <div class="span8">
-                    <label for="observaciones">Observaciones</label>
-                    <textarea id="observaciones" placeholder="Observaciones" class="input-block-level" rows="3" disabled></textarea>
-                </div>
+        <div class="span3">
+            <label for="id_ruta">Ruta</label>
+            <select name="id_ruta" id="id_ruta" class="input-block-level required" <?php if(empty($rutas)) echo "disabled"; ?>>
+                <option value="">Selecciona una ruta...</option>
+                <?php
+                    if(!empty($rutas)){
+                        foreach($rutas as $r){ ?>
+                            <option value="<?php echo $r->id; ?>" <?php if(isset($ruta) && $ruta->id == $r->id) echo "selected"; ?>><?php echo $r->nombre; ?></option>
+                    <?php    
+                        }
+                    }
+                    ?>
+            </select>
+        </div>
+        <div class="span9">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" placeholder="Observaciones" class="input-block-level" rows="3" <?php if(empty($pedido)) echo "disabled"; ?>><?php if(isset($pedido)) echo $pedido->observaciones; ?></textarea>
+        </div>
     </div>
     <div class="row-fluid">
         <div class="span12">
@@ -142,7 +205,13 @@
                 <button id="guardar" class="btn btn-primary"><i class="icon-save"></i> Guardar</button>
             </div>
             <div class="offset8 span2">
-                <p class="text-right"><button id="borrar" class="btn btn-danger"><i class="icon-trash"></i> Borrar</button></p>
+                <?php
+                if(empty($pedido)){
+                ?>
+                <p class="text-right"><button id="borrar" class="btn btn-danger"><i class="icon-eraser"></i> Limpiar</button></p>
+                <?php
+                }
+                ?>
             </div>
     </div>
 </form>
@@ -160,6 +229,7 @@ if(!empty($mensaje)){
 
 <script>
 $(document).ready(function(){
+
     $('#cliente').focus();
     
     // Se anulan los submit de formularios con clase .no-submit
@@ -168,9 +238,43 @@ $(document).ready(function(){
     });
     
     
-    /*$( "#cliente" ).autocomplete({
-      source: "<?php echo site_url('ventas/clientes/get_clientes'); ?>"
-    });*/
+    function calcula_totales(){
+        var total = new Number(0);
+        var total_cantidad = new Number(0);
+    
+        $("#lineas tr").each(function(fila){
+            total += Number($(this).attr('cantidad') * $(this).attr('precio'));
+            total_cantidad += Number($(this).attr('cantidad'));
+        });
+        $('#total').html(Globalize.format(total,'n'));
+        $('#total_cantidad').html(Globalize.format(total_cantidad,'n'));
+        
+        $("#tabla_container").animate({scrollTop:$("#tabla_container")[0].scrollHeight}, 1000);  // Recorrer el scroll hasta el fondo
+    }
+    
+    function get_presentaciones( id_producto, id_producto_presentacion ){
+        var datos;
+        var id_cliente = $('#id_cliente').val();
+        var id_producto = id_producto;
+        var select = '<option value="">Selecciona...</option>';
+        // Método Ajax para obtener presentaciones de un producto y por cliente
+        $.get('<?php echo site_url('ventas/clientes/get_presentaciones'); ?>', { id_cliente: id_cliente, limit: 10, id_producto: id_producto }, function(data) {
+            datos = JSON.parse(data);
+            // Se almacena el resultado en un array para devolverlo al "autocomplete"
+            if (datos !== false) {
+                $.each(datos, function(i, object) {
+                    if(id_producto_presentacion == object.id_producto_presentacion)
+                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.sku+'" selected>'+object.presentacion+'</option>';
+                    else
+                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.sku+'">'+object.presentacion+'</option>';
+                });
+                $('#presentacion').html(select);
+            }
+        });
+    }
+    
+    calcula_totales();
+    
     var arreglo = new Array();
     $( "#cliente" ).autocomplete({
       source: function(request, response){
@@ -273,6 +377,7 @@ $(document).ready(function(){
                 ui.item.celular+'<br>'+
                 ui.item.email+'<br>');
         $('#llenado input, #llenado textarea').removeAttr('disabled');
+        $('#final select, #final textarea').removeAttr('disabled');
         $('#cantidad').focus();
       }
     });
@@ -302,20 +407,8 @@ $(document).ready(function(){
         $('#id_producto').val(ui.item.id);
         
         // Se obtienen las presentaciones para ese producto
-        var datos;
-        var id_cliente = $('#id_cliente').val();
-        var id_producto = ui.item.id;
-        var select = '<option value="">Selecciona...</option>';
-        $.get('<?php echo site_url('ventas/clientes/get_presentaciones'); ?>', { id_cliente: id_cliente, limit: 10, id_producto: id_producto }, function(data) {
-            datos = JSON.parse(data);
-            // Se almacena el resultado en un array para devolverlo al "autocomplete"
-            if (datos !== false) {
-                $.each(datos, function(i, object) {
-                    select += '<option value="'+object.id_producto_presentacion+'">'+object.presentacion+'</option>';
-                });
-                $('#presentacion').html(select);
-            }
-        });
+        get_presentaciones(ui.item.id, null);
+        
         $('#presentacion').removeAttr('disabled').focus();
       }
     });
@@ -335,37 +428,171 @@ $(document).ready(function(){
         });
     });
     
-    $('#agregar_producto').click(function(){
+    $('#agregar_producto').click(function(event){
+        event.preventDefault();
+    
         var producto = $('#producto').val();
         //var producto = $('#nombre').val();
         //var codigo = $('#codigo').val();
-        var codigo = '';
+        var codigo = $('#presentacion option:selected').attr('codigo');
         var presentacion = $('#presentacion option:selected').text();
-        var cantidad = Number($('#cantidad').val());
+        var cantidad = Number($('#cantidad').val()).toFixed(2);
+        var id_producto = $('#id_producto').val();
         var id_producto_presentacion = $('#id_producto_presentacion').val();
-        var precio = Number($('#precio').val());
+        var precio = Number($('#precio').val()).toFixed(2);
         var observaciones = $('#comentarios').val();
         var importe = Number(cantidad * precio);
         var fila = "";
+        var seleccionada = false;
         
         if($.isNumeric(cantidad) && id_producto_presentacion.length > 0){
-            fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" observaciones="'+observaciones+'" producto="'+producto+'">'+
-            '<td style="text-align: center;">'+
+            fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" observaciones="'+observaciones+'" producto="'+producto+'" id_producto="'+id_producto+'" title="Click= editar\nDoble click= borrar">'+
+            '<td style="text-align: right;">'+
             Globalize.format(cantidad,'n')+'</td><td>'+
             codigo+'</td><td>'+
             producto+'</td><td>'+
             presentacion+'</td><td style="text-align: right;">'+
             Globalize.format(precio,'n')+'</td><td style="text-align: right;">'+
-            Globalize.format(importe,'n')+'</td></tr>';
-            $('#lineas').append(fila);
+            Globalize.format(importe,'n')+'</td>'+
+            '</tr>';
+            
+            // Si hay alguna fila seleccionada se sustituye a fila
+            $("#lineas tr").each(function(fila){
+                if($(this).hasClass('info'))
+                    seleccionada = true;
+            });
+            if(seleccionada){
+                $('tr[class="info"]').replaceWith(fila);
+            }else
+                $('#lineas').append(fila);
             
             $('#producto').val('');
             $('#presentacion').html('').attr('disabled',true);
             $('#precio').val('');
             $('#comentarios').val('');
             $('#cantidad').val('');
+            $('#id_producto_presentacion').val('');
+            
+            $(this).removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
+            
+            calcula_totales();
         }
         $('#cantidad').focus();
+    });
+    
+    $('#lineas').on('click','tr',function(){
+        if($(this).hasClass('info')){
+            $(this).removeClass('info');
+            $('#cantidad').val('');
+            $('#producto').val('');
+            $('#precio').val('');
+            $('#presentacion').html('').attr('disabled',true);
+            $('#comentarios').val('');
+            $('#agregar_producto').removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
+        }else{
+            $("#lineas tr").each(function(fila){
+                $(this).removeClass('info');
+            });
+
+            $(this).addClass('info');
+
+            $('#cantidad').val($(this).attr('cantidad'));
+            $('#producto').val($(this).attr('producto'));
+            $('#id_producto_presentacion').val($(this).attr('id_producto_presentacion'));
+            
+            $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
+
+            get_presentaciones($(this).attr('id_producto'), $(this).attr('id_producto_presentacion'));
+
+            $('#presentacion').removeAttr('disabled');
+            $('#presentacion').val($(this).attr('id_producto_presentacion'));
+            $('#precio').val($(this).attr('precio'));
+            $('#comentarios').val($(this).attr('observaciones'));
+        }
+        $("#cantidad").focus();
+    });
+    
+    $('#lineas').on('dblclick','tr',function(){
+        $(this).remove();
+        calcula_totales();
+    });
+    
+    $('#borrar').click(function(event){
+        event.preventDefault();
+        var confirmar = confirm("¿Deseas borrar los datos del pedido?");
+        if(confirmar){
+            $('#id_cliente').val('');
+            $('#id_sucursal').val('');
+            $('#id_contacto').val('');
+            $('#cliente').val('');
+            $('#sucursal').val('').attr('disabled',true);
+            $('#contacto').val('').attr('disabled',true);
+            $('#observaciones').val('').attr('disabled',true);
+            $('#id_ruta').val('').attr('disabled',true);
+            
+            $('#producto').val('').attr('disabled',true);
+            $('#presentacion').html('').attr('disabled',true);
+            $('#precio').val('');
+            $('#comentarios').val('').attr('disabled',true);
+            $('#cantidad').val('').attr('disabled',true);
+            $('#id_producto_presentacion').val('');
+            
+            $('#lineas').html('');
+            $('#cliente').focus();
+            
+            calcula_totales();
+        }
+    });
+    
+    // Guardar el pedido
+    $('#guardar').click(function(event){
+        event.preventDefault();
+        
+        var productos = [];
+        var i = new Number(0);
+
+        $("#lineas tr").each(function(){
+            if($(this).attr("id_producto_presentacion")){
+                productos[i] = new Array(4);
+                productos[i][0] = $(this).attr("id_producto_presentacion");
+                productos[i][1] = $(this).attr("cantidad");
+                productos[i][2] = $(this).attr("precio");
+                productos[i][3] = $(this).attr("observaciones");
+                i++;
+            }
+        });
+        
+        // Validaciones
+        var id_cliente = $('#id_cliente').val();
+        var id_sucursal = $('#id_sucursal').val();
+        var id_contacto = $('#id_contacto').val();
+        var id_ruta = $('#id_ruta').val();
+        
+        if(id_cliente.length > 0 && id_sucursal.length > 0 && id_contacto.length > 0 && id_ruta.length > 0 && productos.length > 0){
+        
+            var r = confirm('Deseas guardar el pedido?');
+            if(r == true){
+                
+                // Si se está editando el pedido se le agrega el id al url para que el controlador haga update y no insert
+                $.ajax({
+                    url: "<?php echo (isset($pedido) ? site_url('ventas/pedidos/pedidos_guardar/'.$pedido->id) : site_url('ventas/pedidos/pedidos_guardar')); ?>",
+                    type: 'post',
+                    data: {id_cliente_sucursal: $('#id_sucursal').val(), id_contacto: $('#id_contacto').val(), id_ruta: $('#id_ruta').val(), 
+                            observaciones: $('#observaciones').val(),
+                            productos: productos},
+                    dataType: 'text'
+                }).done(function(respuesta){
+                    if(respuesta == 'OK'){
+                        //localStorage.removeItem("compras/facturas/registro/productos");
+                        window.location = "<?php echo site_url('ventas/pedidos/index'); ?>";
+                    }
+                }).fail(function(){
+                        alert("Error al intentar guardar el pedido");
+                });
+            }
+        }else{
+            alert("Datos incompletos");
+        }
     });
 });
 </script>

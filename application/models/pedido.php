@@ -8,6 +8,7 @@
 class Pedido extends CI_Model {
     
     private $tbl = 'Pedidos';
+    private $tbl_productos = 'PedidoPresentacion';
     
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
@@ -53,11 +54,24 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_presentaciones( $id ){
+        $this->db->select('pp.*');
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->where('p.id', $id);
+        $this->db->order_by('pp.id');
+        return $this->db->get($this->tbl.' p');
+    }
+    
     /**
     * Alta
     */
     function save( $datos ) {
         $this->db->insert($this->tbl, $datos);
+        return $this->db->insert_id();
+    }
+    
+    function save_presentacion ( $datos ){
+        $this->db->insert($this->tbl_productos, $datos);
         return $this->db->insert_id();
     }
 
@@ -68,6 +82,12 @@ class Pedido extends CI_Model {
         $this->db->where('id', $id);
         $this->db->update($this->tbl, $datos);
     }
+    
+    function cancelar( $id ){
+        $this->db->where('id', $id);
+        $this->db->update($this->tbl, array('estado' => 0));
+        return $this->db->affected_rows();
+    }
 
     /**
     * Eliminar por id
@@ -75,6 +95,11 @@ class Pedido extends CI_Model {
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete($this->tbl);
-    } 
+    }
+    
+    function delete_presentaciones( $id ){
+        $this->db->where('id_pedido',$id);
+        $this->db->delete($this->tbl_productos);
+    }
 }
 ?>

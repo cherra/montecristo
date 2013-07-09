@@ -36,3 +36,13 @@
         <div class="data"><?php echo $table; ?></div>
     </div>
 </div>
+<script>
+$(document).ready(function(){
+    $('a.cancelar').click(function(event){
+        var confirmar = confirm("Deseas cancelar el registro?");
+        if(!confirmar){
+            event.preventDefault();
+        }
+    });
+});
+</script>
