@@ -25,6 +25,13 @@
             <label class="control-label hidden-phone" for="codigo">Alias código</label>
             <div class="controls">
               <input type="text" name="codigo" placeholder="Alias código" value="<?php echo (isset($datos->codigo) ? $datos->codigo : ''); ?>">
+              <span class="help-inline"><?php echo (isset($producto_presentacion) ? $producto_presentacion->codigo : ''); ?></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="sku">Alias SKU</label>
+            <div class="controls">
+              <input type="text" name="sku" placeholder="Alias SKU" value="<?php echo (isset($datos->sku) ? $datos->sku : ''); ?>">
               <span class="help-inline"><?php echo (isset($producto_presentacion) ? $producto_presentacion->sku : ''); ?></span>
             </div>
         </div>

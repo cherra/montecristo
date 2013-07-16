@@ -62,7 +62,7 @@ class Producto_presentacion extends CI_Model {
      * Obtener las presentaciones asignadas a un producto
      */
     function get_by_producto( $id ){
-        $this->db->select('pr.*, pp.peso, pp.sku');
+        $this->db->select('pr.*, pp.peso, pp.sku, pp.codigo');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id');
         $this->db->where('pp.id_producto', $id);
         $this->db->order_by('pr.nombre','asc');
@@ -73,7 +73,7 @@ class Producto_presentacion extends CI_Model {
      * Obtener las presentaciones no asignadas a un producto
      */
     function get_no_asignadas_by_producto( $id ){
-        $this->db->select('pr.*, pp.peso, pp.sku, p.id AS producto');
+        $this->db->select('pr.*, pp.peso, pp.sku, pp.codigo, p.id AS producto');
         $this->db->join($this->tbl.' pp','pr.id = pp.id_presentacion AND pp.id_producto = '.$id,'left');
         $this->db->join('Productos p','pp.id_producto = p.id','left');
         $this->db->having('producto IS NULL');

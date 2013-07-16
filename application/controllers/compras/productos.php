@@ -213,11 +213,12 @@ class Productos extends CI_Controller{
         $this->table->set_empty('-');
         $tmpl = array ('table_open'  => '<table class="' . $this->config->item('tabla_css') . '" >' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('Presentacion', 'SKU', 'Peso', '');
+        $this->table->set_heading('Presentacion', 'Código', 'SKU', 'Peso', '');
         
         foreach ($presentaciones as $p) {
             $this->table->add_row(
                 $p->nombre,
+                $p->codigo,
                 $p->sku,
                 $p->peso,
                 array('data' => anchor('compras/productos/productos_delete_presentacion/' . $id.'/'.$p->id, '<i class="icon-remove"></i>', array('class' => 'btn btn-small', 'title' => 'Quitar')), 'class' => 'hidden-phone')
@@ -239,12 +240,12 @@ class Productos extends CI_Controller{
             if($disponible){
                 $resultado = $this->pp->save($datos);
                 if($resultado > 0){
-                    $this->session->set_flashdata('mensaje', '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Presentación agregada correctamente</div>');
+                    $this->session->set_flashdata('mensaje', array('tipo' => 'alert-success', 'texto' => 'Presentación agregada correctamente'));
                 }else{
-                    $this->session->set_flashdata('mensaje', '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Error al agregar la presentación</div>');
+                    $this->session->set_flashdata('mensaje', array('tipo' => 'alert-error', 'texto' => 'Error al agregar la presentación'));
                 }
             }else{
-                $this->session->set_flashdata('mensaje', '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Error al agregar la presentación: SKU duplicado</div>');
+                $this->session->set_flashdata('mensaje', array('tipo' => 'alert-error', 'texto' => 'Error al agregar la presentación: SKU duplicado'));
             }
             redirect('compras/productos/productos_presentaciones/'.$datos['id_producto']);
         }else{

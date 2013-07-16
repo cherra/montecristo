@@ -264,9 +264,9 @@ $(document).ready(function(){
             if (datos !== false) {
                 $.each(datos, function(i, object) {
                     if(id_producto_presentacion == object.id_producto_presentacion)
-                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.sku+'" selected>'+object.presentacion+'</option>';
+                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.cdigo+'" selected>'+object.presentacion+'</option>';
                     else
-                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.sku+'">'+object.presentacion+'</option>';
+                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.codigo+'">'+object.presentacion+'</option>';
                 });
                 $('#presentacion').html(select);
             }

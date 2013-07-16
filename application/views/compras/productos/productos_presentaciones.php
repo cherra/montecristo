@@ -41,6 +41,12 @@
         </div>
     </div>
     <div class="control-group">
+        <label class="control-label" for="codigo">Código</label>
+        <div class="controls">
+            <input type="text" name="codigo" id="codigo" class="required" placeholder="Código" <?php if(empty($presentacion)) echo "readonly"; ?>/>
+        </div>
+    </div>
+    <div class="control-group">
         <label class="control-label" for="sku">SKU</label>
         <div class="controls">
             <input type="text" name="sku" id="sku" class="required" placeholder="SKU" <?php if(empty($presentacion)) echo "readonly"; ?>/>
@@ -67,12 +73,6 @@
     </div>
 </div>
 
-<div class="row-fluid">
-  	<div class="span6 offset3">
-    	<?php echo $mensaje ?>
-	</div>
-</div>
-
 <script type="text/javascript">
 $(function () {
         
@@ -82,6 +82,6 @@ $(function () {
                 $(location).attr('href',url+'/'+$('#id_producto').val()+'/'+$(this).val());
         });
         
-        $('#sku').focus();
+        $('#codigo').focus();
 });
 </script>

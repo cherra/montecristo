@@ -476,7 +476,7 @@ class Clientes extends CI_Controller{
             $this->table->set_empty('&nbsp;');
             $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
             $this->table->set_template($tmpl);
-            $this->table->set_heading('SKU', 'Producto', 'Presentación', 'Precio', '');
+            $this->table->set_heading('Código', 'Producto', 'Presentación', 'Precio', '');
             foreach ($productos as $p) {
                     $this->table->add_row(
                             $p->codigo, 

@@ -43,7 +43,8 @@ class Cliente_presentacion extends CI_Model {
     function get_paged_list($limit = null, $offset = 0, $filtro = null, $id = NULL) {
         $this->db->select('IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto, 
             IF(LENGTH(cp.presentacion) > 0,cp.presentacion, pr.nombre) AS presentacion, 
-            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.sku) AS codigo, 
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo, 
+            IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku, 
             pp.id AS id_producto_presentacion, 
             cp.id,
             pre.precio', FALSE);
@@ -87,7 +88,7 @@ class Cliente_presentacion extends CI_Model {
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
         $this->db->join('ClientePresentaciones cp', 'cp.id_producto_presentacion = pp.id AND cp.id_cliente = '.$id,'left');
-        $this->db->join('Clientes c','cp.id_cliente = c.id  OR c.id = '.$id,'left');
+        $this->db->join('Clientes c','cp.id_cliente = c.id  AND c.id = '.$id,'left');
         $this->db->join('Listas l','c.id_lista = l.id','left');
         $this->db->join('Precios pre','l.id = pre.id_lista AND pp.id = pre.id_producto_presentacion','left');
         if(!empty($filtro)){
@@ -109,7 +110,8 @@ class Cliente_presentacion extends CI_Model {
             cp.id,
             pp.id AS id_producto_presentacion,
             MAX(pre.precio) AS precio,
-            pp.sku', FALSE);
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo,
+            IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
         $this->db->join('ClientePresentaciones cp', 'cp.id_producto_presentacion = pp.id AND cp.id_cliente = '.$id_cliente,'left');
