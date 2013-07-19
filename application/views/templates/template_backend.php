@@ -163,7 +163,7 @@
                     // y se marca como activa para resaltarla
                     if( strpos(current_url(), $metodo->folder.'/'.$metodo->class.'/'.$metodo->method) ) 
                         echo 'class="active"'; 
-                    ?>><?php echo anchor($link, '<i class="'.$metodo->icon.'"></i> '.$metodo->nombre) ?></li>
+                    ?>><?php echo anchor($link, '<i class="icon-fixed-width '.$metodo->icon.'"></i> '.$metodo->nombre) ?></li>
             <?php
             }
             ?>
