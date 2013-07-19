@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <div class="page-header">
         <h2><?php echo $titulo; ?></h2> 
-        <?php echo $link_back; ?>
+        <a href="javascript:history.back(-1)" class="btn"><i class="icon-arrow-left"></i> Regresar</a>
     </div>
 </div>
 <?php
@@ -14,16 +14,32 @@ if(isset($pedido)){
     <div class="span2">
         <p class="lead text-info text-right" style="margin-bottom: 10px;"><strong><?php echo $pedido->id; ?></strong></p>
     </div>
+    <div class="span2">
+        <?php if(isset($pedido)){ ?>
+        <p style="margin-bottom: 10px;"><button class="btn btn-warning" id="editar">Editar</button></p>
+        <?php } ?>
+    </div>
+    <div class="offset5 span2">
+        <?php if(isset($icono_estado)){ ?>
+        <p class="text-right text-info" style="margin-bottom: 10px;"><?php echo $icono_estado; ?></p>
+        <?php } ?>
+    </div>
 </div>
 <?php
 }
 ?>
 <div class="row-fluid">
-    <form>
+    <form id="todos_datos_cliente">
         <div class="span3">
+            <!-- Cuando se edita el pedido se le asigna el id al input id_pedido -->
+            <input type="hidden" id="id_pedido" value="<?php if(isset($pedido)) echo $pedido->id; ?>" />
+            <input type="hidden" id="id_cliente" value="<?php if(isset($cliente)) echo $cliente->id; ?>" />
+            <input type="hidden" id="id_sucursal" value="<?php if(isset($sucursal)) echo $sucursal->id; ?>" />
+            <input type="hidden" id="id_contacto" value="<?php if(isset($contacto)) echo $contacto->id; ?>" />
+            
             <label><strong>Buscar cliente</strong></label>
-            <input type="text" id="cliente" class="input-block-level" placeholder="Cliente" value="<?php echo (isset($cliente) ? $cliente->nombre : ''); ?>" <?php if(isset($cliente)) echo "disabled"; ?>>
-            <input type="text" id="sucursal" class="input-block-level" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" disabled>
+            <input type="text" id="cliente" class="input-block-level" placeholder="Cliente" value="<?php echo (isset($cliente) ? $cliente->nombre : ''); ?>">
+            <input type="text" id="sucursal" class="input-block-level" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" <?php if(!isset($cliente)) echo "disabled"; ?>>
             <input type="text" id="contacto" class="input-block-level" placeholder="Contacto" value="<?php echo (isset($contacto) ? $contacto->nombre : ''); ?>" disabled>
         </div>
         <div class="span3">
@@ -143,9 +159,9 @@ if(isset($pedido)){
                 <?php
                 if(isset($presentaciones)){
                     foreach($presentaciones as $p){
-                        echo '<tr id_producto_presentacion="'.$p->id_producto_presentacion.'" cantidad="'.$p->cantidad.'" precio="'.$p->precio.'" observaciones="'.$p->observaciones.'" producto="'.$p->producto.'" id_producto="'.$p->id_producto.'" title="Click= editar
+                        echo '<tr id_producto_presentacion="'.$p->id_producto_presentacion.'" cantidad="'.$p->cantidad.'" precio="'.$p->precio.'" codigo="'.$p->codigo.'" observaciones="'.$p->observaciones.'" producto="'.$p->producto.'" id_producto="'.$p->id_producto.'" title="Click= editar
 Doble click= borrar">'.
-                                '<td style="text-align: right;">'.$p->cantidad.'</td><td>&nbsp</td><td>'.$p->producto.'</td><td>'.$p->presentacion.'</td><td style="text-align: right;">'.$p->precio.'</td><td style="text-align: right;">'.number_format($p->cantidad*$p->precio,2).'</td></tr>';
+                                '<td style="text-align: right;">'.$p->cantidad.'</td><td>'.$p->codigo.'</td><td>'.$p->producto.'</td><td>'.$p->presentacion.'</td><td style="text-align: right;">'.$p->precio.'</td><td style="text-align: right;">'.number_format($p->cantidad*$p->precio,2).'</td></tr>';
                     }
                 }
                 ?>
@@ -170,11 +186,6 @@ Doble click= borrar">'.
     </div>
 </div>
 <form class="form-inline" id="final">
-    <!-- Cuando se edita el pedido se le asigna el id al input id_pedido -->
-    <input type="hidden" id="id_pedido" value="<?php if(isset($pedido)) echo $pedido->id; ?>" />
-    <input type="hidden" id="id_cliente" value="<?php if(isset($cliente)) echo $cliente->id; ?>" />
-    <input type="hidden" id="id_sucursal" value="<?php if(isset($sucursal)) echo $sucursal->id; ?>" />
-    <input type="hidden" id="id_contacto" value="<?php if(isset($contacto)) echo $contacto->id; ?>" />
     <div class="row-fluid">
         <div class="span3">
             <label for="id_ruta">Ruta</label>
@@ -183,7 +194,7 @@ Doble click= borrar">'.
                 <?php
                     if(!empty($rutas)){
                         foreach($rutas as $r){ ?>
-                            <option value="<?php echo $r->id; ?>" <?php if(isset($ruta) && $ruta->id == $r->id) echo "selected"; ?>><?php echo $r->nombre; ?></option>
+                            <option value="<?php echo $r->id; ?>" <?php if(!empty($ruta) && $ruta->id == $r->id) echo "selected"; ?>><?php echo $r->nombre; ?></option>
                     <?php    
                         }
                     }
@@ -195,6 +206,7 @@ Doble click= borrar">'.
             <textarea id="observaciones" placeholder="Observaciones" class="input-block-level" rows="3" <?php if(empty($pedido)) echo "disabled"; ?>><?php if(isset($pedido)) echo $pedido->observaciones; ?></textarea>
         </div>
     </div>
+</form>
     <div class="row-fluid">
         <div class="span12">
             <hr>
@@ -214,7 +226,6 @@ Doble click= borrar">'.
                 ?>
             </div>
     </div>
-</form>
 <?php
 if(!empty($mensaje)){
 ?>
@@ -228,7 +239,62 @@ if(!empty($mensaje)){
 ?>
 
 <script>
+    
+function calcula_totales(){
+    var total = new Number(0);
+    var total_cantidad = new Number(0);
+
+    $("#lineas tr").each(function(fila){
+        total += Number($(this).attr('cantidad') * $(this).attr('precio'));
+        total_cantidad += Number($(this).attr('cantidad'));
+    });
+    $('#total').html(Globalize.format(total,'n'));
+    $('#total_cantidad').html(Globalize.format(total_cantidad,'n'));
+
+    $("#tabla_container").animate({scrollTop:$("#tabla_container")[0].scrollHeight}, 1000);  // Recorrer el scroll hasta el fondo
+
+    <?php if(!isset($presentaciones)){ ?>
+    localStorage.setItem("ventas/pedidos/nuevo",$('#lineas').html());  // Cuando se va a registrar un nuevo pedido
+    <?php }else{ ?>
+    localStorage.setItem("ventas/pedidos/edicion",$('#lineas').html());  // Edición de un pedido existente
+    <?php } ?>
+}
+
+function get_presentaciones( id_producto, id_producto_presentacion ){
+    var datos;
+    var id_cliente = $('#id_cliente').val();
+    var id_producto = id_producto;
+    var select = '<option value="">Selecciona...</option>';
+    // Método Ajax para obtener presentaciones de un producto y por cliente
+    $.get('<?php echo site_url('ventas/clientes/get_presentaciones'); ?>', { id_cliente: id_cliente, limit: 10, id_producto: id_producto }, function(data) {
+        datos = JSON.parse(data);
+        // Se almacena el resultado en un array para devolverlo al "autocomplete"
+        if (datos !== false) {
+            $.each(datos, function(i, object) {
+                if(id_producto_presentacion == object.id_producto_presentacion)
+                    select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.codigo+'" selected>'+object.presentacion+'</option>';
+                else
+                    select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.codigo+'">'+object.presentacion+'</option>';
+            });
+            $('#presentacion').html(select);
+        }
+    });
+}
+    
 $(document).ready(function(){
+
+    var edicion = true;
+    <?php if(isset($pedido)){ ?>
+            $('input, textarea, select, button[id!="editar"]').attr('disabled',true);
+            edicion = false;
+    <?php }?>
+        
+    $('#editar').click(function(){
+        $('input[id!="cliente"], textarea, select, button').removeAttr('disabled');
+        $('#autorizar').hide();
+        edicion = true;
+        $('#cantidad').focus();
+    });
 
     $('#cliente').focus();
     
@@ -237,42 +303,18 @@ $(document).ready(function(){
         event.preventDefault();
     });
     
+    $(window).bind('beforeunload', function(event){
+        localStorage.removeItem("ventas/pedidos/edicion");
+    });
     
-    function calcula_totales(){
-        var total = new Number(0);
-        var total_cantidad = new Number(0);
-    
-        $("#lineas tr").each(function(fila){
-            total += Number($(this).attr('cantidad') * $(this).attr('precio'));
-            total_cantidad += Number($(this).attr('cantidad'));
-        });
-        $('#total').html(Globalize.format(total,'n'));
-        $('#total_cantidad').html(Globalize.format(total_cantidad,'n'));
+    <?php if(!isset($presentaciones)){ ?>
+        if(localStorage.getItem("ventas/pedidos/nuevo"))
+            $('#lineas').html(localStorage.getItem("ventas/pedidos/nuevo"));
+    <?php }else{ ?>
+        if(localStorage.getItem("ventas/pedidos/edicion"))
+            $('#lineas').html(localStorage.getItem("ventas/pedidos/edicion"));
+    <?php } ?>
         
-        $("#tabla_container").animate({scrollTop:$("#tabla_container")[0].scrollHeight}, 1000);  // Recorrer el scroll hasta el fondo
-    }
-    
-    function get_presentaciones( id_producto, id_producto_presentacion ){
-        var datos;
-        var id_cliente = $('#id_cliente').val();
-        var id_producto = id_producto;
-        var select = '<option value="">Selecciona...</option>';
-        // Método Ajax para obtener presentaciones de un producto y por cliente
-        $.get('<?php echo site_url('ventas/clientes/get_presentaciones'); ?>', { id_cliente: id_cliente, limit: 10, id_producto: id_producto }, function(data) {
-            datos = JSON.parse(data);
-            // Se almacena el resultado en un array para devolverlo al "autocomplete"
-            if (datos !== false) {
-                $.each(datos, function(i, object) {
-                    if(id_producto_presentacion == object.id_producto_presentacion)
-                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.cdigo+'" selected>'+object.presentacion+'</option>';
-                    else
-                        select += '<option value="'+object.id_producto_presentacion+'" codigo="'+object.codigo+'">'+object.presentacion+'</option>';
-                });
-                $('#presentacion').html(select);
-            }
-        });
-    }
-    
     calcula_totales();
     
     var arreglo = new Array();
@@ -446,7 +488,7 @@ $(document).ready(function(){
         var seleccionada = false;
         
         if($.isNumeric(cantidad) && id_producto_presentacion.length > 0){
-            fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" observaciones="'+observaciones+'" producto="'+producto+'" id_producto="'+id_producto+'" title="Click= editar\nDoble click= borrar">'+
+            fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" codigo="'+codigo+'" observaciones="'+observaciones+'" producto="'+producto+'" id_producto="'+id_producto+'" title="Click= editar\nDoble click= borrar">'+
             '<td style="text-align: right;">'+
             Globalize.format(cantidad,'n')+'</td><td>'+
             codigo+'</td><td>'+
@@ -481,40 +523,47 @@ $(document).ready(function(){
     });
     
     $('#lineas').on('click','tr',function(){
-        if($(this).hasClass('info')){
-            $(this).removeClass('info');
-            $('#cantidad').val('');
-            $('#producto').val('');
-            $('#precio').val('');
-            $('#presentacion').html('').attr('disabled',true);
-            $('#comentarios').val('');
-            $('#agregar_producto').removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
-        }else{
-            $("#lineas tr").each(function(fila){
+        if(edicion){
+            if($(this).hasClass('info')){
                 $(this).removeClass('info');
-            });
+                $('#cantidad').val('');
+                $('#producto').val('');
+                $('#precio').val('');
+                $('#presentacion').html('').attr('disabled',true);
+                $('#comentarios').val('');
+                $('#agregar_producto').removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
+            }else{
+                $("#lineas tr").each(function(fila){
+                    $(this).removeClass('info');
+                });
 
-            $(this).addClass('info');
+                $(this).addClass('info');
 
-            $('#cantidad').val($(this).attr('cantidad'));
-            $('#producto').val($(this).attr('producto'));
-            $('#id_producto_presentacion').val($(this).attr('id_producto_presentacion'));
-            
-            $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
+                $('#cantidad').val($(this).attr('cantidad'));
+                $('#producto').val($(this).attr('producto'));
+                $('#id_producto_presentacion').val($(this).attr('id_producto_presentacion'));
 
-            get_presentaciones($(this).attr('id_producto'), $(this).attr('id_producto_presentacion'));
+                $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
 
-            $('#presentacion').removeAttr('disabled');
-            $('#presentacion').val($(this).attr('id_producto_presentacion'));
-            $('#precio').val($(this).attr('precio'));
-            $('#comentarios').val($(this).attr('observaciones'));
+                get_presentaciones($(this).attr('id_producto'), $(this).attr('id_producto_presentacion'));
+
+                $('#presentacion').removeAttr('disabled');
+                $('#presentacion').val($(this).attr('id_producto_presentacion'));
+                $('#precio').val($(this).attr('precio'));
+                $('#comentarios').val($(this).attr('observaciones'));
+            }
+            $("#cantidad").focus();
         }
-        $("#cantidad").focus();
     });
     
     $('#lineas').on('dblclick','tr',function(){
-        $(this).remove();
-        calcula_totales();
+        if(edicion){
+            if(confirm("¿Borrar linea?")){
+                $(this).remove();
+                calcula_totales();
+            
+            }
+        }
     });
     
     $('#borrar').click(function(event){

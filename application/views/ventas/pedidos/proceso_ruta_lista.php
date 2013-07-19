@@ -31,13 +31,11 @@
         <?php } ?>
     </div>
 </div>
-<?php if(isset($table)){ ?>
 <div class="row-fluid">
     <div class="span12">
         <div class="data"><?php echo $table; ?></div>
     </div>
 </div>
-<?php } ?>
 <script>
 $(document).ready(function(){
     $('a.cancelar').click(function(event){

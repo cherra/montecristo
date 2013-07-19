@@ -88,7 +88,7 @@ class Cliente_presentacion extends CI_Model {
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
         $this->db->join('ClientePresentaciones cp', 'cp.id_producto_presentacion = pp.id AND cp.id_cliente = '.$id,'left');
-        $this->db->join('Clientes c','cp.id_cliente = c.id  AND c.id = '.$id,'left');
+        $this->db->join('Clientes c','cp.id_cliente = c.id  OR c.id = '.$id,'left');
         $this->db->join('Listas l','c.id_lista = l.id','left');
         $this->db->join('Precios pre','l.id = pre.id_lista AND pp.id = pre.id_producto_presentacion','left');
         if(!empty($filtro)){
