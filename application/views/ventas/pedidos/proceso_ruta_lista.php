@@ -55,7 +55,7 @@
 <?php } ?>
 <script>
 $(document).ready(function(){
-    var url = "<?php echo site_url(); ?>/ventas/pedidos/pedidos_consolidar_ruta";
+    var url = "<?php echo site_url(); ?>/ventas/pedidos/pedidos_proceso_ruta";
     
     $('#id_ruta').on('change',function(){
        if($(this).val() > 0)
