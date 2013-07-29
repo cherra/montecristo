@@ -111,6 +111,7 @@ class Cliente_presentacion extends CI_Model {
             pp.id AS id_producto_presentacion,
             MAX(pre.precio) AS precio,
             IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo,
+            IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto,
             IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
@@ -136,6 +137,9 @@ class Cliente_presentacion extends CI_Model {
         $this->db->select('IF(LENGTH(cp.presentacion) > 0, cp.presentacion, pr.nombre) AS presentacion, 
             cp.id,
             pp.id AS id_producto_presentacion,
+            IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto,
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo,
+            IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku,
             pre.precio', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
@@ -143,18 +147,12 @@ class Cliente_presentacion extends CI_Model {
         $this->db->join('Clientes c','cp.id_cliente = c.id  OR c.id = '.$id_cliente,'left');
         $this->db->join('Listas l','c.id_lista = l.id','left');
         $this->db->join('Precios pre','l.id = pre.id_lista AND pp.id = pre.id_producto_presentacion','left');
-        if(!empty($filtro)){
-            $filtro = explode(' ', $filtro);
-            foreach($filtro as $f){
-                $this->db->or_like('cp.presentacion',$f);
-                $this->db->or_like('pr.nombre',$f);
-            }
-        }
+        
         $this->db->where('pp.id', $id_producto_presentacion);
         //$this->db->group_by('pr.id');
         $this->db->having('precio IS NOT NULL');
         //$this->db->order_by('presentacion','asc');
-        return $this->db->get('Productos p', $limit, $offset);
+        return $this->db->get('Productos p');
     }
     
     /**

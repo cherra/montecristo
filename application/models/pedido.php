@@ -91,6 +91,34 @@ class Pedido extends CI_Model {
     }
     
     function get_importe($id){
+        $this->db->select('SUM(pp.cantidad * pp.precio) + SUM(pp.cantidad * pp.precio * pp.iva) AS total', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->total;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_iva($id){
+        $this->db->select('SUM(pp.cantidad * pp.precio * pp.iva) AS iva', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->iva;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_subtotal($id){
         $this->db->select('SUM(pp.cantidad * pp.precio) AS total', FALSE);
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->where('p.id',$id);
@@ -99,6 +127,36 @@ class Pedido extends CI_Model {
         if($query->num_rows() > 0){
             $result = $query->row();
             return $result->total;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_peso($id){
+        $this->db->select('SUM(pp.cantidad * ppr.peso) AS peso', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->peso;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_piezas($id){
+        $this->db->select('SUM(pp.cantidad) AS piezas', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->piezas;
         }else{
             return 0;
         }
