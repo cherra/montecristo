@@ -53,6 +53,11 @@
       hr{
           margin: 10px 0;
       }
+      
+      .ui-spinner.ui-widget.ui-widget-content, .ui-spinner-input{
+          border: none;
+          margin: 0;
+      }
 
       /* Tablets y mobiles*/
       @media (max-width: 980px) {

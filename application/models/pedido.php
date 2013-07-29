@@ -104,12 +104,21 @@ class Pedido extends CI_Model {
         }
     }
     
-    function count_grouped_by_ruta($filtro = NULL, $estado = '1', $id_ruta = NULL){
+    function count_grouped_by_ruta($filtro = NULL, $estado = array('1'), $id_ruta = NULL){
         //$this->db->select('r.nombre AS ruta, r.id AS id_ruta, COUNT(DISTINCT p.id) AS pedidos, MIN(p.fecha) AS desde, MAX(p.fecha) AS hasta, SUM(pp.cantidad * pp.precio) AS total');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
         $this->db->join('Rutas r','p.id_ruta = r.id');
-        $this->db->where('p.estado',$estado);
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'p.estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
         if(!empty($id_ruta))
             $this->db->where('p.id_ruta',$id_ruta);
         if(!empty($filtro)){
@@ -120,7 +129,7 @@ class Pedido extends CI_Model {
         return $query->num_rows();
     }
     
-    function get_grouped_by_ruta( $limit = NULL, $offset = 0, $filtro = NULL, $estado = '1', $id_ruta = NULL ){
+    function get_grouped_by_ruta( $limit = NULL, $offset = 0, $filtro = NULL, $estado = array('1'), $id_ruta = NULL ){
         $this->db->select('r.nombre AS ruta, r.id AS id_ruta, 
             COUNT(DISTINCT p.id) AS pedidos, 
             MIN(p.fecha) AS desde, MAX(p.fecha) AS hasta, 
@@ -130,13 +139,79 @@ class Pedido extends CI_Model {
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
         $this->db->join('Rutas r','p.id_ruta = r.id');
-        $this->db->where('p.estado',$estado);
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'p.estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
         if(!empty($id_ruta))
             $this->db->where('p.id_ruta',$id_ruta);
         if(!empty($filtro)){
             $this->db->like('r.nombre',$filtro);
         }
         $this->db->group_by('r.id');
+        return $this->db->get($this->tbl.' p', $limit, $offset);
+    }
+    
+    function count_grouped_by_fecha_programada($filtro = NULL, $estado = array('1'), $id_ruta = NULL){
+        //$this->db->select('r.nombre AS ruta, r.id AS id_ruta, COUNT(DISTINCT p.id) AS pedidos, MIN(p.fecha) AS desde, MAX(p.fecha) AS hasta, SUM(pp.cantidad * pp.precio) AS total');
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->join('Rutas r','p.id_ruta = r.id');
+        $this->db->join('OrdenSalida os','p.id_orden_salida = os.id');
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'p.estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
+        if(!empty($id_ruta))
+            $this->db->where('p.id_ruta',$id_ruta);
+        if(!empty($filtro)){
+            $this->db->like('r.nombre',$filtro);
+        }
+        $this->db->group_by('os.fecha_programada, r.id');
+        $query = $this->db->get($this->tbl.' p');
+        return $query->num_rows();
+    }
+    
+    function get_grouped_by_fecha_programada( $limit = NULL, $offset = 0, $filtro = NULL, $estado = array('1'), $id_ruta = NULL ){
+        $this->db->select('r.nombre AS ruta, r.id AS id_ruta, 
+            COUNT(DISTINCT p.id) AS pedidos, 
+            MIN(p.fecha) AS desde, MAX(p.fecha) AS hasta, 
+            SUM(pp.cantidad * ppr.peso) AS peso, 
+            SUM(pp.cantidad) AS piezas, 
+            SUM(pp.cantidad * pp.precio) AS total,
+            DATE_FORMAT(os.fecha_programada,"%Y-%m-%d") AS fecha', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->join('Rutas r','p.id_ruta = r.id');
+        $this->db->join('OrdenSalida os','p.id_orden_salida = os.id');
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'p.estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
+        if(!empty($id_ruta))
+            $this->db->where('p.id_ruta',$id_ruta);
+        if(!empty($filtro)){
+            $this->db->like('r.nombre',$filtro);
+        }
+        $this->db->group_by('fecha, r.id');
         return $this->db->get($this->tbl.' p', $limit, $offset);
     }
     

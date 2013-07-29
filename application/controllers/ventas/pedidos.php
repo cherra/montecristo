@@ -242,7 +242,7 @@ class Pedidos extends CI_Controller {
             $data['filtro'] = $filtro;
         
         $page_limit = $this->config->item("per_page");
-    	$datos = $this->p->get_grouped_by_ruta($page_limit, $offset, $filtro)->result();
+    	$datos = $this->p->get_grouped_by_ruta($page_limit, $offset, $filtro, array('1'))->result();
     	
         // generar paginacion
     	$this->load->library('pagination');
@@ -282,22 +282,53 @@ class Pedidos extends CI_Controller {
         $this->load->model('sucursal','s');
         $this->load->model('preferencias/usuario','u');
         $this->load->model('ruta','r');
+        $this->load->model('orden_salida','os');
+        $this->load->model('almacen','a');
         
         $this->config->load("pagination");
     	
-        $data['titulo'] = 'Pedidos por consolidar <small>Lista por ruta</small>';
+        $data['titulo'] = 'Consolidar pedidos para envío <small>Lista por ruta</small>';
         //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
     	$data['action'] = $this->folder.$this->clase.'pedidos_consolidar_ruta/'.$id_ruta;
         $data['link_back'] = anchor($this->folder.$this->clase.'pedidos_consolidar/'.$offset,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['rutas'] = $this->r->get_all()->result();
         
         if(!empty($id_ruta)){
+            $data['almacenes'] = $this->a->get_all()->result();
             $data['ruta'] = $this->r->get_by_id($id_ruta)->row();
             
+            // A la fecha programada se le agregan los días predefinidos en la configuración
+            $fecha_programada = date_create(date('Y-m-d H:i:s'));
+            date_add($fecha_programada, date_interval_create_from_date_string($this->configuracion->get_valor('salidas_dias').' days'));
+            $data['fecha_programada'] = date_format($fecha_programada, 'Y-m-d');
             if( ($pedidos = $this->input->post('pedidos')) ){
                 foreach($pedidos AS $id){
                     $pedido = $this->p->get_by_id($id)->row();
-                    $this->p->update($id, array('estado' => $pedido->estado + 1));
+                    
+                    // Se genera la orden de salida de almacén
+                    $presentaciones = $this->p->get_presentaciones($id)->result();
+                    
+                    $salida = array(
+                        'id_cliente_sucursal' => $pedido->id_cliente_sucursal,
+                        'id_ruta' => $pedido->id_ruta,
+                        'id_almacen' => $this->input->post('id_almacen'),
+                        'fecha' => date('Y-m-d H:i:s'),
+                        'origen' => $this->configuracion->get_valor('pedidos_prefijo').$id,
+                        'fecha_programada' => $this->input->post('fecha_programada').' '.$this->input->post('hora_programada')
+                    );
+                    $this->db->trans_start();
+                    $id_orden = $this->os->save($salida);
+                    foreach($presentaciones AS $p){
+                        $presentacion = array(
+                            'id_orden_salida' => $id_orden,
+                            'id_producto_presentacion' => $p->id_producto_presentacion,
+                            'cantidad' => $p->cantidad
+                        );
+                        $this->os->save_presentacion($presentacion);
+                    }
+                    
+                    $this->p->update($id, array('estado' => $pedido->estado + 1, 'id_orden_salida' => $id_orden));
+                    $this->db->trans_complete();
                 }
             }
             // Filtro de busqueda (se almacenan en la sesión a través de un hook)
@@ -306,12 +337,16 @@ class Pedidos extends CI_Controller {
                 $data['filtro'] = $filtro;
 
             $page_limit = $this->config->item("per_page");
+            // Pedidos en preorden y en proceso
+            //$datos = (object)array_merge($this->p->get_by_ruta($id_ruta, '1', $page_limit, $offset, $filtro)->result(), $this->p->get_by_ruta($id_ruta, '2', $page_limit, $offset, $filtro)->result());
+            // Pedidos en preorden
             $datos = $this->p->get_by_ruta($id_ruta, '1', $page_limit, $offset, $filtro)->result();
-
+            
             // generar paginacion
             $this->load->library('pagination');
             $config['base_url'] = site_url($this->folder.$this->clase.'index');
             $config['total_rows'] = $this->p->count_by_ruta($id_ruta, '1',$filtro);
+            //$config['total_rows'] += $this->p->count_by_ruta($id_ruta, '2',$filtro);
             $config['per_page'] = $page_limit;
             $config['uri_segment'] = 5;
             $this->pagination->initialize($config);
@@ -323,30 +358,44 @@ class Pedidos extends CI_Controller {
             $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
             $this->table->set_template($tmpl);
             $this->table->set_heading('','Núm.','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Peso','Piezas','Total', '');
+            $total_peso = 0;
+            $total_piezas = 0;
+            $total_importe = 0;
             foreach ($datos as $d) {
                 $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
                 $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
                 $usuario = $this->u->get_by_id($d->id_usuario)->row();
                 $importe = $this->p->get_importe($d->id);
-                    $this->table->add_row(
-                            '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>',
-                            $d->id,
-                            $d->fecha,
-                            $cliente->nombre,
-                            $sucursal->numero.' | '.$sucursal->nombre,
-                            $sucursal->municipio,
-                            $sucursal->estado,
-                            $usuario->nombre,
-                            array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
-                            array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
-                            array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
-                            array('data' => anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
-                    );
-                    if($d->estado == 0)
-                        $this->table->add_row_class('muted');
-                    else
-                        $this->table->add_row_class('');
+                $this->table->add_row(
+                        $d->estado == '1' ? '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>' : '<i class="icon-gears"></i>',
+                        $d->id,
+                        $d->fecha,
+                        $cliente->nombre,
+                        $sucursal->numero.' | '.$sucursal->nombre,
+                        $sucursal->municipio,
+                        $sucursal->estado,
+                        $usuario->nombre,
+                        array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
+                        array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
+                        array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                );
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+                $total_peso += $d->peso;
+                $total_piezas += $d->piezas;
+                $total_importe += $importe;
             }
+            // Totales
+            $this->table->add_row(
+                    '', '', '', '', '', '', '', '',
+                    array('data' => number_format($total_peso,2).'kg', 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_piezas,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_importe,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    ''
+            );
             $data['table'] = $this->table->generate();
         }
     	
@@ -369,12 +418,12 @@ class Pedidos extends CI_Controller {
             $data['filtro'] = $filtro;
         
         $page_limit = $this->config->item("per_page");
-    	$datos = $this->p->get_grouped_by_ruta($page_limit, $offset, $filtro, '2')->result();
+    	$datos = $this->p->get_grouped_by_fecha_programada($page_limit, $offset, $filtro, array('2'))->result();
     	
         // generar paginacion
     	$this->load->library('pagination');
     	$config['base_url'] = site_url($this->folder.$this->clase.'consolidar');
-    	$config['total_rows'] = $this->p->count_grouped_by_ruta($filtro, '2');
+    	$config['total_rows'] = $this->p->count_grouped_by_fecha_programada($filtro, array('2'));
     	$config['per_page'] = $page_limit;
     	$config['uri_segment'] = 4;
     	$this->pagination->initialize($config);
@@ -385,12 +434,11 @@ class Pedidos extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Ruta','Primer pedido','Último pedido','Pedidos','Peso','Piezas','Total', '');
+    	$this->table->set_heading('Ruta','Fecha programada', 'Pedidos','Peso','Piezas','Total', '');
     	foreach ($datos as $d) {
             $this->table->add_row(
                     $d->ruta,
-                    $d->desde,
-                    $d->hasta,
+                    $d->fecha,
                     $d->pedidos,
                     array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
                     array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
@@ -444,30 +492,44 @@ class Pedidos extends CI_Controller {
             $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
             $this->table->set_template($tmpl);
             $this->table->set_heading('','Núm.','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Peso','Piezas','Total', '');
+            $total_peso = 0;
+            $total_piezas = 0;
+            $total_importe = 0;
             foreach ($datos as $d) {
                 $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
                 $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
                 $usuario = $this->u->get_by_id($d->id_usuario)->row();
                 $importe = $this->p->get_importe($d->id);
-                    $this->table->add_row(
-                            '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
-                            $d->id,
-                            $d->fecha,
-                            $cliente->nombre,
-                            $sucursal->numero.' | '.$sucursal->nombre,
-                            $sucursal->municipio,
-                            $sucursal->estado,
-                            $usuario->nombre,
-                            array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
-                            array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
-                            array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
-                            array('data' => anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
-                    );
-                    if($d->estado == 0)
-                        $this->table->add_row_class('muted');
-                    else
-                        $this->table->add_row_class('');
+                $this->table->add_row(
+                        '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
+                        $d->id,
+                        $d->fecha,
+                        $cliente->nombre,
+                        $sucursal->numero.' | '.$sucursal->nombre,
+                        $sucursal->municipio,
+                        $sucursal->estado,
+                        $usuario->nombre,
+                        array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
+                        array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
+                        array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                );
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+                $total_peso += $d->peso;
+                $total_piezas += $d->piezas;
+                $total_importe += $importe;
             }
+            // Totales
+            $this->table->add_row(
+                    '', '', '', '', '', '', '', '',
+                    array('data' => number_format($total_peso,2).'kg', 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_piezas,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_importe,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    ''
+            );
             $data['table'] = $this->table->generate();
         }
     	
