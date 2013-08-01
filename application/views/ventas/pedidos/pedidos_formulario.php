@@ -632,6 +632,7 @@ $(document).ready(function(){
                     dataType: 'text'
                 }).done(function(respuesta){
                     if(respuesta == 'OK'){
+                        localStorage.removeItem("ventas/pedidos/nuevo");
                         //localStorage.removeItem("compras/facturas/registro/productos");
                         window.location = "<?php echo site_url('ventas/pedidos/index'); ?>";
                     }

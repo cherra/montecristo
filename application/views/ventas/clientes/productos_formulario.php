@@ -10,14 +10,14 @@
         <div class="control-group">
             <label class="control-label hidden-phone" for="producto">Alias nombre</label>
             <div class="controls">
-              <input type="text" name="producto" id="producto" class="required" placeholder="Alias nombre" value="<?php echo (isset($datos->producto) ? $datos->producto : ''); ?>">
+              <input type="text" name="producto" id="producto" placeholder="Alias nombre" value="<?php echo (isset($datos->producto) ? $datos->producto : ''); ?>">
               <span class="help-inline"><?php echo (isset($producto) ? $producto->nombre : ''); ?></span>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label hidden-phone" for="presentacion">Alias presentación</label>
             <div class="controls">
-              <input type="text" name="presentacion" id="presentacion" class="required" placeholder="Alias presentación" value="<?php echo (isset($datos->presentacion) ? $datos->presentacion : ''); ?>">
+              <input type="text" name="presentacion" id="presentacion" placeholder="Alias presentación" value="<?php echo (isset($datos->presentacion) ? $datos->presentacion : ''); ?>">
               <span class="help-inline"><?php echo (isset($presentacion) ? $presentacion->nombre : ''); ?></span>
             </div>
         </div>
