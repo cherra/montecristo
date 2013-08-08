@@ -356,6 +356,11 @@ class Pedido extends CI_Model {
         $this->db->update($this->tbl, $datos);
     }
     
+    function update_by_orden_salida($id, $datos) {
+        $this->db->where('id_orden_salida', $id);
+        $this->db->update($this->tbl, $datos);
+    }
+    
     function cancelar( $id ){
         $this->db->where('id', $id);
         $this->db->update($this->tbl, array('estado' => 0));

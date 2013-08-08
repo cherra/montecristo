@@ -311,6 +311,7 @@ class Pedidos extends CI_Controller {
                     $salida = array(
                         'id_cliente_sucursal' => $pedido->id_cliente_sucursal,
                         'id_ruta' => $pedido->id_ruta,
+                        'id_usuario' => $this->session->userdata('userid'),
                         'id_almacen' => $this->input->post('id_almacen'),
                         'fecha' => date('Y-m-d H:i:s'),
                         'origen' => $this->configuracion->get_valor('pedidos_prefijo').$id,
