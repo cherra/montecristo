@@ -23,7 +23,7 @@
     <div class="control-group">
         <label class="control-label hidden-phone" for="filtro">Filtros</label>
         <div class="controls">
-          <input type="text" name="filtro" id="filtro" placeholder="Filtros de busqueda" value="<?php if(isset($filtro)) echo $filtro; ?>" >
+          <input type="text" name="filtro" id="filtro" placeholder="Filtros de busqueda" value="<?php if(isset($filtro)) echo $filtro; ?>"/>
           <button type="submit" class="btn btn-primary">Buscar</button>
         </div>
     </div>
@@ -47,19 +47,98 @@
     </div>
 </div>
 <?php if(isset($table)){ ?>
+<?php echo form_open($action, array('id' => 'form_tabla', 'class' => 'form-horizontal')) ?>
+<div class="row-fluid">
+    <div class="span2">
+        <input type="checkbox" id="marcar_todos"/> Marcar todos
+    </div>
+</div>
 <div class="row-fluid">
     <div class="span12">
         <div class="data"><?php echo $table; ?></div>
     </div>
 </div>
+<div class="row-fluid">
+    <div class="control-group">
+        <label for="fecha_entrega" class="control-label">Fecha de entrega: </label>
+        <div class="controls">
+            <input type="text" class="input-small fecha required" name="fecha_entrega" value="<?php if(isset($fecha_entrega)) echo $fecha_entrega; ?>" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="hora_entrega" class="control-label">Hora: </label>
+        <div class="controls">
+            <input type="text" class="input-small hora required" name="hora_entrega" value="<?php if(isset($hora_entrega)) echo $hora_entrega; ?>" />
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-info">Entregar pedido(s)</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <div id="error"></div>
+        </div>
+    </div>
+</div>
+<?php echo form_close(); ?>
 <?php } ?>
 <script>
 $(document).ready(function(){
-    var url = "<?php echo site_url(); ?>/ventas/pedidos/pedidos_enviados_ruta";
+    
+    // Validación del formulario
+    $('#form_tabla').validate({
+        rules:{
+            fecha_programada:{
+                required: true,
+                dateISO: true
+            },
+            "pedidos[]":{
+                required: true
+            }
+        },
+        messages: {
+            "pedidos[]": "Es necesario seleccionar al menos un pedido"
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("name") == "pedidos[]") {
+              $('#error').html(error);
+              //error.html("form");
+            } else {
+              error.insertAfter(element);
+            }
+        },
+        highlight: function(element, errorClass) {
+            $(element).fadeOut(function() {
+              $(element).fadeIn();
+            });
+        },
+        submitHandler: function(form){
+            if(confirm("¿Entregar pedido(s)?")){
+                form.submit();
+            }
+        }
+    });
+    
+    var url = "<?php echo site_url(); ?>/ventas/pedidos/pedidos_entregar_ruta";
     
     $('#id_ruta').on('change',function(){
        if($(this).val() > 0)
            $(location).attr('href',url+'/'+$(this).val());
+    });
+    
+    /*$('#form_tabla').submit(function(event){
+        if(!confirm ("¿Procesar los pedidos seleccionados?"))
+        event.preventDefault();
+    });*/
+    
+    $('#marcar_todos').change(function(){
+        if($(this).is(':checked')){
+            $('table input[type="checkbox"]').prop('checked', true);
+        }else{
+            $('table input[type="checkbox"]').prop('checked', false);
+        }
     });
 });
 </script>

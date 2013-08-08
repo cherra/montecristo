@@ -246,8 +246,8 @@ class Pedidos extends CI_Controller {
     	
         // generar paginacion
     	$this->load->library('pagination');
-    	$config['base_url'] = site_url($this->folder.$this->clase.'consolidar');
-    	$config['total_rows'] = $this->p->count_grouped_by_ruta($filtro);
+    	$config['base_url'] = site_url($this->folder.$this->clase.'pedidos_consolidar');
+    	$config['total_rows'] = $this->p->count_grouped_by_ruta($filtro, array('4'));
     	$config['per_page'] = $page_limit;
     	$config['uri_segment'] = 4;
     	$this->pagination->initialize($config);
@@ -733,12 +733,18 @@ class Pedidos extends CI_Controller {
     	
         $data['titulo'] = 'Pedidos en proceso <small>Lista por ruta</small>';
         //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
-    	$data['action'] = $this->folder.$this->clase.'pedidos_proceso_ruta/'.$id_ruta;
+    	$data['action'] = $this->folder.$this->clase.'pedidos_enviados_ruta/'.$id_ruta;
         $data['link_back'] = '<a href="javascript:history.back(-1)" class="btn"><i class="icon-arrow-left"></i> Regresar</a>';
         $data['rutas'] = $this->r->get_all()->result();
         
         if(!empty($id_ruta)){
             $data['ruta'] = $this->r->get_by_id($id_ruta)->row();
+            
+            if( ($pedidos = $this->input->post('pedidos')) ){
+                foreach($pedidos AS $id){
+                    $this->p->update($id, array('estado' => '5'));
+                }
+            }
             
             // Filtro de busqueda (se almacenan en la sesión a través de un hook)
             $filtro = $this->session->userdata('filtro');
@@ -772,7 +778,7 @@ class Pedidos extends CI_Controller {
                 $usuario = $this->u->get_by_id($d->id_usuario)->row();
                 $importe = $this->p->get_importe($d->id);
                 $this->table->add_row(
-                        '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
+                        $d->estado == '4' ? '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>' : '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
                         $d->id,
                         $d->fecha,
                         $cliente->nombre,
