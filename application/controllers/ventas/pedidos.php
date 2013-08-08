@@ -538,6 +538,141 @@ class Pedidos extends CI_Controller {
     	$this->load->view('ventas/pedidos/proceso_ruta_lista', $data);
     }
     
+    public function pedidos_enviados( $offset = 0 ){
+        $this->load->model('pedido','p');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Pedidos enviados <small>Lista por ruta</small>';
+        //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'proceso';
+        //$data['link_back'] = anchor($this->folder.$this->clase.'consolidar/'.$offset,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $page_limit = $this->config->item("per_page");
+    	$datos = $this->p->get_grouped_by_fecha_programada($page_limit, $offset, $filtro, array('3'))->result();
+    	
+        // generar paginacion
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'consolidar');
+    	$config['total_rows'] = $this->p->count_grouped_by_fecha_programada($filtro, array('3'));
+    	$config['per_page'] = $page_limit;
+    	$config['uri_segment'] = 4;
+    	$this->pagination->initialize($config);
+    	$data['pagination'] = $this->pagination->create_links();
+    	
+    	// generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Ruta','Fecha programada', 'Pedidos','Peso','Piezas','Total', '');
+    	foreach ($datos as $d) {
+            $this->table->add_row(
+                    $d->ruta,
+                    $d->fecha,
+                    $d->pedidos,
+                    array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
+                    array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
+                    array('data' => number_format($d->total,2), 'style' => 'text-align: right;'),
+                    array('data' => anchor($this->folder.$this->clase.'pedidos_enviados_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Pedidos')), 'style' => 'text-align: right;')
+            );
+    	}
+    	$data['table'] = $this->table->generate();
+    	
+    	$this->load->view('ventas/lista', $data);
+    }
+    
+    public function pedidos_enviados_ruta( $id_ruta = NULL, $offset = 0 ){
+        $this->load->model('pedido','p');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('preferencias/usuario','u');
+        $this->load->model('ruta','r');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Pedidos en proceso <small>Lista por ruta</small>';
+        //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'pedidos_proceso_ruta/'.$id_ruta;
+        $data['link_back'] = '<a href="javascript:history.back(-1)" class="btn"><i class="icon-arrow-left"></i> Regresar</a>';
+        $data['rutas'] = $this->r->get_all()->result();
+        
+        if(!empty($id_ruta)){
+            $data['ruta'] = $this->r->get_by_id($id_ruta)->row();
+            
+            // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+            $filtro = $this->session->userdata('filtro');
+            if($filtro)
+                $data['filtro'] = $filtro;
+
+            $page_limit = $this->config->item("per_page");
+            $datos = $this->p->get_by_ruta($id_ruta, '3', $page_limit, $offset, $filtro)->result();
+
+            // generar paginacion
+            $this->load->library('pagination');
+            $config['base_url'] = site_url($this->folder.$this->clase.'index');
+            $config['total_rows'] = $this->p->count_by_ruta($id_ruta, '3', $filtro);
+            $config['per_page'] = $page_limit;
+            $config['uri_segment'] = 5;
+            $this->pagination->initialize($config);
+            $data['pagination'] = $this->pagination->create_links();
+
+            // generar tabla
+            $this->load->library('table');
+            $this->table->set_empty('&nbsp;');
+            $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+            $this->table->set_template($tmpl);
+            $this->table->set_heading('','Núm.','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Peso','Piezas','Total', '');
+            $total_peso = 0;
+            $total_piezas = 0;
+            $total_importe = 0;
+            foreach ($datos as $d) {
+                $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
+                $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+                $usuario = $this->u->get_by_id($d->id_usuario)->row();
+                $importe = $this->p->get_importe($d->id);
+                $this->table->add_row(
+                        '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
+                        $d->id,
+                        $d->fecha,
+                        $cliente->nombre,
+                        $sucursal->numero.' | '.$sucursal->nombre,
+                        $sucursal->municipio,
+                        $sucursal->estado,
+                        $usuario->nombre,
+                        array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
+                        array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
+                        array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir'))),
+                        array('data' => anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                );
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+                $total_peso += $d->peso;
+                $total_piezas += $d->piezas;
+                $total_importe += $importe;
+            }
+            // Totales
+            $this->table->add_row(
+                    '', '', '', '', '', '', '', '',
+                    array('data' => number_format($total_peso,2).'kg', 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_piezas,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    array('data' => number_format($total_importe,2), 'style' => 'text-align: right;', 'class' => 'text-info'),
+                    ''
+            );
+            $data['table'] = $this->table->generate();
+        }
+    	
+    	$this->load->view('ventas/pedidos/enviados_ruta_lista', $data);
+    }
+    
     // Genera el formato de pedido para impresión
     private function pedidos_render_template($id){
         $this->load->model('pedido', 'p');
