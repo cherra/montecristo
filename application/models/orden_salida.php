@@ -227,7 +227,6 @@ class Orden_salida extends CI_Model {
         $estados .= ")";
         $this->db->where($estados);
         $this->db->group_by('os.id');
-        $this->db->order_by('c.nombre, os.id','desc');
         $query = $this->db->get($this->tbl.' os');
         return $query->num_rows();
     }
@@ -269,7 +268,8 @@ class Orden_salida extends CI_Model {
         $estados .= ")";
         $this->db->where($estados);
         $this->db->group_by('os.id');
-        $this->db->order_by('c.nombre, os.id','desc');
+        $this->db->order_by('os.fecha_entrega','desc');
+        $this->db->order_by('os.id','desc');
         return $this->db->get($this->tbl.' os', $limit, $offset);
     }
     

@@ -71,20 +71,8 @@
         </div>
     </div>
     <div class="control-group">
-        <label for="fecha_entrega" class="control-label">Fecha de envío: </label>
         <div class="controls">
-            <input type="text" class="input-small fecha required" name="fecha_entrega" value="<?php if(isset($fecha_entrega)) echo $fecha_entrega; ?>" />
-        </div>
-    </div>
-    <div class="control-group">
-        <label for="hora_entrega" class="control-label">Hora: </label>
-        <div class="controls">
-            <input type="text" class="input-small hora required" name="hora_entrega" value="<?php if(isset($hora_entrega)) echo $hora_entrega; ?>" />
-        </div>
-    </div>
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn btn-info"><i class="icon-truck"></i> Enviar</button>
+            <button type="submit" class="btn btn-info"><i class="icon-check"></i> Procesar</button>
         </div>
     </div>
     <div class="control-group">
@@ -101,10 +89,6 @@ $(document).ready(function(){
     // Validación del formulario
     $('#form_tabla').validate({
         rules:{
-            fecha_entrega:{
-                required: true,
-                dateISO: true
-            },
             "salidas[]":{
                 required: true
             }
@@ -126,13 +110,13 @@ $(document).ready(function(){
             });
         },
         submitHandler: function(form){
-            if(confirm("¿Marcar la(s) orden(es) como enviada(s)?")){
+            if(confirm("¿Marcar la(s) orden(es) como lista(s) para envío?")){
                 form.submit();
             }
         }
     });
     
-    var url = "<?php echo site_url(); ?>/almacenes/salidas/ordenes_salida_procesadas_ruta";
+    var url = "<?php echo site_url(); ?>/almacenes/salidas/ordenes_salida_ruta";
     
     $('#id_ruta').on('change',function(){
        if($(this).val() > 0)
