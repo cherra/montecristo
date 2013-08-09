@@ -378,6 +378,7 @@ class Pedido extends CI_Model {
             $presentaciones = $query_presentaciones->result_array();
             unset($pedido['id']);  // Quitamos el ID para que se genere uno nuevo
             unset($pedido['fecha']);  // Quitamos la fecha para poner la fecha actual
+            $pedido['estado'] = '1';
             $this->db->trans_start();
             $this->db->insert($this->tbl, $pedido);
             $id_pedido = $this->db->insert_id();
