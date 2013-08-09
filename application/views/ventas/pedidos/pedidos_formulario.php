@@ -14,12 +14,17 @@ if(isset($pedido)){
     <div class="span2">
         <p class="lead text-info text-right" style="margin-bottom: 10px;"><strong><?php echo $pedido->id; ?></strong></p>
     </div>
-    <div class="span2">
+    <div class="span3">
         <?php if(isset($pedido)){ ?>
-        <p style="margin-bottom: 10px;"><button class="btn btn-warning" id="editar">Editar</button></p>
+        <p style="margin-bottom: 10px;"><button class="btn btn-warning" id="editar"><i class="icon-edit"></i> Editar</button></p>
         <?php } ?>
     </div>
-    <div class="offset5 span2">
+    <div class="offset3 span2">
+        <?php if(isset($pedido)){ ?>
+        <p style="margin-bottom: 10px;"><button class="btn" id="duplicar"><i class="icon-copy"></i> Duplicar</button></p>
+        <?php } ?>
+    </div>
+    <div class="span1">
         <?php if(isset($icono_estado)){ ?>
         <p class="text-right text-info" style="margin-bottom: 10px;"><?php echo $icono_estado; ?></p>
         <?php } ?>
@@ -285,7 +290,7 @@ $(document).ready(function(){
 
     var edicion = true;
     <?php if(isset($pedido)){ ?>
-            $('input, textarea, select, button[id!="editar"]').attr('disabled',true);
+            $('input, textarea, select, button[id!="editar"][id!="duplicar"]').attr('disabled',true);
             edicion = false;
     <?php }?>
         
@@ -294,6 +299,10 @@ $(document).ready(function(){
         $('#autorizar').hide();
         edicion = true;
         $('#cantidad').focus();
+    });
+    
+    $('#duplicar').click(function(){
+        window.location = "<?php echo site_url('ventas/pedidos/pedidos_duplicar/'.$pedido->id.'/1/pedidos_editar'); ?>";
     });
 
     $('#cliente').focus();

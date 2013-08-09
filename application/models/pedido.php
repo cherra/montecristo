@@ -366,6 +366,33 @@ class Pedido extends CI_Model {
         $this->db->update($this->tbl, array('estado' => 0));
         return $this->db->affected_rows();
     }
+    
+    function duplicar( $id ){
+        $this->db->where('id', $id);
+        $query = $this->db->get($this->tbl);  // Se obtiene el pedido
+        $this->db->where('id_pedido', $id);
+        $query_presentaciones = $this->db->get($this->tbl_productos);  // Se obtienen los productos
+        
+        if($query->num_rows() > 0 && $query_presentaciones->num_rows() > 0){
+            $pedido = $query->row_array();
+            $presentaciones = $query_presentaciones->result_array();
+            unset($pedido['id']);  // Quitamos el ID para que se genere uno nuevo
+            unset($pedido['fecha']);  // Quitamos la fecha para poner la fecha actual
+            $this->db->trans_start();
+            $this->db->insert($this->tbl, $pedido);
+            $id_pedido = $this->db->insert_id();
+            foreach($presentaciones AS $key => $val){  // Quitamos el ID para que se genere uno nuevo
+                unset($presentaciones[$key]['id']);
+                $presentaciones[$key]['id_pedido'] = $id_pedido;
+            }
+            $this->db->insert_batch($this->tbl_productos, $presentaciones);
+            $this->db->trans_complete();
+            return $id_pedido;
+        }else{
+            return FALSE;
+        }
+        
+    }
 
     /**
     * Eliminar por id

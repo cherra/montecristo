@@ -74,6 +74,7 @@ class Pedidos extends CI_Controller {
                         $usuario->nombre,
                         array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 ? anchor($this->folder.$this->clase.'pedidos_duplicar/' . $d->id, '<i class="icon-copy"></i>', array('class' => 'btn btn-small', 'title' => 'Duplicar')) :  '<a class="btn btn-small" disabled><i class="icon-copy"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
     		);
                 if($d->estado == 0)
@@ -213,6 +214,22 @@ class Pedidos extends CI_Controller {
             $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar el pedido', 'tipo' => 'alert-error'));
         }
         redirect('ventas/pedidos/index');
+    }
+    
+    public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index' ){
+        if(!empty($id)){
+            $this->load->model('pedido','p');
+            $respuesta = $this->p->duplicar( $id );   // Debe regresar el id del pedido nuevo
+            if($respuesta){
+                $this->session->set_flashdata('mensaje',array('texto' => 'Pedido duplicado', 'tipo' => ''));
+            }else{
+                $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al duplicar el pedido', 'tipo' => 'alert-error'));
+            }
+        }
+        if($incluir_id)
+            redirect('ventas/pedidos/'.$origen.'/'.$respuesta);
+        else
+            redirect('ventas/pedidos/'.$origen);
     }
     
     
