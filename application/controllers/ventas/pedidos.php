@@ -104,6 +104,7 @@ class Pedidos extends CI_Controller {
     public function pedidos_guardar( $id = NULL ){
         if($this->input->is_ajax_request()){
             $this->load->model('pedido','p');
+            $this->load->model('orden_salida','os');
             if( ($datos = $this->input->post()) ){
                 $respuesta = 'OK';
                 $pedido = array(
@@ -115,17 +116,23 @@ class Pedidos extends CI_Controller {
                 );
                 $this->db->trans_start();
                 
+                $edicion = FALSE;
                 if(empty($id)){ // Si es un pedido nuevo
                     $id_pedido = $this->p->save($pedido);
                     $mensaje = 'Se generó el pedido no. '.$id_pedido;
                 }else{  // Si se está editando el pedido
+                    $edicion = TRUE;
                     $id_pedido = $id;
                     $this->p->update($id, $pedido);
                     $this->p->delete_presentaciones($id);  // Se borran los productos
                     $mensaje = 'Se actualizó el pedido no. '.$id_pedido;
                 }
                 if( $id_pedido ){
+                    $pedido = $this->p->get_by_id($id_pedido)->row();
+                    //$salida = $this->os->get_by_id($pedido->id_orden_salida)->row();
+                    $this->os->delete_presentaciones($pedido->id_orden_salida);
                     foreach($datos['productos'] as $producto){
+                        // Presentaciones del pedido
                         $presentacion = array(
                             'id_pedido' => $id_pedido,
                             'id_producto_presentacion' => $producto[0],
@@ -134,12 +141,25 @@ class Pedidos extends CI_Controller {
                             'observaciones' => $producto[3]
                         );
                         if( !($this->p->save_presentacion($presentacion)) ){
-                            $respuesto = 'Error';
+                            $respuesta = 'Error';
                             $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar el pedido', 'tipo' => 'alert-error'));
+                        }
+                        if($edicion && ($pedido->estado > 1 && $pedido->estado < 4)){  // Si el estado del pedido es mayor a 1 quiere decir que es una edición de pedido
+                            // Presentaciones de la orden de salida
+                            $presentacion_os = array(
+                                'id_orden_salida' => $pedido->id_orden_salida,
+                                'id_producto_presentacion' => $producto[0],
+                                'cantidad' => $producto[1],
+                                'observaciones' => $producto[3]
+                            );
+                            if( !($this->os->save_presentacion($presentacion_os)) ){
+                                $respuesta = 'Error';
+                                $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la orden de salida', 'tipo' => 'alert-error'));
+                            }
                         }
                     }
                 }else{
-                    $respuesto = 'Error';
+                    $respuesta = 'Error';
                     $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar el pedido', 'tipo' => 'alert-error'));
                 }
                 $this->db->trans_complete();
@@ -207,8 +227,15 @@ class Pedidos extends CI_Controller {
         }
         
         $this->load->model('pedido','p');
+        $this->load->model('orden_salida','os');
+        $this->db->trans_start();
+        $pedido = $this->p->get_by_id($id)->row();
         $respuesta = $this->p->cancelar($id);
-        if($respuesta){
+        $respuesta_os = TRUE;
+        if($pedido->estado < 4)
+            $respuesta_os = $this->os->cancelar($pedido->id_orden_salida);
+        $this->db->trans_complete();
+        if($respuesta && $respuesta_os){
             $this->session->set_flashdata('mensaje',array('texto' => 'Pedido cancelado', 'tipo' => ''));
         }else{
             $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar el pedido', 'tipo' => 'alert-error'));

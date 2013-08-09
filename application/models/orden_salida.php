@@ -222,6 +222,12 @@ class Orden_salida extends CI_Model {
         $this->db->where('id', $id);
         $this->db->update($this->tbl, $datos);
     }
+    
+    function cancelar( $id ){
+        $this->db->where('id', $id);
+        $this->db->update($this->tbl, array('estado' => 0));
+        return $this->db->affected_rows();
+    }
 
     /**
     * Eliminar por id
@@ -229,6 +235,11 @@ class Orden_salida extends CI_Model {
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete($this->tbl);
-    } 
+    }
+    
+    function delete_presentaciones( $id ){
+        $this->db->where('id_orden_salida',$id);
+        $this->db->delete($this->tbl_presentacion);
+    }
 }
 ?>

@@ -84,7 +84,7 @@
     </div>
     <div class="control-group">
         <div class="controls">
-            <button type="submit" class="btn btn-info">Enviar</button>
+            <button type="submit" class="btn btn-info">Procesar</button>
         </div>
     </div>
     <div class="control-group">
