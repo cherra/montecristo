@@ -43,6 +43,7 @@ class Orden_salida extends CI_Model {
             }
         }
         $this->db->order_by('fecha_programada','desc');
+        $this->db->order_by('id','desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
