@@ -297,6 +297,83 @@ class Ordenes_compra extends CI_Controller{
         $this->load->view('compras/ordenes_compra/autorizar_lista', $data);
     }
     
+    public function ordenes_compra_enviar( $offset = 0 ){
+        $this->load->model('compra', 'c');
+        $this->load->model('proveedor', 'p');
+        $this->load->model('preferencias/usuario','u');
+
+        $this->config->load("pagination");
+
+        $data['titulo'] = 'Ordenes de compra por enviar al proveedor <small>Lista</small>';
+        //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+        $data['link_back'] = anchor($this->folder . $this->clase . 'ordenes_compra_enviar', '<i class="icon-arrow-left"></i> Regresar', array('class' => 'btn'));
+        $data['action'] = $this->folder . $this->clase . 'ordenes_compra_enviar';
+
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if ($filtro)
+            $data['filtro'] = $filtro;
+
+        // Se marca(n) como autorizadas las ordenes de compra
+        if ($this->input->post()) {
+            $compras = $this->input->post('compras');
+            //$fecha = $this->input->post('fecha_entrega').' '.$this->input->post('hora_entrega');
+            foreach ($compras as $c) {
+                $this->c->update($c, array('estado' => '3')); // Estado 3 = Enviada
+                /* 
+                 * Aquí va la creación de una orden de entrada para almacén    ***************************************
+                 * 
+                 */
+                //$this->p->update_by_orden_salida($s, array('estado' => '4'));  // Estado 4 = Enviado
+            }
+        }
+
+        $page_limit = $this->config->item("per_page");
+        $datos = $this->c->get_paged_list($page_limit, $offset, $filtro, array('2'))->result();
+        // generar paginacion
+        $this->load->library('pagination');
+        $config['base_url'] = site_url($this->folder . $this->clase . 'ordenes_compra_enviar');
+        $config['total_rows'] = $this->c->count_all($filtro, array('2'));
+        $config['per_page'] = $page_limit;
+        $config['uri_segment'] = 4;
+        $this->pagination->initialize($config);
+        $data['pagination'] = $this->pagination->create_links();
+
+        // generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('E','Número','Fecha','Proveedor','Municipio','Estado','Teléfono','Contacto','Usuario','Total', '', '');
+    	foreach ($datos as $d) {
+            $proveedor = $this->p->get_by_id($d->id_proveedor)->row();
+            $usuario = $this->u->get_by_id($d->id_usuario)->row();
+            $importe = $this->c->get_importe($d->id);
+    		$this->table->add_row(
+                        $d->estado == '2' ? '<input type="checkbox" name="compras[]" value="'.$d->id.'"/>' : '<i class="'.$this->iconos_estado[$d->estado].'"></i>',
+                        $d->id,
+                        $d->fecha_orden_compra,
+                        $proveedor->nombre,
+                        $proveedor->municipio,
+                        $proveedor->estado,
+                        $proveedor->telefono,
+                        $proveedor->contacto,
+                        $usuario->nombre,
+                        array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'ordenes_compra_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
+    		);
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+    	}
+    	$data['table'] = $this->table->generate();
+
+        $this->load->view('compras/ordenes_compra/enviar_lista', $data);
+    }
+    
     // Genera el formato de orden de compra para impresión
     private function ordenes_compra_render_template($id){
         $this->load->model('compra', 'c');
