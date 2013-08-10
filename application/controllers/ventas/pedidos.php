@@ -626,7 +626,7 @@ class Pedidos extends CI_Controller {
                     array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
                     array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
                     array('data' => number_format($d->total,2), 'style' => 'text-align: right;'),
-                    array('data' => anchor($this->folder.$this->clase.'pedidos_enviados_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Pedidos')), 'style' => 'text-align: right;')
+                    array('data' => anchor($this->folder.$this->clase.'pedidos_procesados_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Pedidos')), 'style' => 'text-align: right;')
             );
     	}
     	$data['table'] = $this->table->generate();
@@ -717,7 +717,7 @@ class Pedidos extends CI_Controller {
             $data['table'] = $this->table->generate();
         }
     	
-    	$this->load->view('ventas/pedidos/enviados_ruta_lista', $data);
+    	$this->load->view('ventas/pedidos/procesados_ruta_lista', $data);
     }
     
     public function pedidos_enviados( $offset = 0 ){
