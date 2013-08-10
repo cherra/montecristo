@@ -12,8 +12,8 @@ class Salidas extends CI_Controller {
     private $iconos_estado = array(
         0 => 'icon-remove',
         1 => 'icon-gears',
-        2 => 'icon-adjust',
-        3 => 'icon-check'
+        2 => 'icon-check',
+        3 => 'icon-truck'
     );
 
     function __construct() {
