@@ -106,6 +106,29 @@ class Proveedores extends CI_Controller {
         
         $this->load->view('compras/proveedores/formulario', $data);
     }
+
+    /*
+     * Métodos Ajax
+     */
     
+    public function get_proveedores( $filtro = NULL ){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($filtro = $this->input->get('filtro')) ){
+                $this->load->model('proveedor','p');
+                $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                $query = $this->p->get_paged_list($limit, 0, $filtro);
+                
+                if($query->num_rows() > 0){
+                    $proveedores = $query->result();
+                    echo json_encode($proveedores);
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
 }
 ?>

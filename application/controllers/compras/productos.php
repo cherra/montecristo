@@ -346,6 +346,52 @@ class Productos extends CI_Controller{
         $this->load->view('compras/productos/presentaciones_formulario', $data);
     }
     
+    /*
+     * Métodos con Ajax
+     */
+    
+    public function get_productos(){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            $this->load->model('producto','p');
+            $limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+            $filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+            
+            $query = $this->p->get_paged_list($limit, 0, $filtro);
+
+            if($query->num_rows() > 0){
+                $productos = $query->result();
+                echo json_encode($productos);
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_presentaciones(){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_producto = $this->input->get('id_producto')) ){
+                $this->load->model('producto_presentacion', 'p');
+                
+                //$limit = ($this->input->get('limit') ? $this->input->get('limit') : NULL);
+                //$filtro = ($this->input->get('filtro') ? $this->input->get('filtro') : NULL);
+                if($id_producto){
+                    $query = $this->p->get_by_producto($id_producto);
+                    if($query->num_rows() > 0){
+                        $presentaciones = $query->result();
+                        echo json_encode($presentaciones);
+                    }else{
+                        echo json_encode(FALSE);
+                    }
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
 }
 
 ?>

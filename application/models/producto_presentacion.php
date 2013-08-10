@@ -62,7 +62,7 @@ class Producto_presentacion extends CI_Model {
      * Obtener las presentaciones asignadas a un producto
      */
     function get_by_producto( $id ){
-        $this->db->select('pr.*, pp.peso, pp.sku, pp.codigo');
+        $this->db->select('pr.*, pp.peso, pp.sku, pp.codigo, pp.id AS id_producto_presentacion');
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id');
         $this->db->where('pp.id_producto', $id);
         $this->db->order_by('pr.nombre','asc');
