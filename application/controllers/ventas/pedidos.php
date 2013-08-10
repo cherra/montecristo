@@ -219,6 +219,7 @@ class Pedidos extends CI_Controller {
         /*if($data['pedido']->estado == '1')
             $data['action_estado'] = anchor($this->folder.$this->clase.'siguiente_estado/'.$id, 'Autorizar', array('class' => 'btn btn-success input-block-level', 'id' => 'autorizar'));
             */
+        $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $id, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
         $this->load->view('ventas/pedidos/pedidos_formulario', $data);
     }
     

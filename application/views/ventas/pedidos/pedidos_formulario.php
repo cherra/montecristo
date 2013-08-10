@@ -227,6 +227,10 @@ Doble click= borrar">'.
                 ?>
                 <p class="text-right"><button id="borrar" class="btn btn-danger"><i class="icon-eraser"></i> Limpiar</button></p>
                 <?php
+                }else{
+                ?>
+                <p class="text-right"><?php echo $link_imprimir; ?></p>
+                <?php
                 }
                 ?>
             </div>
