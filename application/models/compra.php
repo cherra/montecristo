@@ -12,13 +12,23 @@ class Compra extends CI_Model {
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
      */
-    function count_all( $filtro = NULL ) {
+    function count_all( $filtro = NULL, $estado = array('0','1','2','3','4','5') ) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
                 $this->db->or_like('id',$f);
             }
         }
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
         $query = $this->db->get($this->tbl);
         return $query->num_rows();
     }
@@ -34,13 +44,23 @@ class Compra extends CI_Model {
     /**
     * Cantidad de registros por pagina
     */
-    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL) {
+    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL, $estado = array('0','1','2','3','4','5')) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
                 $this->db->or_like('id',$f);
             }
         }
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
         $this->db->order_by('id','asc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
