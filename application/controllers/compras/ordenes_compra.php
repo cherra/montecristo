@@ -66,6 +66,7 @@ class Ordenes_compra extends CI_Controller{
                         $proveedor->contacto,
                         $usuario->nombre,
                         array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'ordenes_compra_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
     		);
@@ -196,6 +197,8 @@ class Ordenes_compra extends CI_Controller{
         /*if($data['pedido']->estado == '1')
             $data['action_estado'] = anchor($this->folder.$this->clase.'siguiente_estado/'.$id, 'Autorizar', array('class' => 'btn btn-success input-block-level', 'id' => 'autorizar'));
             */
+        $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'ordenes_compra_documento/' . $id, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
+        
         $this->load->view('compras/ordenes_compra/formulario', $data);
     }
     
@@ -219,6 +222,105 @@ class Ordenes_compra extends CI_Controller{
             $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la orden de compra', 'tipo' => 'alert-error'));
         }
         redirect('compras/ordenes_compra/index');
+    }
+    
+    // Genera el formato de orden de compra para impresión
+    private function ordenes_compra_render_template($id){
+        $this->load->model('compra', 'c');
+        $this->load->model('proveedor','p');
+        $this->load->model('producto_presentacion','pp');
+        $this->load->model('presentacion','pre');
+        $this->load->model('producto','pr');
+        $this->load->model('preferencias/usuario','u');
+            
+        $compra = $this->c->get_by_id($id)->row();
+        $proveedor = $this->p->get_by_id($compra->id_proveedor)->row();
+        $usuario = $this->u->get_by_id($compra->id_usuario)->row();
+        
+        $this->load->library('tbs');
+        $this->load->library('numero_letras');
+
+        // Nombres de meses en español (config/sitio.php)
+        $meses = $this->config->item('meses');
+
+        // Se carga el template predefinido para los recibos (tabla Configuracion)
+        $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_ordenes_compra'));
+
+        // Se sustituyen los campos en el template
+        $this->tbs->VarRef['numero'] = $compra->id;
+        $fecha = date_create($compra->fecha_orden_compra);
+        $this->tbs->VarRef['fecha'] = date_format($fecha,'d/m/Y');
+        $this->tbs->VarRef['observaciones'] = $compra->observaciones;
+        /*$this->tbs->VarRef['dia'] = date_format($fecha,'d');
+        $this->tbs->VarRef['mes'] = $meses[date_format($fecha,'n')-1];
+        $this->tbs->VarRef['ano'] = date_format($fecha,'Y');
+         */
+        $this->tbs->VarRef['usuario'] = $usuario->nombre;
+        
+        $this->tbs->VarRef['proveedor'] = $proveedor->nombre;
+        $this->tbs->VarRef['rfc'] = $proveedor->rfc;
+        $this->tbs->VarRef['domicilio'] = $proveedor->calle.' '.$proveedor->numero_exterior.' '.$proveedor->numero_interior;
+        $this->tbs->VarRef['colonia'] = $proveedor->colonia;
+        $this->tbs->VarRef['poblacion'] = $proveedor->poblacion;
+        $this->tbs->VarRef['municipio'] = $proveedor->municipio;
+        $this->tbs->VarRef['estado'] = $proveedor->estado;
+        $this->tbs->VarRef['cp'] = $proveedor->cp;
+        $this->tbs->VarRef['contacto'] = $proveedor->contacto;
+
+        $presentaciones = $this->c->get_presentaciones($compra->id)->result_array();
+        foreach($presentaciones as $key => $value){
+            $producto_presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
+            $producto = $this->pr->get_by_id($producto_presentacion->id_producto)->row();
+            $presentacion = $this->pre->get_by_id($producto_presentacion->id_presentacion)->row();
+            
+            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * $presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
+            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['codigo'] = $producto_presentacion->codigo;
+            $presentaciones[$key]['nombre'] = $producto->nombre;
+            $presentaciones[$key]['presentacion'] = $presentacion->nombre;
+        }
+        $this->tbs->MergeBlock('presentaciones', $presentaciones);
+        
+        $this->tbs->VarRef['subtotal'] = number_format($this->c->get_subtotal($compra->id),2,'.',',');
+        $this->tbs->VarRef['iva'] = number_format($this->c->get_iva($compra->id),2,'.',',');
+        $total = $this->c->get_importe($compra->id);
+        $this->tbs->VarRef['total'] = number_format($total,2,'.',',');
+        $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($total);
+        $this->tbs->VarRef['peso'] = number_format($this->c->get_peso($compra->id),2,'.',',').'kg';
+        $this->tbs->VarRef['piezas'] = number_format($this->c->get_piezas($compra->id),2,'.',',');
+        // Render sin desplegar en navegador
+        $this->tbs->Show(TBS_NOTHING);
+        // Se regresa el render
+        return $this->tbs->Source;
+    }
+    
+    // Impresión de ordenes de compra
+    public function ordenes_compra_documento( $id = null ){
+        if(!empty($id)){
+            $this->layout = "template_pdf";
+            $this->load->model('compra', 'c');
+            $compra = $this->c->get_by_id($id)->row();
+            if( $this->session->flashdata('pdf') ){
+            //if(true){
+                if($compra){
+                    $data['contenido'] = $this->ordenes_compra_render_template($id);                    
+                    $this->load->view('documento', $data);
+                }else{
+                    redirect($this->folder.$this->clase.'index');
+                }
+            }else{
+                $this->session->set_flashdata('pdf', true);
+                if($compra){
+                    if($compra->estado == '0'){  // Se agrega una marca de agua al PDF
+                        $this->session->set_flashdata('watermark', 'Cancelado');
+                    }
+                }
+                redirect($this->folder.$this->clase.'ordenes_compra_documento/'.$id); // Se recarga el método para imprimirlo como PDF
+            }
+        }else{
+            redirect($this->folder.$this->clase.'index');
+        }
     }
 }
 

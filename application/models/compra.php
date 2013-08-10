@@ -61,6 +61,34 @@ class Compra extends CI_Model {
         return $this->db->get($this->tbl.' c');
     }
     
+    function get_iva($id){
+        $this->db->select('SUM(cp.cantidad * cp.precio * cp.iva) AS iva', FALSE);
+        $this->db->join('CompraPresentacion cp','c.id = cp.id_compra');
+        $this->db->where('c.id',$id);
+        $this->db->group_by('c.id');
+        $query = $this->db->get($this->tbl.' c');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->iva;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_subtotal($id){
+        $this->db->select('SUM(cp.cantidad * cp.precio) AS total', FALSE);
+        $this->db->join('CompraPresentacion cp','c.id = cp.id_compra');
+        $this->db->where('c.id',$id);
+        $this->db->group_by('c.id');
+        $query = $this->db->get($this->tbl.' c');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->total;
+        }else{
+            return 0;
+        }
+    }
+    
     function get_importe($id){
         $this->db->select('SUM(cp.cantidad * cp.precio) + SUM(cp.cantidad * cp.precio * cp.iva) AS total', FALSE);
         $this->db->join('CompraPresentacion cp','c.id = cp.id_compra');
@@ -74,6 +102,37 @@ class Compra extends CI_Model {
             return 0;
         }
     }
+    
+    function get_peso($id){
+        $this->db->select('SUM(cp.cantidad * ppr.peso) AS peso', FALSE);
+        $this->db->join('CompraPresentacion cp','c.id = cp.id_compra');
+        $this->db->join('ProductoPresentaciones ppr','cp.id_producto_presentacion = ppr.id');
+        $this->db->where('c.id',$id);
+        $this->db->group_by('c.id');
+        $query = $this->db->get($this->tbl.' c');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->peso;
+        }else{
+            return 0;
+        }
+    }
+    
+    function get_piezas($id){
+        $this->db->select('SUM(pp.cantidad) AS piezas', FALSE);
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->piezas;
+        }else{
+            return 0;
+        }
+    }
+    
     /**
     * Alta
     */
