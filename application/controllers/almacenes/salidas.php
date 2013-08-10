@@ -84,7 +84,7 @@ class Salidas extends CI_Controller {
         $this->load->view('lista', $data);
     }
 
-    public function ordenes_salida($offset = 0) {
+    public function ordenes_salida_proceso($offset = 0) {
         $this->load->model('orden_salida', 'os');
         $this->load->model('cliente', 'c');
         $this->load->model('sucursal', 's');
@@ -126,7 +126,7 @@ class Salidas extends CI_Controller {
                     $d->ordenes, 
                     array('data' => number_format($d->piezas, 2), 'style' => 'text-align: right;'), 
                     array('data' => number_format($d->peso, 2), 'style' => 'text-align: right;'), 
-                    array('data' => anchor($this->folder . $this->clase . 'ordenes_salida_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Ordenes de salida')), 'style' => 'text-align: right;')
+                    array('data' => anchor($this->folder . $this->clase . 'ordenes_salida_proceso_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Ordenes de salida')), 'style' => 'text-align: right;')
             );
         }
         $data['table'] = $this->table->generate();
@@ -134,7 +134,7 @@ class Salidas extends CI_Controller {
         $this->load->view('lista', $data);
     }
 
-    public function ordenes_salida_ruta($id_ruta = NULL, $offset = 0) {
+    public function ordenes_salida_proceso_ruta($id_ruta = NULL, $offset = 0) {
         $this->load->model('orden_salida', 'os');
         $this->load->model('cliente', 'c');
         $this->load->model('sucursal', 's');
