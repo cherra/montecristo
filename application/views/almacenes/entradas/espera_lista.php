@@ -56,15 +56,15 @@
         </div>
     </div>
     <div class="control-group">
-        <label for="fecha_programada" class="control-label">Fecha de recepción: </label>
+        <label for="fecha_entrega" class="control-label">Fecha de recepción: </label>
         <div class="controls">
-            <input type="text" class="input-small fecha required" name="fecha_programada" value="<?php if(isset($fecha_programada)) echo $fecha_programada; ?>" />
+            <input type="text" class="input-small fecha required" name="fecha_entrega" value="<?php if(isset($fecha_entrega)) echo $fecha_entrega; ?>" />
         </div>
     </div>
     <div class="control-group">
-        <label for="hora_programada" class="control-label">Hora: </label>
+        <label for="hora_entrega" class="control-label">Hora: </label>
         <div class="controls">
-            <input type="text" class="input-small hora required" name="hora_programada" value="<?php if(isset($hora_programada)) echo $hora_programada; ?>" />
+            <input type="text" class="input-small hora required" name="hora_entrega" value="<?php if(isset($hora_entrega)) echo $hora_entrega; ?>" />
         </div>
     </div>
     <div class="control-group">
