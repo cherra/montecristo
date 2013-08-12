@@ -55,7 +55,7 @@ class Orden_entrada extends CI_Model {
     
     
     function count_by_estado( $estado = array('1'), $filtro = NULL){
-        $this->db->join($this->tbl_presentacion.' oep','os.id = oep.id_orden_entrada');
+        $this->db->join($this->tbl_presentacion.' oep','oe.id = oep.id_orden_entrada');
         $this->db->join('ProductoPresentaciones ppr','oep.id_producto_presentacion = ppr.id');
         $this->db->join('Proveedores p','oe.id_proveedor = p.id');
         $this->db->join('Usuarios u','oe.id_usuario = u.id_usuario');
@@ -93,7 +93,7 @@ class Orden_entrada extends CI_Model {
         $this->db->join('OrdenEntradaPresentacion oep','oe.id = oep.id_orden_entrada');
         $this->db->join('ProductoPresentaciones ppr','oep.id_producto_presentacion = ppr.id');
         $this->db->join('Proveedores p','oe.id_proveedor = p.id');
-        $this->db->join('Usuarios u','os.id_usuario = u.id_usuario');
+        $this->db->join('Usuarios u','oe.id_usuario = u.id_usuario');
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
