@@ -320,10 +320,6 @@ class Ordenes_compra extends CI_Controller{
             //$fecha = $this->input->post('fecha_entrega').' '.$this->input->post('hora_entrega');
             foreach ($compras as $c) {
                 $this->c->update($c, array('estado' => '3')); // Estado 3 = Enviada
-                /* 
-                 * Aquí va la creación de una orden de entrada para almacén    ***************************************
-                 * 
-                 */
                 //$this->p->update_by_orden_salida($s, array('estado' => '4'));  // Estado 4 = Enviado
             }
         }
@@ -378,6 +374,8 @@ class Ordenes_compra extends CI_Controller{
         $this->load->model('compra', 'c');
         $this->load->model('proveedor', 'p');
         $this->load->model('preferencias/usuario','u');
+        $this->load->model('orden_entrada','oe');
+        $this->load->model('almacen','a');
 
         $this->config->load("pagination");
 
@@ -386,6 +384,11 @@ class Ordenes_compra extends CI_Controller{
         $data['link_back'] = anchor($this->folder . $this->clase . 'ordenes_compra_confirmar', '<i class="icon-arrow-left"></i> Regresar', array('class' => 'btn'));
         $data['action'] = $this->folder . $this->clase . 'ordenes_compra_confirmar';
 
+        // A la fecha programada se le agregan los días predefinidos en la configuración
+        $fecha_programada = date_create(date('Y-m-d H:i:s'));
+        date_add($fecha_programada, date_interval_create_from_date_string($this->configuracion->get_valor('entradas_dias').' days'));
+        $data['fecha_programada'] = date_format($fecha_programada, 'Y-m-d');
+        
         // Filtro de busqueda (se almacenan en la sesión a través de un hook)
         $filtro = $this->session->userdata('filtro');
         if ($filtro)
@@ -395,13 +398,34 @@ class Ordenes_compra extends CI_Controller{
         if ($this->input->post()) {
             $compras = $this->input->post('compras');
             //$fecha = $this->input->post('fecha_entrega').' '.$this->input->post('hora_entrega');
-            foreach ($compras as $c) {
-                $this->c->update($c, array('estado' => '4')); // Estado 4 = Confirmada por el proveedor
-                /* 
-                 * Aquí va la creación de una orden de entrada para almacén    ***************************************
-                 * 
+            foreach ($compras as $id) {
+                /*
+                 * Se genera la orden de entrada a almacén
                  */
-                //$this->p->update_by_orden_salida($s, array('estado' => '4'));  // Estado 4 = Enviado
+                $compra = $this->c->get_by_id($id)->row();
+                $entrada = array(
+                    'id_almacen' => $this->input->post('id_almacen'),
+                    'id_proveedor' => $compra->id_proveedor,
+                    'id_usuario' => $this->session->userdata('userid'),
+                    'fecha' => date('Y-m-d H:i:s'),
+                    'origen' => $this->configuracion->get_valor('compras_prefijo').$id,
+                    'fecha_programada' => $this->input->post('fecha_programada').' '.$this->input->post('hora_programada')
+                );
+                // Las presentaciones de la orden de compra
+                $presentaciones = $this->c->get_presentaciones($id)->result();
+                $this->db->trans_start();
+                $id_orden = $this->oe->save($entrada);
+                foreach($presentaciones AS $p){
+                    $presentacion = array(
+                        'id_orden_entrada' => $id_orden,
+                        'id_producto_presentacion' => $p->id_producto_presentacion,
+                        'cantidad' => $p->cantidad
+                    );
+                    $this->oe->save_presentacion($presentacion);
+                }
+
+                $this->c->update($id, array('estado' => '4', 'id_orden_entrada' => $id_orden)); // Estado 4 = Confirmada por el proveedor
+                $this->db->trans_complete();
             }
         }
 
@@ -448,6 +472,7 @@ class Ordenes_compra extends CI_Controller{
     	}
     	$data['table'] = $this->table->generate();
 
+        $data['almacenes'] = $this->a->get_all()->result();
         $this->load->view('compras/ordenes_compra/confirmar_lista', $data);
     }
     

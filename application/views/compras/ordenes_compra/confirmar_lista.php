@@ -46,6 +46,29 @@
 </div>
 <div class="row-fluid">
     <div class="control-group">
+        <label class="control-label" for="id_almacen">Entrada a: </label>
+        <div class="controls">
+            <select name="id_almacen" class="required">
+                <option value="">Selecciona un almacén...</option>
+                <?php foreach($almacenes AS $a){ ?>
+                <option value="<?php echo $a->id; ?>"><?php echo $a->nombre; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="fecha_programada" class="control-label">Fecha de recepción: </label>
+        <div class="controls">
+            <input type="text" class="input-small fecha required" name="fecha_programada" value="<?php if(isset($fecha_programada)) echo $fecha_programada; ?>" />
+        </div>
+    </div>
+    <div class="control-group">
+        <label for="hora_programada" class="control-label">Hora: </label>
+        <div class="controls">
+            <input type="text" class="input-small hora required" name="hora_programada" value="<?php if(isset($hora_programada)) echo $hora_programada; ?>" />
+        </div>
+    </div>
+    <div class="control-group">
         <div class="controls">
             <button type="submit" class="btn btn-info"><i class="icon-check"></i> Confirmada(s)</button>
         </div>
