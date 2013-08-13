@@ -64,6 +64,7 @@ class Productos extends CI_Controller{
     public function index( $offset = 0 ){
         $this->load->model('producto','a');
         $this->load->model('categoria','c');
+        $this->load->model('stock','st');
         $this->config->load("pagination");
     	
         $data['titulo'] = 'Productos <small>Lista</small>';
@@ -92,15 +93,19 @@ class Productos extends CI_Controller{
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Nombre', 'Presentación', 'SKU', 'Categoría');
+    	$this->table->set_heading('Nombre', 'Presentación', 'SKU', 'Stock', 'Categoría');
     	foreach ($datos as $d) {
             $categoria = $this->c->get_by_id($d->id_categoria)->row();
+            $stock = $this->st->get_real_by_producto($d->id)->row();
             $this->table->add_row(
                     $d->nombre,
                     $d->presentacion,
                     $d->sku,
+                    $stock->stock,
                     $categoria->nombre
             );
+            //echo $this->db->last_query();
+            //die();
     	}
     	$data['table'] = $this->table->generate();
     	
