@@ -306,7 +306,7 @@ $(document).ready(function(){
     });
     
     $('#duplicar').click(function(){
-        window.location = "<?php echo site_url('ventas/pedidos/pedidos_duplicar/'.$pedido->id.'/1/pedidos_editar'); ?>";
+        window.location = "<?php if(isset($pedido)){ echo site_url('ventas/pedidos/pedidos_duplicar/'.$pedido->id.'/1/pedidos_editar'); }?>";
     });
 
     $('#cliente').focus();
