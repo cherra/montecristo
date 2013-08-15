@@ -88,14 +88,26 @@ class Pedidos extends CI_Controller {
     	$this->load->view('ventas/lista', $data);
     }
     
-    public function pedidos_agregar() {
+    public function pedidos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
     	$this->load->model('pedido', 'p');
         $this->load->model('ruta','r');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('contacto','co');
         
     	$data['titulo'] = 'Pedido <small>Registro nuevo</small>';
     	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
     
-    	//$data['action'] = site_url($this->folder.$this->clase.'pedidos_agregar');
+    	$data['action'] = site_url($this->folder.$this->clase.'pedidos_agregar');
+        if(!empty($id_cliente)){
+            $data['cliente'] = $this->c->get_by_id($id_cliente)->row();
+            if(!empty($id_sucursal)){
+                $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
+                if(!empty($id_contacto)){
+                    $data['contacto'] = $this->co->get_by_id($id_contacto)->row();
+                }
+            }
+        }
         
         $data['rutas'] = $this->r->get_all()->result();
         $this->load->view('ventas/pedidos/pedidos_formulario', $data);
@@ -188,6 +200,7 @@ class Pedidos extends CI_Controller {
         
         $data['titulo'] = 'Pedido <small>Editar</small>';
     	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['action'] = site_url($this->folder.$this->clase.'pedidos_editar');
         
         $pedido = $datos->row();
         $data['pedido'] = $pedido;

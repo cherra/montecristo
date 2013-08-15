@@ -45,7 +45,7 @@ if(isset($pedido)){
             <label><strong>Buscar cliente</strong></label>
             <input type="text" id="cliente" class="input-block-level" placeholder="Cliente" value="<?php echo (isset($cliente) ? $cliente->nombre : ''); ?>">
             <input type="text" id="sucursal" class="input-block-level" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" <?php if(!isset($cliente)) echo "disabled"; ?>>
-            <input type="text" id="contacto" class="input-block-level" placeholder="Contacto" value="<?php echo (isset($contacto) ? $contacto->nombre : ''); ?>" disabled>
+            <input type="text" id="contacto" class="input-block-level" placeholder="Contacto" value="<?php echo (isset($contacto) ? $contacto->nombre : ''); ?>" <?php if(!isset($sucursal)) echo "disabled"; ?>>
         </div>
         <div class="span3">
             <address id="datos_cliente">
@@ -113,11 +113,11 @@ if(isset($pedido)){
     
         <div class="span1">
                 <label for="cantidad">Cantidad</label>
-                <input type="text" id="cantidad" placeholder="Cantidad" class="input-block-level" <?php if(empty($pedido)) echo "disabled"; ?>>
+                <input type="text" id="cantidad" placeholder="Cantidad" class="input-block-level" <?php if(empty($pedido) && (empty($cliente) OR empty($sucursal) OR empty($contacto))) echo "disabled"; ?>>
         </div>
         <div class="span4">
                 <label for="producto">Producto</label>
-                <input type="text" id="producto" placeholder="Producto" class="input-block-level" <?php if(empty($pedido)) echo "disabled"; ?>>
+                <input type="text" id="producto" placeholder="Producto" class="input-block-level" <?php if(empty($pedido) && (empty($cliente) OR empty($sucursal) OR empty($contacto))) echo "disabled"; ?>>
                 <input type="hidden" id="id_producto"/>
         </div>
         <div class="span2">
@@ -262,11 +262,13 @@ function calcula_totales(){
 
     $("#tabla_container").animate({scrollTop:$("#tabla_container")[0].scrollHeight}, 1000);  // Recorrer el scroll hasta el fondo
 
+    /*
     <?php if(!isset($presentaciones)){ ?>
     localStorage.setItem("ventas/pedidos/nuevo",$('#lineas').html());  // Cuando se va a registrar un nuevo pedido
     <?php }else{ ?>
     localStorage.setItem("ventas/pedidos/edicion",$('#lineas').html());  // Edición de un pedido existente
     <?php } ?>
+            */
 }
 
 function get_presentaciones( id_producto, id_producto_presentacion ){
@@ -292,6 +294,10 @@ function get_presentaciones( id_producto, id_producto_presentacion ){
     
 $(document).ready(function(){
 
+    <?php 
+    
+    ?>
+    var url = "<?php if(isset($action)){ echo $action; } ?>";
     var edicion = true;
     <?php if(isset($pedido)){ ?>
             $('input, textarea, select, button[id!="editar"][id!="duplicar"]').attr('disabled',true);
@@ -299,7 +305,7 @@ $(document).ready(function(){
     <?php }?>
         
     $('#editar').click(function(){
-        $('input[id!="cliente"], textarea, select, button').removeAttr('disabled');
+        $('input[id!="cliente"][id!="sucursal"][id!="contacto"], textarea, select, button').removeAttr('disabled');
         $('#autorizar').hide();
         edicion = true;
         $('#cantidad').focus();
@@ -309,8 +315,15 @@ $(document).ready(function(){
         window.location = "<?php if(isset($pedido)){ echo site_url('ventas/pedidos/pedidos_duplicar/'.$pedido->id.'/1/pedidos_editar'); }?>";
     });
 
-    $('#cliente').focus();
-    
+    <?php if(empty($cliente)){ ?>
+        $('#cliente').focus();
+    <?php }elseif(empty($sucursal)){ ?>
+        $('#sucursal').focus();
+    <?php }elseif(empty($contacto)){ ?>
+        $('#contacto').focus();
+    <?php }else{ ?>
+        $('#cantidad').focus();
+    <?php } ?>
     // Se anulan los submit de formularios con clase .no-submit
     $('form.no-submit').submit(function(event){
         event.preventDefault();
@@ -319,7 +332,7 @@ $(document).ready(function(){
     $(window).bind('beforeunload', function(event){
         localStorage.removeItem("ventas/pedidos/edicion");
     });
-    
+    /*
     <?php if(!isset($presentaciones)){ ?>
         if(localStorage.getItem("ventas/pedidos/nuevo"))
             $('#lineas').html(localStorage.getItem("ventas/pedidos/nuevo"));
@@ -327,7 +340,7 @@ $(document).ready(function(){
         if(localStorage.getItem("ventas/pedidos/edicion"))
             $('#lineas').html(localStorage.getItem("ventas/pedidos/edicion"));
     <?php } ?>
-        
+        */
     calcula_totales();
     
     var arreglo = new Array();
@@ -351,7 +364,9 @@ $(document).ready(function(){
       },
       select: function(event, ui){ // Cuando se selecciona un item
         event.preventDefault();  // Cancelamos el evento default
-        $(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
+        //localStorage.removeItem("ventas/pedidos/nuevo");  // Limpiamos la tabla de productos porque pueden cambiar los precios
+        window.location = url+'/'+ui.item.id;
+        /*$(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
         $('#id_cliente').val(ui.item.id);  // Se guarda el id del cliente en el input #id_cliente
         // Se muestran los datos del cliente
         $('#datos_cliente').html('<strong>'+ui.item.nombre+'</strong><br>'+
@@ -365,7 +380,7 @@ $(document).ready(function(){
         $('#datos_sucursal').html('<br><br><br><br><br>');  
         $('#datos_contacto').html('<br><br><br><br><br>');
         $('#llenado input, #llenado textarea').attr('disabled', true);  // Se deshabilitan los input para llenar el pedido (porque al cambiar el cliente puede cambiar el precio).
-        $('#lineas').html(''); // Se vacía la tabla del pedido
+        $('#lineas').html(''); // Se vacía la tabla del pedido*/
       }
     });
     
@@ -390,7 +405,8 @@ $(document).ready(function(){
       },
       select: function(event, ui){ // Cuando se selecciona un item
         event.preventDefault();  // Cancelamos el evento default
-        $(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
+        window.location = url+'/'+$('#id_cliente').val()+'/'+ui.item.id;
+        /*$(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
         $('#id_sucursal').val(ui.item.id);  // Se guarda el id de la sucursal en el input #id_sucursal
         // Se muestran los datos de la sucursal
         $('#datos_sucursal').html('<strong>'+ui.item.numero+' '+ui.item.nombre+'</strong><br>'+
@@ -399,7 +415,7 @@ $(document).ready(function(){
                 ui.item.poblacion+', '+ui.item.municipio+', '+ui.item.estado+'<br>'+
                 ui.item.telefono+'<br>');
         $('#contacto').removeAttr('disabled').focus().val('');  // Se habilita el input para contacto
-        $('#datos_contacto').html('<br><br><br><br><br>');  // Se borran los datos de contacto
+        $('#datos_contacto').html('<br><br><br><br><br>');  // Se borran los datos de contacto*/
       }
     });
     
@@ -424,7 +440,8 @@ $(document).ready(function(){
       },
       select: function(event, ui){ // Cuando se selecciona un item
         event.preventDefault();  // Cancelamos el evento default
-        $(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
+        window.location = url+'/'+$('#id_cliente').val()+'/'+$('#id_sucursal').val()+'/'+ui.item.id;
+        /*$(this).val(ui.item.label);  // Sustituimos el valor del input con el nombre
         $('#id_contacto').val(ui.item.id);
         $('#datos_contacto').html('<strong>'+ui.item.nombre+'</strong><br>'+
                 ui.item.puesto+'<br>'+
@@ -433,7 +450,7 @@ $(document).ready(function(){
                 ui.item.email+'<br>');
         $('#llenado input, #llenado textarea').removeAttr('disabled');
         $('#final select, #final textarea').removeAttr('disabled');
-        $('#cantidad').focus();
+        $('#cantidad').focus();*/
       }
     });
     

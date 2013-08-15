@@ -144,6 +144,7 @@ class Clientes extends CI_Controller{
                     $d->municipio,
                     $d->estado,
                     $d->telefono,
+                    array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $d->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
                     array('data' => anchor($this->folder.$this->clase.'sucursales/' . $d->id, '<i class="icon-building"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;'),
                     array('data' => anchor($this->folder.$this->clase.'clientes_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;')
             );
@@ -253,6 +254,7 @@ class Clientes extends CI_Controller{
                         $sucursal->estado,
                         $sucursal->telefono,
                         array('data' => $sucursal->email, 'class' => 'hidden-phone'),
+                        array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
                         array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
                         array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                 );
@@ -373,6 +375,7 @@ class Clientes extends CI_Controller{
                             $contacto->telefono,
                             $contacto->celular,
                             $contacto->email,
+                            array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
                             array('data' => anchor('ventas/clientes/contactos_editar/' . $contacto->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                     );
                 }
