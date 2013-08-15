@@ -16,7 +16,14 @@ class Sucursal extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->like('nombre',$f);
+                $this->db->where("(
+                        numero LIKE '%".$f."%' OR
+                        nombre LIKE '%".$f."%' OR
+                        poblacion LIKE '%".$f."%' OR
+                        municipio LIKE '%".$f."%' OR
+                        estado LIKE '%".$f."%'
+                    )");
+                //$this->db->like('nombre',$f);
             }
         }
         if(!empty($id_cliente)){
@@ -41,7 +48,14 @@ class Sucursal extends CI_Model {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
-                $this->db->like('nombre',$f);
+                $this->db->where("(
+                        numero LIKE '%".$f."%' OR
+                        nombre LIKE '%".$f."%' OR
+                        poblacion LIKE '%".$f."%' OR
+                        municipio LIKE '%".$f."%' OR
+                        estado LIKE '%".$f."%'
+                    )");
+                //$this->db->like('nombre',$f);
             }
         }
         if(!empty($id_cliente)){
