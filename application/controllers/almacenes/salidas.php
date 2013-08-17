@@ -56,12 +56,12 @@ class Salidas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Ruta', 'Origen', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
-            //$ruta = $this->r->get_by_id($d->id_ruta)->row();
+            $ruta = $this->r->get_by_id($d->id_ruta)->row();
             $piezas = $this->os->get_piezas($d->id);
             $this->table->add_row(
                     '<i class="'.$this->iconos_estado[$d->estado].'"></i>', 
@@ -71,6 +71,7 @@ class Salidas extends CI_Controller {
                     !empty($almacen->nombre) ? $almacen->nombre : '', 
                     $d->fecha_programada, 
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
+                    $ruta->nombre,
                     $d->origen, 
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_salida_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
@@ -147,7 +148,7 @@ class Salidas extends CI_Controller {
         $data['titulo'] = 'Ordenes de salida en proceso por ruta <small>Lista</small>';
         //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
         $data['link_back'] = anchor($this->folder . $this->clase . 'ordenes_salida', '<i class="icon-arrow-left"></i> Regresar', array('class' => 'btn'));
-        $data['action'] = $this->folder . $this->clase . 'ordenes_salida_ruta/' . $id_ruta;
+        $data['action'] = $this->folder . $this->clase . 'ordenes_salida_proceso_ruta/' . $id_ruta;
 
         // Filtro de busqueda (se almacenan en la sesión a través de un hook)
         $filtro = $this->session->userdata('filtro');

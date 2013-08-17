@@ -24,6 +24,7 @@ class Entradas extends CI_Controller {
         $this->load->model('orden_entrada', 'oe');
         $this->load->model('proveedor', 'p');
         $this->load->model('almacen', 'a');
+        $this->load->model('preferencias/usuario','u');
 
         $this->config->load("pagination");
 
@@ -53,12 +54,13 @@ class Entradas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Proveedor', 'Almacén', 'Fecha programada', 'Piezas', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Fecha', 'Proveedor', 'Almacén', 'Fecha programada', 'Piezas', 'Origen', 'Usuario', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $proveedor = $this->p->get_by_id($d->id_proveedor)->row();
             //$ruta = $this->r->get_by_id($d->id_ruta)->row();
             $piezas = $this->oe->get_piezas($d->id);
+            $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $this->table->add_row(
                     '<i class="'.$this->iconos_estado[$d->estado].'"></i>', 
                     $d->id, 
@@ -68,6 +70,7 @@ class Entradas extends CI_Controller {
                     $d->fecha_programada, 
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
                     $d->origen, 
+                    $usuario->nombre,
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_entrada_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
             if ($d->estado == 0)
