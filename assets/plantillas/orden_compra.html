@@ -1,0 +1,69 @@
+<h4 style="text-align: center;">ORDEN DE COMPRA</h4>
+<table style="width: 100%;">
+<tbody>
+<tr>
+<td width="10%"><strong>Cliente:&nbsp;</strong></td>
+<td width="70%">[onshow.proveedor]</td>
+<td width="10%"><strong>N&uacute;m:</strong></td>
+<td style="text-align: right;" width="10%">[onshow.numero]</td>
+</tr>
+<tr>
+<td><strong>RFC:</strong></td>
+<td>[onshow.rfc]</td>
+<td><strong>Fecha:</strong></td>
+<td style="text-align: right;">[onshow.fecha]</td>
+</tr>
+<tr>
+<td><strong>Domicilio:&nbsp;</strong></td>
+<td>[onshow.domicilio]&nbsp;[onshow.colonia]</td>
+<td style="text-align: left;" colspan="2"><strong>Solicit&oacute;:</strong></td>
+</tr>
+<tr>
+<td><strong>&nbsp;</strong></td>
+<td>[onshow.poblacion], [onshow.municipio], [onshow.estado] [onshow.cp]</td>
+<td style="text-align: left;" colspan="2" rowspan="2" valign="top">[onshow.usuario]</td>
+</tr>
+<tr>
+<td><strong><strong>Contacto:</strong><br /></strong></td>
+<td>[onshow.contacto]</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: right;">&nbsp;</p>
+<table class="table table-condensed table-bordered" style="width: 100%; margin-bottom: 10px;">
+<thead>
+<tr>
+<td style="text-align: center;" width="10%"><strong>C&oacute;digo</strong></td>
+<td style="text-align: center;" width="10%"><strong>Cant.</strong></td>
+<td style="text-align: center;" width="50%"><strong>Descripci&oacute;n</strong></td>
+<td style="text-align: center;" width="10%"><strong>Presentaci&oacute;n</strong></td>
+<td style="text-align: center;" width="10%"><strong>Precio</strong></td>
+<td style="text-align: center;" width="10%"><strong>Importe</strong></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">[presentaciones.codigo; block=tr]</td>
+<td style="text-align: center;">[presentaciones.cantidad; block=tr]</td>
+<td style="text-align: left;">[presentaciones.nombre; block=tr]</td>
+<td style="text-align: left;">[presentaciones.presentacion; block=tr]</td>
+<td style="text-align: right;">&nbsp;[presentaciones.precio; block=tr]</td>
+<td style="text-align: right;">[presentaciones.importe; block=tr]</td>
+</tr>
+<tr>
+<td style="text-align: center;" colspan="4" rowspan="3" valign="middle">([onshow.cantidad_letra])</td>
+<td style="text-align: right;">Subtotal&nbsp;</td>
+<td style="text-align: right;">[onshow.subtotal]</td>
+</tr>
+<tr>
+<td style="text-align: right;">&nbsp;IVA</td>
+<td style="text-align: right;">[onshow.iva]</td>
+</tr>
+<tr>
+<td style="text-align: right;"><strong>TOTAL</strong></td>
+<td style="text-align: right;"><strong>[onshow.total]</strong></td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: left;"><strong>Piezas:</strong> [onshow.piezas]<br /><strong>Peso:</strong> [onshow.peso]</p>
+<p style="text-align: left;"><strong>Observaciones:&nbsp;</strong>[onshow.observaciones]</p>
