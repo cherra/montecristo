@@ -5,7 +5,8 @@
   <title><?php echo $this->config->item('nombre_proyecto'); ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <!-- css -------------------------------------------------------------------- -->
-  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
       .contenedor-principal {
         padding-top: 50px;
@@ -67,7 +68,7 @@
 <!-- menu-top ---------------------------------------------------------------- -->
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -86,7 +87,7 @@
         <ul class="nav">
             <?php
             // Se obtienen los folders de los métodos para mostrarlos en la barra superior.
-            $folders = $this->session->userdata('folders');
+            $folders = $this->menu->get_folders();
             foreach($folders as $folder){ ?>
             <li><?php 
             // Temporalmente se pone uri_string() para redireccionar a donde mismo
@@ -98,8 +99,8 @@
   </div>
 </div>
 <!-- contenido ---------------------------------------------------------------------- -->
-<div class="container contenedor-principal">
-    <div class="row">
+<div class="container-fluid contenedor-principal">
+    <div class="row-fluid">
     {contenido_vista}
     </div>
 </div>

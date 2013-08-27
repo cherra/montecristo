@@ -5,7 +5,7 @@
     padding-bottom: 40px;
     max-width: 300px;
     padding: 40px 29px 40px;
-    margin: 0 auto 20px;
+    margin: 50px auto 20px;
     background-color: #fff;
     border: 1px solid #e5e5e5;
     -webkit-border-radius: 5px;
@@ -35,7 +35,7 @@
   <div class="row">
     <div class="offset4 span4">
         <?php echo form_open('login/process', array('class' => 'form-signin')); ?>
-          <h2 class="form-signin-heading">login</h2>
+          <h2 class="form-signin-heading">Acceso</h2>
           <input type="text" name="username" id="usuario" class="input-block-level small" placeholder="Nombre de usuario">
           <input type="password" name="password" id="contrasena" class="input-block-level small" placeholder="Contraseña">
           <button id="ingresar" class="btn btn-large btn-primary" type="submit">Iniciar sesión</button>

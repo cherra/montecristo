@@ -5,7 +5,7 @@
   <title><?php echo $this->config->item('nombre_proyecto'); ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- css -------------------------------------------------------------------- -->
-  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="<?php echo asset_url(); ?>jqueryui/css/flick/jquery-ui-1.10.1.custom.min.css" rel="stylesheet">
  
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->

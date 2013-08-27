@@ -1,0 +1,5 @@
+Orden de salida con informe agrupados por cadena.
+Movimientos entre pedidos cuando estan en estatus de enviado.
+Ordenes de compra a partir de productos faltantes.
+Productos que se compran por proveedor.
+Productos comprables, vendibles, producibles, 

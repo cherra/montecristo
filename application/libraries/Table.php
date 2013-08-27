@@ -36,7 +36,8 @@ class CI_Table {
 	var $newline			= "\n";
 	var $empty_cells		= "";
 	var	$function			= FALSE;
-        var $row_class                 = array();
+        var $row_class                  = array();
+        var $row_href                   = array();
 
 	public function __construct()
 	{
@@ -173,6 +174,12 @@ class CI_Table {
 	{
 		$args = func_get_args();
 		$this->row_class[] = $this->_prep_args($args);
+	}
+        
+        function add_row_href()
+	{
+		$args = func_get_args();
+		$this->row_href[] = $this->_prep_args($args);
 	}
 
 	// --------------------------------------------------------------------
@@ -338,10 +345,12 @@ class CI_Table {
 				$name = (fmod($i++, 2)) ? '' : 'alt_';
 
                                 //nvg
+                                $tr_end = "";
 				if(isset($this->row_class[$cnt][0]['data']))
-					$tr_end = ' class="'.$this->row_class[$cnt][0]['data'].'">';
-				else
-					$tr_end = '>';
+                                    $tr_end = ' class="'.$this->row_class[$cnt][0]['data'].'"';
+                                if( isset($this->row_href[$cnt][0]['data']) )
+                                    $tr_end = ' onclick="window.location.href=\''.$this->row_href[$cnt][0]['data'].'\'"';
+                                $tr_end .= '>';
 				$cnt++;
                                 
 				$out .= $this->template['row_'.$name.'start'].$tr_end;

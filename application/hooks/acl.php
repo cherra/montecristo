@@ -173,7 +173,6 @@ class acl
                 'permKey' => $perm,
                 'nombre' => $perm,
                 'folder' => $folders[0] ? $folders[0] : '',
-                'submenu' => $folders[1] ? $folders[1] : '',
                 'method' => $method,
                 'class' => $class
             );
@@ -198,7 +197,7 @@ class acl
                 $folder = strstr(uri_string(), $class, TRUE);
                 
                 //$permKey = $this->ci->uri->uri_string();
-                $permKey = $class;
+                $permKey = $folder.$class;
                 $permKey .= $method != "index" ? "/".$method : "";
                 $permKey = strtolower($permKey);
                 
@@ -207,7 +206,8 @@ class acl
                         if($class == 'login' && $method == 'index')
                             redirect('home');
 
-                        if($class == 'home' && $method == 'index')
+                        // Todos los usuario tienen acceso al home y a hacer logout
+                        if(($class == 'home' && $method == 'index') or ($class == 'login' && $method == 'do_logout') )
                             return false;
                             
                         if($this->ci->session->userdata('userid')){

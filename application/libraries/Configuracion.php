@@ -67,6 +67,15 @@ class Configuracion {
         $this->CI->db->where('id', $id);
         $this->CI->db->delete($this->tbl);
     }
+    
+    public function update_by_key( $key = null, $datos = null ){
+        if(!empty($datos) && !empty($key)){
+            $this->CI->db->where('key', $key);
+            $this->CI->db->update($this->tbl, $datos);
+            return $this->CI->db->affected_rows();
+        }
+    }
+    
 }
 
 ?>

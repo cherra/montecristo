@@ -5,7 +5,8 @@
   <title><?php echo $this->config->item('nombre_proyecto'); ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <!-- css -------------------------------------------------------------------- -->
-  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<?php echo asset_url(); ?>font-awesome/css/font-awesome.css" rel="stylesheet">
   <style type="text/css">
       body{
           padding-top: 50px;
@@ -39,6 +40,23 @@
 
       .navbar-fixed-top{
         margin-bottom: 10px;
+      }
+      
+      .control-group{
+          margin-bottom: 10px !important;
+      }
+      
+      address{
+          margin-bottom: 0;
+      }
+      
+      hr{
+          margin: 10px 0;
+      }
+      
+      .ui-spinner.ui-widget.ui-widget-content, .ui-spinner-input{
+          border: none;
+          margin: 0;
       }
 
       /* Tablets y mobiles*/
@@ -89,7 +107,7 @@
 <!-- menu-top ---------------------------------------------------------------- -->
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
       <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -108,13 +126,15 @@
         <ul class="nav">
           <?php
             // Se obtienen los folders de los métodos para mostrarlos en la barra superior.
-            $folders = $this->session->userdata('folders');
+            $folders = $this->menu->get_folders();
             foreach($folders as $folder){ ?>
             <li <?php 
             // Si el primer segmento del URI es igual al folder quiere decir que es la opción seleccionada
             // y se marca como activa para resaltarla
-            if( $this->uri->segment(1) == $folder->folder) 
+            if( $this->uri->segment(1) == $folder->folder){
+                $folder_activo = $folder->folder;
                 echo 'class="active"'; 
+            }
             ?>><?php 
             echo anchor($folder->folder.'/'.$folder->folder, strtoupper($folder->folder), 'class="navbar-link"'); ?></li>
             <?php } ?>
@@ -124,15 +144,15 @@
   </div>
 </div>
 <!-- contenido ----------------------------------------------------------------------- -->
-<div class="container contenedor-principal">
-  <div class="row">
+<div class="container-fluid contenedor-principal">
+  <div class="row-fluid">
       <!-- Menú lateral para tablets y escritorio -->
-    <div class="span3 hidden-phone">
+    <div class="span2 hidden-phone">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
             <?php
             $clase = '';
-            $metodos = $this->session->userdata('submenu');
+            $metodos = $this->menu->get_metodos($folder_activo);
             foreach ( $metodos as $metodo ){
                 if($clase != $metodo->class){
                     $clase = $metodo->class;
@@ -146,16 +166,26 @@
                     <li <?php 
                     // Si el link es igual al URI quiere decir que es la opción seleccionada
                     // y se marca como activa para resaltarla
-                    if( strpos(current_url(), $metodo->folder.'/'.$metodo->class) ) 
+                    if( strpos(current_url(), $metodo->folder.'/'.$metodo->class.'/'.$metodo->method) ) 
                         echo 'class="active"'; 
-                    ?>><?php echo anchor($link, '<i class="'.$metodo->icon.'"></i> '.$metodo->nombre) ?></li>
+                    ?>><?php echo anchor($link, '<i class="icon-fixed-width '.$metodo->icon.'"></i> '.$metodo->nombre) ?></li>
             <?php
             }
             ?>
         </ul>
       </div>
     </div>
-    <div class="span9">
+    <div class="span10">
+        <?php
+            if( ($mensaje = $this->session->flashdata('mensaje')) ){
+        ?>
+            <div class="span9 alert <?php echo $mensaje['tipo']; ?>" style="position: fixed; display: none; top: 50px; z-index: 1031;" id="mensaje">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong><i class="icon-ok"></i> </strong> <?php echo $mensaje['texto']; ?>
+            </div>
+        <?php
+            }
+        ?>
       <!-- contenido --------------------------------------------------------------- -->
       {contenido_vista}
     </div>
@@ -216,16 +246,33 @@
 </div>
 
 <script>
+    //var modal = document.getElementById('loader');
     $(document).ready(function(){
         
+        $('#mensaje').slideDown(500).delay(2000).slideUp(500);
+        
+        $('#filtro').focus();
         //$('input[type="text"]').attr('autocomplete', 'off');
         
-        $('#form').validate({
+        $('form').validate({
             rules: {
                 confirmar_password: {
                     equalTo: "#password"
                 }
+            },
+            highlight: function(element, errorClass) {
+                $(element).fadeOut(function() {
+                  $(element).fadeIn();
+                });
             }
+        });
+        
+        $('tbody').on('mouseover','tr[onclick]',function(){
+            document.body.style.cursor = 'pointer';  
+        });
+        
+        $('tbody').on('mouseout','tr[onclick]',function(){
+            document.body.style.cursor = 'default';  
         });
         
         // Widget para los input donde se debe ingresar una hora (ej. 14:00)
@@ -283,6 +330,7 @@
         // Los input con la clase "hora" se utilizan para seleccionar la hora
         $('.hora').timespinner();
         $('.hora').val(hora);
+        
     });
 </script>
 
