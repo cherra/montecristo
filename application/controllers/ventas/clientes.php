@@ -260,7 +260,7 @@ class Clientes extends CI_Controller{
                             $sucursal->telefono,
                             array('data' => $sucursal->email, 'class' => 'hidden-phone'),
                             array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
-                            array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
+                            array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$estado.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
                             array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                     );
                 }

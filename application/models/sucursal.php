@@ -67,7 +67,7 @@ class Sucursal extends CI_Model {
         if(!empty($estado)){
             $this->db->like('estado', $estado);
         }
-        $this->db->order_by('nombre','asc');
+        $this->db->order_by('municipio, numero, nombre','asc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
