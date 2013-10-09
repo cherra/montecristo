@@ -61,7 +61,7 @@ class Sucursal extends CI_Model {
         if(!empty($id_cliente)){
             $this->db->where('id_cliente', $id_cliente);
         }
-        $this->db->order_by('numero','asc');
+        $this->db->order_by('nombre','asc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
@@ -75,7 +75,22 @@ class Sucursal extends CI_Model {
     
     function get_by_id_cliente($id){
         $this->db->where('id_cliente',$id);
-        $this->db->order_by('numero','asc');
+        $this->db->order_by('nombre','asc');
+        return $this->db->get($this->tbl);
+    }
+    
+    function get_by_id_cliente_estado($id, $estado){
+        $this->db->where('id_cliente', $id);
+        $this->db->like('estado', $estado);
+        $this->db->order_by('nombre','asc');
+        return $this->db->get($this->tbl);
+    }
+    
+    function get_estados_by_id_cliente($id){
+        $this->db->select('estado');
+        $this->db->where('id_cliente', $id);
+        $this->db->group_by('estado');
+        $this->db->order_by('estado');
         return $this->db->get($this->tbl);
     }
     

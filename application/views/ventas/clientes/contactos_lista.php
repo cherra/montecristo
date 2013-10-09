@@ -23,6 +23,20 @@
         </div>
     </div>
     <div class="control-group">
+        <label class="control-label hidden-phone">Estado</label>
+        <div class="controls">
+            <select id="estado">
+                <option value="">Selecciona un estado...</option>
+                <?php
+                foreach($estados as $e){ ?>
+                    <option value="<?php echo trim($e->estado); ?>" <?php if(!empty($estado)) echo ($estado == trim($e->estado) ? 'selected' : ''); ?>><?php echo trim($e->estado); ?></option>
+                <?php
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="control-group">
         <label class="control-label hidden-phone">Sucursal</label>
         <div class="controls">
             <select id="id_sucursal" <?php if(empty($cliente)) echo "disabled"; ?>>
@@ -71,10 +85,15 @@ $(document).ready(function(){
        if($(this).val() > 0)
            $(location).attr('href',url+'/'+$(this).val());
     });
+    
+    $('#estado').on('change',function(){
+       if($(this).length > 0)
+           $(location).attr('href',url+'/'+$('#id_cliente').val()+'/'+$(this).val());
+    });
    
     $('#id_sucursal').on('change',function(){
        if($(this).val() > 0)
-           $(location).attr('href',url+'/'+$('#id_cliente').val()+'/'+$(this).val());
+           $(location).attr('href',url+'/'+$('#id_cliente').val()+'/'+$('#estado').val()+'/'+$(this).val());
     });
 });
 </script>

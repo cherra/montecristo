@@ -325,7 +325,7 @@ class Clientes extends CI_Controller{
     /*
      * Contactos por sucursal
      */
-    public function contactos( $id_cliente = NULL, $id_sucursal = NULL, $offset = 0) {
+    public function contactos( $id_cliente = NULL, $estado = NULL, $id_sucursal = NULL, $offset = 0) {
        
         $this->load->model('cliente', 'cl');
         $this->load->model('sucursal', 's');
@@ -342,8 +342,14 @@ class Clientes extends CI_Controller{
         
         $data['clientes'] = $this->cl->get_all()->result();
         if(!empty($id_cliente)){
+            $data['estados'] = $this->s->get_estados_by_id_cliente($id_cliente)->result();
+            if(!empty($estado)){
+                $data['sucursales'] = $this->s->get_by_id_cliente_estado($id_cliente, urldecode($estado))->result();
+                $data['estado'] = trim(urldecode($estado));
+            }else{
+                $data['sucursales'] = $this->s->get_by_id_cliente($id_cliente)->result();
+            }
             $data['cliente'] = $this->cl->get_by_id($id_cliente)->row();
-            $data['sucursales'] = $this->s->get_by_id_cliente($id_cliente)->result();
             
             if(!empty($id_sucursal)){
                 $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
@@ -358,7 +364,7 @@ class Clientes extends CI_Controller{
                 $this->load->library('pagination');
                 $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id_sucursal);
                 $config['total_rows'] = $this->c->count_all($filtro, $id_sucursal);
-                $config['uri_segment'] = 5;
+                $config['uri_segment'] = 7;
                 $this->pagination->initialize($config);
                 $data['pagination'] = $this->pagination->create_links();
 
