@@ -25,8 +25,8 @@
     <div class="control-group">
         <label class="control-label hidden-phone">Estado</label>
         <div class="controls">
-            <select id="estado">
-                <option value="">Selecciona un estado...</option>
+            <select id="estado" <?php if(empty($cliente)) echo "disabled"; ?>>
+                <option value=" ">Selecciona un estado...</option>
                 <?php
                 foreach($estados as $e){ ?>
                     <option value="<?php echo trim($e->estado); ?>" <?php if(!empty($estado)) echo ($estado == trim($e->estado) ? 'selected' : ''); ?>><?php echo trim($e->estado); ?></option>
@@ -39,7 +39,7 @@
     <div class="control-group">
         <label class="control-label hidden-phone">Sucursal</label>
         <div class="controls">
-            <select id="id_sucursal" <?php if(empty($cliente)) echo "disabled"; ?>>
+            <select id="id_sucursal" <?php if(empty($estado)) echo "disabled"; ?>>
                 <option value="">Selecciona una sucursal...</option>
                 <?php
                 foreach($sucursales as $s){ ?>
@@ -87,7 +87,7 @@ $(document).ready(function(){
     });
     
     $('#estado').on('change',function(){
-       if($(this).length > 0)
+       //if($(this).length > 0)
            $(location).attr('href',url+'/'+$('#id_cliente').val()+'/'+$(this).val());
     });
    
