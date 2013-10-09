@@ -208,14 +208,14 @@ class Clientes extends CI_Controller{
     /*
      * Sucursales por cliente
      */
-    public function sucursales($id = NULL, $offset = 0) {
+    public function sucursales($id = NULL, $estado = NULL, $offset = 0) {
         $this->load->model('cliente', 'c');
         $this->load->model('sucursal', 's');
         $data['clientes'] = $this->c->get_all()->result();
         
         $data['titulo'] = 'Sucursales <small>Listado</small>';
         $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Clientes',array('class'=>'btn'));
-        $data['action'] = $this->folder.$this->clase.'sucursales/'.$id;
+        $data['action'] = $this->folder.$this->clase.'sucursales/'.$id.'/'.$estado;
         
         // Filtro de busqueda (se almacenan en la sesión a través de un hook)
         $filtro = $this->session->userdata('filtro');
@@ -224,44 +224,50 @@ class Clientes extends CI_Controller{
         
         if (!empty($id)) {
             $data['cliente'] = $this->c->get_by_id($id)->row();
+            $data['estados'] = $this->s->get_estados_by_id_cliente($id)->result();
             
-            // obtener datos
-            $this->config->load("pagination");
-            //$this->load->model('fraccionamientos/manzana', 'm');
-            $page_limit = $this->config->item("per_page");
-            $sucursales = $this->s->get_paged_list($page_limit, $offset, $filtro, $id)->result();
+            if(!empty($estado)){
+                $data['sucursales'] = $this->s->get_by_id_cliente_estado($id, urldecode($estado))->result();
+                $data['estado'] = trim(urldecode($estado));
 
-            // generar paginacion
-            $this->load->library('pagination');
-            $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id);
-            $config['total_rows'] = $this->s->count_all($filtro, $id);
-            $config['uri_segment'] = 5;
-            $this->pagination->initialize($config);
-            $data['pagination'] = $this->pagination->create_links();
+                // obtener datos
+                $this->config->load("pagination");
+                //$this->load->model('fraccionamientos/manzana', 'm');
+                $page_limit = $this->config->item("per_page");
+                $sucursales = $this->s->get_paged_list($page_limit, $offset, $filtro, $id, urldecode($estado))->result();
 
-            // generar tabla
-            $this->load->library('table');
-            $this->table->set_empty('&nbsp;');
-            $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
-            $this->table->set_template($tmpl);
-            $this->table->set_heading('Núm', 'Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', array('data' => 'E-mail', 'class' => 'hidden-phone'), '','');
-            foreach ($sucursales as $sucursal) {
-                $this->table->add_row(
-                        $sucursal->numero, 
-                        $sucursal->nombre,
-                        $sucursal->poblacion,
-                        $sucursal->municipio,
-                        $sucursal->estado,
-                        $sucursal->telefono,
-                        array('data' => $sucursal->email, 'class' => 'hidden-phone'),
-                        array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
-                        array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
-                        array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
-                );
+                // generar paginacion
+                $this->load->library('pagination');
+                $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id. '/'. $estado);
+                $config['total_rows'] = $this->s->count_all($filtro, $id, urldecode($estado));
+                $config['uri_segment'] = 6;
+                $this->pagination->initialize($config);
+                $data['pagination'] = $this->pagination->create_links();
+
+                // generar tabla
+                $this->load->library('table');
+                $this->table->set_empty('&nbsp;');
+                $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
+                $this->table->set_template($tmpl);
+                $this->table->set_heading('Núm', 'Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', array('data' => 'E-mail', 'class' => 'hidden-phone'), '','');
+                foreach ($sucursales as $sucursal) {
+                    $this->table->add_row(
+                            $sucursal->numero, 
+                            $sucursal->nombre,
+                            $sucursal->poblacion,
+                            $sucursal->municipio,
+                            $sucursal->estado,
+                            $sucursal->telefono,
+                            array('data' => $sucursal->email, 'class' => 'hidden-phone'),
+                            array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
+                            array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
+                            array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                    );
+                }
+
+                $data['table'] = $this->table->generate();
+                $data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
             }
-
-            $data['table'] = $this->table->generate();
-            $data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
         }
         
         $this->load->view('ventas/clientes/sucursales_lista', $data);

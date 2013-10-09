@@ -12,7 +12,7 @@ class Sucursal extends CI_Model {
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
      */
-    function count_all( $filtro = NULL, $id_cliente = NULL ) {
+    function count_all( $filtro = NULL, $id_cliente = NULL, $estado = NULL ) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
@@ -28,6 +28,9 @@ class Sucursal extends CI_Model {
         }
         if(!empty($id_cliente)){
             $this->db->where('id_cliente', $id_cliente);
+        }
+        if(!empty($estado)){
+            $this->db->like('estado', $estado);
         }
         $query = $this->db->get($this->tbl);
         return $query->num_rows();
@@ -44,7 +47,7 @@ class Sucursal extends CI_Model {
     /**
     * Cantidad de registros por pagina
     */
-    function get_paged_list($limit = null, $offset = 0, $filtro = null, $id_cliente = null) {
+    function get_paged_list($limit = null, $offset = 0, $filtro = null, $id_cliente = null, $estado = null) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
@@ -60,6 +63,9 @@ class Sucursal extends CI_Model {
         }
         if(!empty($id_cliente)){
             $this->db->where('id_cliente', $id_cliente);
+        }
+        if(!empty($estado)){
+            $this->db->like('estado', $estado);
         }
         $this->db->order_by('nombre','asc');
         return $this->db->get($this->tbl, $limit, $offset);
