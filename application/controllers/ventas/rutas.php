@@ -92,13 +92,8 @@ class Rutas extends CI_Controller {
     	$data['action'] = site_url($this->folder.$this->clase.'rutas_editar') . '/' . $id;
     	 
     	if ( ($datos = $this->input->post()) ) {
-            if($this->r->numero_disponible($datos['numero'])){
-    		$this->r->update($id, $datos);
-    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
-            }else{
-                $data['datos'] = (object)$datos;
-                $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Error: el número de ruta ya existe!</div>';
-            }
+            $this->r->update($id, $datos);
+            $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
     	}
 
     	$data['datos'] = $this->r->get_by_id($id)->row();
