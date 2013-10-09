@@ -9,7 +9,7 @@
     <div class="control-group">
         <label class="control-label hidden-phone">Cliente</label>
         <div class="controls">
-            <select id="id_cliente" class="span4">
+            <select id="id_cliente">
             <option value="0">Selecciona un cliente...</option>
             <?php
             foreach($clientes as $c){ ?>
