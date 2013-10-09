@@ -63,7 +63,7 @@ if(isset($pedido)){
                 }
                 ?>
             </address>
-            <button class="btn btn-small">Editar</button>
+<!--            <button class="btn btn-small">Editar</button>-->
         </div>
         <div class="span3">
             <address id="datos_sucursal">
@@ -81,7 +81,7 @@ if(isset($pedido)){
                 }
                 ?>
             </address>
-            <button class="btn btn-small">Editar</button>
+<!--            <button class="btn btn-small">Editar</button>-->
         </div>
         <div class="span3">
             <address id="datos_contacto">
@@ -99,7 +99,7 @@ if(isset($pedido)){
                 }
                 ?>
             </address>
-            <button class="btn btn-small">Editar</button>
+<!--            <button class="btn btn-small">Editar</button>-->
         </div>
     </form>
 </div>
