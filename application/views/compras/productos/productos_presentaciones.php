@@ -49,13 +49,13 @@
     <div class="control-group">
         <label class="control-label" for="sku">SKU</label>
         <div class="controls">
-            <input type="text" name="sku" id="sku" class="required" placeholder="SKU" <?php if(empty($presentacion)) echo "readonly"; ?>/>
+            <input type="text" name="sku" id="sku" placeholder="SKU" <?php if(empty($presentacion)) echo "readonly"; ?>/>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="peso">Peso</label>
         <div class="controls">
-            <input type="text" name="peso" id="peso" class="required" placeholder="Peso" <?php if(empty($presentacion)) echo "readonly"; ?>/>
+            <input type="text" name="peso" id="peso" placeholder="Peso" <?php if(empty($presentacion)) echo "readonly"; ?>/>
         </div>
     </div>
     <div class="control-group">
