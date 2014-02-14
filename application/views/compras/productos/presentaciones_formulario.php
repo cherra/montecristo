@@ -14,6 +14,12 @@
         </div>
       </div>
       <div class="control-group">
+        <label class="control-label hidden-phone" for="codigo">Código</label>
+        <div class="controls">
+          <input type="text" name="codigo" id="codigo" class="required" placeholder="Código" value="<?php echo (isset($datos->codigo) ? $datos->codigo : ''); ?>">
+        </div>
+      </div>
+      <div class="control-group">
         <div class="controls">
           <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
