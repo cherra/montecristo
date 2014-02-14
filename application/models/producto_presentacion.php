@@ -62,8 +62,9 @@ class Producto_presentacion extends CI_Model {
      * Obtener las presentaciones asignadas a un producto
      */
     function get_by_producto( $id ){
-        $this->db->select('pr.*, pp.peso, pp.sku, pp.codigo, pp.id AS id_producto_presentacion');
+        $this->db->select('pr.*, pp.peso, pp.sku, CONCAT(p.codigo,pr.codigo) AS codigo, pp.id AS id_producto_presentacion', FALSE);
         $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id');
+        $this->db->join('Productos p', 'pp.id_producto = p.id');
         $this->db->where('pp.id_producto', $id);
         $this->db->order_by('pr.nombre','asc');
         return $this->db->get($this->tbl.' pp');
@@ -127,10 +128,14 @@ class Producto_presentacion extends CI_Model {
      * Valida la disponibilidad de un SKU
      */
     function sku_disponible( $sku ){
-        $this->db->where('sku', $sku);
-        $query = $this->db->get($this->tbl);
-        if($query->num_rows() > 0){
-            return FALSE;
+        if(strlen($sku) > 0){
+            $this->db->where('sku', $sku);
+            $query = $this->db->get($this->tbl);
+            if($query->num_rows() > 0){
+                return FALSE;
+            }else{
+                return TRUE;
+            }
         }else{
             return TRUE;
         }
