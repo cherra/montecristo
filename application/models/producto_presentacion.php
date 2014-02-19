@@ -54,8 +54,11 @@ class Producto_presentacion extends CI_Model {
     * Obtener por id
     */
     function get_by_id($id) {
-        $this->db->where('id', $id);
-        return $this->db->get($this->tbl);
+        $this->db->select('pp.id_producto, pp.id_presentacion, pp.sku, pp.peso, CONCAT(p.codigo,pr.codigo) AS codigo', FALSE);
+        $this->db->join('Productos p','pp.id_producto = p.id');
+        $this->db->join('Presentaciones pr','pp.id_presentacion = pr.id');
+        $this->db->where('pp.id', $id);
+        return $this->db->get($this->tbl.' pp');
     }
     
     /*
