@@ -92,12 +92,13 @@ class Productos extends CI_Controller{
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Nombre', 'Presentación', 'SKU', 'Categoría');
+    	$this->table->set_heading('Nombre', 'Presentación', 'Código', 'SKU', 'Categoría');
     	foreach ($datos as $d) {
             $categoria = $this->c->get_by_id($d->id_categoria)->row();
             $this->table->add_row(
                     $d->nombre,
                     $d->presentacion,
+                    $d->codigo,
                     $d->sku,
                     $categoria->nombre
             );

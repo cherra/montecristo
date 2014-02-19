@@ -93,7 +93,7 @@ class Productos extends CI_Controller{
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Nombre', 'Presentación', 'SKU', 'Stock', 'Stock V.', 'Categoría');
+    	$this->table->set_heading('Nombre', 'Presentación', 'Código', 'SKU', 'Stock', 'Stock V.', 'Categoría');
     	foreach ($datos as $d) {
             $categoria = $this->c->get_by_id($d->id_categoria)->row();
             $stock = $this->st->get_real_by_producto($d->id)->row();
@@ -101,6 +101,7 @@ class Productos extends CI_Controller{
             $this->table->add_row(
                     $d->nombre,
                     $d->presentacion,
+                    $d->codigo,
                     $d->sku,
                     array('data' => $stock->stock, 'style' => 'text-align: right;'),
                     array('data' => $stock_v->stock, 'style' => 'text-align: right;'),
