@@ -43,7 +43,7 @@ class Cliente_presentacion extends CI_Model {
     function get_paged_list($limit = null, $offset = 0, $filtro = null, $id = NULL) {
         $this->db->select('IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto, 
             IF(LENGTH(cp.presentacion) > 0,cp.presentacion, pr.nombre) AS presentacion, 
-            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo, 
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, CONCAT(p.codigo, pr.codigo)) AS codigo, 
             IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku, 
             pp.id AS id_producto_presentacion, 
             cp.id,
