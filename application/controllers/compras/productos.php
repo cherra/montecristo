@@ -199,7 +199,7 @@ class Productos extends CI_Controller{
         $this->load->model('presentacion','pr');
         $this->load->model('producto_presentacion', 'pp');
         
-        $data['titulo'] = 'Prdoductos <small>Presentaciones</small>';
+        $data['titulo'] = 'Productos <small>Presentaciones</small>';
         $data['link_back'] = anchor('compras/productos/index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = $this->session->flashdata('mensaje');
         $data['action'] = site_url('compras/productos/productos_add_presentacion');
