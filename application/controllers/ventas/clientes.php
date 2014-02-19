@@ -410,7 +410,10 @@ class Clientes extends CI_Controller{
         $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
         
         $data['titulo'] = 'Contactos <small>Registro nuevo</small>';
-        $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        if(empty($origen))
+            $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. trim($data['sucursal']->estado).'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        elseif($origen == 'pedido')
+            $data['link_back'] = anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
         $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$origen;
 	
