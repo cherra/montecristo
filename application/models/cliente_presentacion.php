@@ -96,6 +96,7 @@ class Cliente_presentacion extends CI_Model {
             foreach($filtro as $f){
                 $this->db->or_like('cp.producto',$f);
                 $this->db->or_like('p.nombre',$f);
+                $this->db->or_like('p.codigo',$f);
             }
         }
         $this->db->group_by('p.id');
@@ -110,7 +111,7 @@ class Cliente_presentacion extends CI_Model {
             cp.id,
             pp.id AS id_producto_presentacion,
             MAX(pre.precio) AS precio,
-            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo,
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, CONCAT(p.codigo, pr.codigo)) AS codigo,
             IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto,
             IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');

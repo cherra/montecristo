@@ -500,7 +500,7 @@ $(document).ready(function(){
                 $('#id_producto_presentacion').val(datos.id_producto_presentacion);  // Se guarda el id de la presentación
                 /*$('#codigo').val(datos.codigo);
                 $('#nombre').val(datos.nombre);*/
-                $('#comentarios').focus();
+                $('#comentarios').removeAttr('disabled').focus();
             }
         });
     });
@@ -546,7 +546,7 @@ $(document).ready(function(){
             $('#producto').val('');
             $('#presentacion').html('').attr('disabled',true);
             $('#precio').val('');
-            $('#comentarios').val('');
+            $('#comentarios').val('').attr('disabled',true);
             $('#cantidad').val('');
             $('#id_producto_presentacion').val('');
             
@@ -585,7 +585,7 @@ $(document).ready(function(){
                 $('#presentacion').removeAttr('disabled');
                 $('#presentacion').val($(this).attr('id_producto_presentacion'));
                 $('#precio').val($(this).attr('precio'));
-                $('#comentarios').val($(this).attr('observaciones'));
+                $('#comentarios').val($(this).attr('observaciones')).removeAttr('disabled');
             }
             $("#cantidad").focus();
         }
