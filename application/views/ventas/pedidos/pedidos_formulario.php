@@ -424,8 +424,13 @@ $(document).ready(function(){
             arreglo = [];
             var datos;
             var id_sucursal = $('#id_sucursal').val();
+            var objeto = new Object();
             $.get('<?php echo site_url('ventas/clientes/get_contactos'); ?>', { filtro: request.term, id_sucursal: id_sucursal, limit: 10 }, function(data) {
                 datos = JSON.parse(data);
+                objeto.label = "Nuevo...";
+                objeto.value = "";
+                objeto.id = "nuevo";
+                arreglo.push(objeto);
                 // Se almacena el resultado en un array para devolverlo al "autocomplete"
                 if (datos !== false) {
                     $.each(datos, function(i, object) {

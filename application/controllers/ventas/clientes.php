@@ -398,7 +398,7 @@ class Clientes extends CI_Controller{
         $this->load->view('ventas/clientes/contactos_lista', $data);
     }
     
-    public function contactos_agregar( $id_cliente = NULL, $id_sucursal = NULL ) {
+    public function contactos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $origen = NULL ) {
         if (empty($id_cliente) OR empty($id_sucursal)) {
             redirect($this->folder.$this->clase.'contactos');
         }
@@ -412,15 +412,19 @@ class Clientes extends CI_Controller{
         $data['titulo'] = 'Contactos <small>Registro nuevo</small>';
         $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
-        $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal;
+        $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$origen;
 	
         if ( ( $contacto = $this->input->post() ) ) {
             $contacto['id_cliente_sucursal'] = $id_sucursal;
-            if( $this->co->save($contacto) > 0 )
+            if( $this->co->save($contacto) > 0 ){
+                if(!empty($origen) && $origen == 'pedido'){
+                    redirect('ventas/pedidos/pedidos_agregar/'.$id_cliente.'/'.$id_sucursal.'/'.$this->db->insert_id());
+                }
                 $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
-            else
+            }else
                 $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
         }
+        
         $this->load->view('ventas/clientes/contactos_formulario', $data);
     }
     

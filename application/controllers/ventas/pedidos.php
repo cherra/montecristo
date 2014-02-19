@@ -89,6 +89,9 @@ class Pedidos extends CI_Controller {
     }
     
     public function pedidos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
+        if(!empty($id_contacto) && $id_contacto == 'nuevo'){
+            redirect('ventas/clientes/contactos_agregar/'.$id_cliente.'/'.$id_sucursal.'/pedido');
+        }
     	$this->load->model('pedido', 'p');
         $this->load->model('ruta','r');
         $this->load->model('cliente','c');
