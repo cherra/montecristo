@@ -322,6 +322,7 @@ $(document).ready(function(){
     <?php }elseif(empty($contacto)){ ?>
         $('#contacto').focus();
     <?php }else{ ?>
+        $('#observaciones').removeAttr('disabled');
         $('#cantidad').focus();
     <?php } ?>
     // Se anulan los submit de formularios con clase .no-submit
