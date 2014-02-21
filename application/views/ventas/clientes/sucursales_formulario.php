@@ -58,13 +58,13 @@
         <div class="control-group">
             <label class="control-label hidden-phone" for="municipio">Municipio</label>
             <div class="controls">
-              <input type="text" name="municipio" placeholder="Municipio" value="<?php echo (isset($datos->municipio) ? $datos->municipio : ''); ?>">
+              <input type="text" name="municipio" placeholder="Municipio" value="<?php echo (isset($datos->municipio) ? $datos->municipio : ''); ?>" class="required">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label hidden-phone" for="estado">Estado</label>
             <div class="controls">
-              <input type="text" name="estado" placeholder="Estado" value="<?php echo (isset($datos->estado) ? $datos->estado : ''); ?>">
+              <input type="text" name="estado" placeholder="Estado" value="<?php echo (isset($datos->estado) ? $datos->estado : ''); ?>" class="required">
             </div>
         </div>
         <div class="control-group">
