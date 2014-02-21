@@ -115,6 +115,29 @@ class Productos extends CI_Controller{
     	$this->load->view('lista', $data);
     }
     
+    /****************************
+     * Métodos Ajax
+     */
+    
+    public function get_existencia_presentacion( $filtro = NULL ){
+        // La petición debe venir por GET
+        if($this->input->is_ajax_request()){
+            if( ($id_producto_presentacion = $this->input->get('id_producto_presentacion')) ){
+                $this->load->model('stock','st');
+                $query = $this->st->get_virtual_by_presentacion($id_producto_presentacion);
+                
+                if($query->num_rows() > 0){
+                    $stock = $query->row();
+                    echo json_encode($stock);
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
 }
 
 ?>

@@ -130,7 +130,11 @@ if(isset($pedido)){
                 <input type="hidden" id="codigo" />
                 <input type="hidden" id="nombre" />
         </div>
-        <div class="span2">
+        <div class="span1">
+                <label>Stock</label>
+                <p id="stock">0.00</p>
+        </div>
+        <div class="span1">
                 <label for="precio">Precio</label>
                 <input type="text" id="precio" placeholder="Precio" class="input-block-level" readonly>
         </div>
@@ -493,6 +497,20 @@ $(document).ready(function(){
     
     $('#presentacion').change(function(){
         var id_cliente = $('#id_cliente').val();
+        // Se obtiene la existencia virtual
+        $.get('<?php echo site_url('almacenes/productos/get_existencia_presentacion'); ?>', { id_producto_presentacion: $(this).val() }, function(data) {
+            datos = JSON.parse(data);
+            // Se almacena el resultado en un array para devolverlo al "autocomplete"
+            if (datos !== false) {
+                if(datos.stock <= 0)
+                    $('#stock').removeClass('text-info').addClass('text-error');
+                else
+                    $('#stock').removeClass('text-error').addClass('text-info');
+                $('#stock').html(datos.stock);  // Se llena el campo stock
+            }
+        });
+        
+        // Se obtien el precio
         $.get('<?php echo site_url('ventas/clientes/get_precio_presentacion'); ?>', { id_cliente: id_cliente, id_producto_presentacion: $(this).val() }, function(data) {
             datos = JSON.parse(data);
             // Se almacena el resultado en un array para devolverlo al "autocomplete"
