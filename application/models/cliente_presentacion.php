@@ -151,7 +151,7 @@ class Cliente_presentacion extends CI_Model {
         
         $this->db->where('pp.id', $id_producto_presentacion);
         //$this->db->group_by('pr.id');
-        $this->db->having('precio IS NOT NULL');
+        //$this->db->having('precio IS NOT NULL');
         //$this->db->order_by('presentacion','asc');
         return $this->db->get('Productos p');
     }
