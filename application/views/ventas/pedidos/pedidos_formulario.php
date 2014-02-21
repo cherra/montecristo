@@ -132,7 +132,7 @@ if(isset($pedido)){
         </div>
         <div class="span1">
                 <label>Stock</label>
-                <p id="stock">0.00</p>
+                <p id="stock">-</p>
         </div>
         <div class="span1">
                 <label for="precio">Precio</label>
@@ -293,6 +293,23 @@ function get_presentaciones( id_producto, id_producto_presentacion ){
             });
             $('#presentacion').html(select);
         }
+    });
+}
+
+function get_stock_virtual(id_producto_presentacion){
+    var datos;
+    $.get('<?php echo site_url('almacenes/productos/get_existencia_presentacion'); ?>', { id_producto_presentacion: id_producto_presentacion }, function(data) {
+        datos = JSON.parse(data);
+        // Se almacena el resultado en un array para devolverlo al "autocomplete"
+        if(datos !== false){
+            if(datos.stock <= 0)
+                $('#stock').removeClass('text-info').addClass('text-error');
+            else
+                $('#stock').removeClass('text-error').addClass('text-info');
+            console.log('Resultado de obtener el stock: '+datos.stock);
+            $('#stock').html(datos.stock);  // Se llena el campo stock
+        }else
+            $('#stock').html('-');  // Se llena el campo stock
     });
 }
     
@@ -497,18 +514,9 @@ $(document).ready(function(){
     
     $('#presentacion').change(function(){
         var id_cliente = $('#id_cliente').val();
-        // Se obtiene la existencia virtual
-        $.get('<?php echo site_url('almacenes/productos/get_existencia_presentacion'); ?>', { id_producto_presentacion: $(this).val() }, function(data) {
-            datos = JSON.parse(data);
-            // Se almacena el resultado en un array para devolverlo al "autocomplete"
-            if (datos !== false) {
-                if(datos.stock <= 0)
-                    $('#stock').removeClass('text-info').addClass('text-error');
-                else
-                    $('#stock').removeClass('text-error').addClass('text-info');
-                $('#stock').html(datos.stock);  // Se llena el campo stock
-            }
-        });
+        
+        // Se obtiene la existencia virtual   
+        get_stock_virtual($(this).val());     
         
         // Se obtien el precio
         $.get('<?php echo site_url('ventas/clientes/get_precio_presentacion'); ?>', { id_cliente: id_cliente, id_producto_presentacion: $(this).val() }, function(data) {
@@ -567,6 +575,7 @@ $(document).ready(function(){
             $('#precio').val('');
             $('#comentarios').val('').attr('disabled',true);
             $('#cantidad').val('');
+            $('#stock').removeClass('text-info').removeClass('text-error').html('-');
             $('#id_producto_presentacion').val('');
             
             $(this).removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
@@ -584,6 +593,7 @@ $(document).ready(function(){
                 $('#producto').val('');
                 $('#precio').val('');
                 $('#presentacion').html('').attr('disabled',true);
+                $('#stock').removeClass('text-info').removeClass('text-error').html('-');
                 $('#comentarios').val('');
                 $('#agregar_producto').removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
             }else{
@@ -603,6 +613,10 @@ $(document).ready(function(){
 
                 $('#presentacion').removeAttr('disabled');
                 $('#presentacion').val($(this).attr('id_producto_presentacion'));
+                
+                // Se obtiene la existencia virtual   
+                get_stock_virtual($(this).attr('id_producto_presentacion')); 
+        
                 $('#precio').val($(this).attr('precio'));
                 $('#comentarios').val($(this).attr('observaciones')).removeAttr('disabled');
             }
