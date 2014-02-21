@@ -157,18 +157,27 @@ class Clientes extends CI_Controller{
     /*
      * Agregar un cliente
      */
-    public function clientes_agregar() {
+    public function clientes_agregar( $origen = NULL ) {
     	$this->load->model('grupo', 'g');
         $this->load->model('cliente','c');
         $this->load->model('lista','l');
         
     	$data['titulo'] = 'Clientes <small>Registro nuevo</small>';
-    	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        if(empty($origen))
+            $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        elseif($origen == 'pedido')
+            $data['link_back'] = anchor('ventas/pedidos/pedidos_agregar/','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
     
-    	$data['action'] = $this->folder.$this->clase.'clientes_agregar';
+    	$data['action'] = $this->folder.$this->clase.'clientes_agregar/'.$origen;
     	if ( ($datos = $this->input->post()) ) {
-    		$this->c->save($datos);
-    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
+            if($this->c->save($datos) > 0){
+                if(!empty($origen) && $origen == 'pedido'){
+                    redirect('ventas/pedidos/pedidos_agregar/'.$this->db->insert_id());
+                }
+                $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro exitoso!</div>';
+            }else{
+                $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
+            }
     	}
         $data['grupos'] = $this->g->get_all()->result();
         $data['listas'] = $this->l->get_all()->result();
@@ -276,7 +285,7 @@ class Clientes extends CI_Controller{
     /*
      * Agregar una sucursal
      */
-    public function sucursales_agregar( $id = NULL ) {
+    public function sucursales_agregar( $id = NULL, $origen = NULL ) {
         if (empty($id)) {
             redirect($this->folder.$this->clase.'sucursales');
         }
@@ -285,15 +294,21 @@ class Clientes extends CI_Controller{
         $this->load->model('sucursal', 's');
         $data['cliente'] = $this->c->get_by_id($id)->row();
         $data['titulo'] = 'Sucursales <small>Registro nuevo</small>';
-        $data['link_back'] = anchor($this->folder.$this->clase.'sucursales/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        if(empty($origen))
+            $data['link_back'] = anchor($this->folder.$this->clase.'sucursales/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        elseif($origen == 'pedido')
+            $data['link_back'] = anchor('ventas/pedidos/pedidos_agregar/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
-        $data['action'] = $this->folder.$this->clase.'sucursales_agregar/' . $id;
+        $data['action'] = $this->folder.$this->clase.'sucursales_agregar/' . $id .'/'.$origen;
 	
         if ( ( $sucursal = $this->input->post() ) ) {
             $sucursal['id_cliente'] = $id;
-            if( $this->s->save($sucursal) > 0 )
+            if( $this->s->save($sucursal) > 0 ){
+                if(!empty($origen) && $origen == 'pedido'){
+                    redirect('ventas/pedidos/pedidos_agregar/'.$id.'/'.$this->db->insert_id());
+                }
                 $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
-            else
+            }else
                 $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
         }
         $this->load->view('ventas/clientes/sucursales_formulario', $data);

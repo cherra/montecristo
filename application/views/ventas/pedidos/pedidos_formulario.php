@@ -370,8 +370,13 @@ $(document).ready(function(){
       source: function(request, response){
             arreglo = [];
             var datos;
+            var objeto = new Object();
             $.get('<?php echo site_url('ventas/clientes/get_clientes'); ?>', { filtro: request.term, limit: 10 }, function(data) {
                 datos = JSON.parse(data);
+                objeto.label = "Nuevo...";
+                objeto.value = "";
+                objeto.id = "nuevo";
+                arreglo.push(objeto);
                 // Se almacena el resultado en un array para devolverlo al "autocomplete"
                 if (datos !== false) {
                     $.each(datos, function(i, object) {
@@ -411,8 +416,13 @@ $(document).ready(function(){
             arreglo = [];
             var datos;
             var id_cliente = $('#id_cliente').val();
+            var objeto = new Object();
             $.get('<?php echo site_url('ventas/clientes/get_sucursales'); ?>', { filtro: request.term, id_cliente: id_cliente, limit: 10 }, function(data) {
                 datos = JSON.parse(data);
+                objeto.label = "Nuevo...";
+                objeto.value = "";
+                objeto.id = "nuevo";
+                arreglo.push(objeto);
                 // Se almacena el resultado en un array para devolverlo al "autocomplete"
                 if (datos !== false) {
                     $.each(datos, function(i, object) {
@@ -513,8 +523,7 @@ $(document).ready(function(){
     });
     
     $('#presentacion').change(function(){
-        var id_cliente = $('#id_cliente').val();
-        
+        var id_cliente = $('#id_cliente').val();        
         // Se obtiene la existencia virtual   
         get_stock_virtual($(this).val());     
         

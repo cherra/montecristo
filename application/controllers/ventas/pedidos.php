@@ -89,6 +89,15 @@ class Pedidos extends CI_Controller {
     }
     
     public function pedidos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
+        // Nuevo cliente
+        if(!empty($id_cliente) && $id_cliente == 'nuevo'){
+            redirect('ventas/clientes/clientes_agregar/pedido');
+        }
+        // Nueva sucursal
+        if(!empty($id_sucursal) && $id_sucursal == 'nuevo'){
+            redirect('ventas/clientes/sucursales_agregar/'.$id_cliente.'/pedido');
+        }
+        // Nuevo contacto
         if(!empty($id_contacto) && $id_contacto == 'nuevo'){
             redirect('ventas/clientes/contactos_agregar/'.$id_cliente.'/'.$id_sucursal.'/pedido');
         }
