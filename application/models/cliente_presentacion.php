@@ -63,7 +63,7 @@ class Cliente_presentacion extends CI_Model {
         }
         //$this->db->where('cp.id_cliente', $id);
         $this->db->having('precio > 0');
-        $this->db->order_by('presentacion, producto','asc');
+        $this->db->order_by('producto, presentacion','asc');
         return $this->db->get('Productos p', $limit, $offset);
     }
     
