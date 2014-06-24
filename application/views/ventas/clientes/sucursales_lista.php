@@ -27,7 +27,7 @@
                 <option value=" ">Selecciona un estado...</option>
                 <?php
                 foreach($estados as $e){ ?>
-                    <option value="<?php echo trim($e->estado); ?>" <?php if(!empty($estado)) echo ($estado == trim($e->estado) ? 'selected' : ''); ?>><?php echo trim($e->estado); ?></option>
+                    <option value="<?php echo urlencode(trim($e->estado)); ?>" <?php if(!empty($estado)) echo ($estado == trim($e->estado) ? 'selected' : ''); ?>><?php echo trim($e->estado); ?></option>
                 <?php
                 }
                 ?>
