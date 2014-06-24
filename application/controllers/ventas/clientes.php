@@ -258,16 +258,16 @@ class Clientes extends CI_Controller{
                 $this->table->set_empty('&nbsp;');
                 $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
                 $this->table->set_template($tmpl);
-                $this->table->set_heading('Núm', 'Nombre', 'Población', 'Municipio', 'Estado', 'Teléfono', array('data' => 'E-mail', 'class' => 'hidden-phone'), '','');
+                $this->table->set_heading('Núm', 'Nombre', 'Municipio', 'Estado', 'Teléfono', 'Teléfono 2', array('data' => 'Teléfono 3', 'class' => 'hidden-phone'), '','');
                 foreach ($sucursales as $sucursal) {
                     $this->table->add_row(
                             $sucursal->numero, 
                             $sucursal->nombre,
-                            $sucursal->poblacion,
                             $sucursal->municipio,
                             $sucursal->estado,
                             $sucursal->telefono,
-                            array('data' => $sucursal->email, 'class' => 'hidden-phone'),
+                            $sucursal->telefono2,
+                            array('data' => $sucursal->telefono3, 'class' => 'hidden-phone'),
                             array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
                             array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$estado.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
                             array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
