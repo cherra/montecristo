@@ -86,6 +86,48 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono3">Teléfono 3</label>
+            <div class="controls">
+              <input type="text" name="telefono3" placeholder="Teléfono 3" value="<?php echo (isset($datos->telefono3) ? $datos->telefono3 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono4">Teléfono 4</label>
+            <div class="controls">
+              <input type="text" name="telefono4" placeholder="Teléfono 4" value="<?php echo (isset($datos->telefono4) ? $datos->telefono4 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono5">Teléfono 5</label>
+            <div class="controls">
+              <input type="text" name="telefono5" placeholder="Teléfono 5" value="<?php echo (isset($datos->telefono5) ? $datos->telefono5 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono6">Teléfono 6</label>
+            <div class="controls">
+              <input type="text" name="telefono6" placeholder="Teléfono 6" value="<?php echo (isset($datos->telefono6) ? $datos->telefono6 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono7">Teléfono 7</label>
+            <div class="controls">
+              <input type="text" name="telefono7" placeholder="Teléfono 7" value="<?php echo (isset($datos->telefono7) ? $datos->telefono7 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono8">Teléfono 8</label>
+            <div class="controls">
+              <input type="text" name="telefono8" placeholder="Teléfono 8" value="<?php echo (isset($datos->telefono8) ? $datos->telefono8 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="telefono9">Teléfono 9</label>
+            <div class="controls">
+              <input type="text" name="telefono9" placeholder="Teléfono 9" value="<?php echo (isset($datos->telefono9) ? $datos->telefono9 : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label hidden-phone" for="email">E-mail</label>
             <div class="controls">
               <input type="text" name="email" placeholder="E-mail" value="<?php echo (isset($datos->email) ? $datos->email : ''); ?>">
