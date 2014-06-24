@@ -1,0 +1,700 @@
+id_cliente,"Num. Tienda",Nombre,Calle,Num.,Colonia,Ciudad,Estado,CP,Teléfono,Teléfono,Teléfono,Fax,Formato
+1,1,"Santo Domingo","Av. Santo Domingo",1800,"Villas de Santo Domingo","San Nicolás de los Garza","Nuevo León",66437,018183299000,Ext5001127,,,Soriana
+1,2,"San Isidro","Blvd. Venustiano Carranza",4826,Doctores,Saltillo,Coahuila,25250,018444160206,018444160296,,018444160362,Soriana
+1,3,Escobedo,"Av. Parque Industrial",201,"Los Girasoles 2o. Sector",Escobedo,"Nuevo León",66050,018183299000,Ext5003126,,Ext5003111,Soriana
+1,4,Oriente,"Blvd. Torreón-Matamoros",5000,"Fracc. La Merced",Torreón,Coahuila,27270,018717212263,018717213750,018717215743,,Soriana
+1,5,Vallarta,"Av. Colón y Bernardo Reyes",S/N,Industrial,Monterrey,"Nuevo León",64000,018183299000,Ext5005126/127,,Ext5005111,Soriana
+1,6,Tecnológico,"Av. Tecnológico",6902,"Fracc. Santa Bárbara",Chihuahua,Chihuahua,31150,016144400031,016144400032,016144400033,,Soriana
+1,7,Contry,"Av. Eugenio Gaza Sada y Alfonso Reyes",S/N,Contry,Monterrey,"Nuevo León",64860,018183299000,Ext5007126/127,,Ext5007111,Soriana
+1,8,Guadalupe,"Av. Benito Juárez",601,"La Huerta",Guadalupe,"Nuevo León",67140,018183299000,Ext5008126/127,,Ext5008111,Soriana
+1,9,"La Fe","Av. Félix Galván esquina con Av. Miguel Alemán",100,"La Fe","San Nicolás de los Garza","Nuevo León",66447,018183299000,Ext5009126/127,,Ext5009111,Soriana
+1,10,Lincoln,"Av. Abraham Lincoln y Gonzalitos",S/N,"Mitras Norte",Monterrey,"Nuevo León",64320,018183299000,Ext5010126/127,,Ext5010111,Soriana
+1,11,"Francisco Coss","Blvd. Francisco Coss",S/N,Centro,Saltillo,Coahuila,25000,018444158808,018444154630,018444154648,018444154690,Soriana
+1,12,"San Nicolás","Av. Alfonso Reyes y Fray Bartolomé de las Casas",601,"El Roble","San Nicolás de los Garza","Nuevo León",66450,018183299000,Ext5012126/127,,018183323837,Soriana
+1,13,Monclova,"Brasil y Huemac",S/N,Anáhuac,Monclova,Coahuila,25750,018666312400,018666312411,018666312503,018666312705,Soriana
+1,14,"San Pedro","Av. Humberto Lobo y Río Guadalquivir",520,"Del Valle","San Pedro Garza García","Nuevo León",66200,018183299000,Ext2226/2218,,Ext2211,Soriana
+1,15,"López Mateos","Perimetral Carlos Amaya",2125,"Partido Iglesias","Cd. Juárez",Chihuahua,32380,016566390374,016566390380,,,Soriana
+1,16,Bugambilias,"Bugambilias y Prolongación Mariano Otero",130-A,Bugambilias,Zapopan,Jalisco,45120,013336129592,013336129593,013336935265,,Soriana
+1,17,Matamoros,"Av. Pedro Cárdenas Gtz.",1900,Victoria,Matamoros,Tamaulipas,87300,018688174538,018688174539,018688173548,018688173548,Soriana
+1,18,Hidalgo,"Blvd. Hidalgo y Fuente de Diana Km. 101",S/N,"Fracc. Las Fuentes",Reynosa,Tamaulipas,88710,018999234771,018999234060,,018999231541,Soriana
+1,19,Reforma,"Blvd. Reforma y 15 de Septiembre",S/N,Campestre,"Nuevo Laredo",Tamaulipas,88278,018677153121,018677151334,018677153301,,Soriana
+1,20,"Santa Catarina","Blvd. Díaz Ordaz",S/N,"La Fama","Santa Catarina","Nuevo León",66350,018183299000,Ext5020126/127,,Ext5020111,Soriana
+1,21,"Piedras Negras","Av. Industrial y Carretera 57",203,"Venustiano Carranza","Piedras Negras",Coahuila,26070,018787832142,018787832022,018787832716,018787831899,Soriana
+1,22,"Linda Vista","Av. Ruiz Cortínez y Gral. Bonifacio Salinas",600,"León XII",Guadalupe,"Nuevo León",67120,018183299000,Ext5022126/127,,Ext5022111,Soriana
+1,23,"Félix U. Gómez","Av. Félix U. Gómez y Av. Los Angeles",1732,"Juana de Arco",Monterrey,"Nuevo León",64510,018183299000,Ext8726/8727,,018183311343,Soriana
+1,24,Cumbres,"Alejandro de Rodas",3102-A,"Cumbres 8tvo. Sector",Monterrey,"Nuevo León",64610,018183299000,Ext2526/2527,,,Soriana
+1,25,Independencia,"Blvd. Independencia Ote.",1100,Centro,Torreón,Coahuila,27000,018717297200,018717297201,018717297202,018717297202,Soriana
+1,26,"San Lorenzo","Paseo Triunfo de la República",5298,"San Lorenzo","Cd. Juárez",Chihuahua,32320,016566294300,016566294304,,016566294305,Soriana
+1,27,"Santa María","Av. Pablo Livas Ote.",7500,"Santa María",Guadalupe,"Nuevo León",67190,018183299000,Ext5027126/127,,Ext5027111,Soriana
+1,28,"Río Nilo","Av. Río Nilo",1000,"Lomas del Nilo",Guadalajara,Jalisco,44860,013338180000,,,013338180002,Soriana
+1,29,Henequén,"Av. de las Torres y Henequén",6975,"Las Dunas","Cd. Juárez",Chihuahua,32650,016566247974,016566248581,016566411636,,Soriana
+1,30,Malecón,"Blvd. Mariano Escobedo Ote.",3002,Tlacuache,León,Guanajuato,37500,014777102900,014777102901,014777102903,014777102906,Soriana
+1,31,"Del Río","Av. Américo Villarreal",136,"Antonio J. Bermúdez",Reynosa,Tamaulipas,67727,018999263208,018999263209,018999263213,,Soriana
+1,32,Jacarandas,"Av. Arboledas",1200,"Fracc. San Miguel",Irapuato,Guanajuato,36510,014626251116,014626251182,,014626251176,Soriana
+1,33,Colón,"Calzada Colón Sur",400,Centro,Torreón,Coahuila,27000,018717590630,018717590632,,,Soriana
+1,34,Centro,"Av. Hidalgo",1550,Centro,Torreón,Coahuila,27000,018717126954,018717122872,,,Soriana
+1,35,"20 de Noviembre","Av. 20 de Noviembre Ote.",209,Centro,Durango,Durango,34000,016188290301,016188290302,016188290303,016188290304,Soriana
+1,36,"Niños Héroes","Av. Niños Héroes",1,Centro,Chihuahua,Chihuahua,31000,016144104960,016144107081,,,Soriana
+1,37,"Gómez Palacio","Av. Victoria y Urrea",S/N,Centro,"Gómez Palacio",Durango,35000,018717373486,018717373487,018717373489,,Soriana
+1,38,Universidad,"Av. Universidad",3500,Magisterial,Chihuahua,Chihuahua,31170,016144391200,016144391201,016144391201,016144391202,Soriana
+1,39,Sanders,"Calz. Eduardo Sander´s",S/N,Barreal,"Cd. Juárez",Chihuahua,32040,016566322549,016566322339,,,Soriana
+1,40,Aguascalientes,"Av. Universidad y Blvd. Aguascalientes",S/N,"Bosques del Prado",Aguascalientes,Aguascalientes,20120,014499120603,014499120363,,014499148489,Soriana
+1,41,Fundadores,"Blvd. Revolución y Calz. Saltillo 400",S/N,"Campestre La Rosita",Torreón,Coahuila,27250,018717325765,018717320730,018717326721,,Soriana
+1,42,"Plaza Juárez","Ejército Nacional y  Av. Tecnológico",2701,"El Marquéz","Cd. Juárez",Chihuahua,32601,016566237867,016566237868,016566237870,,Soriana
+1,43,Constitución,"Blvd. Constitución",1111,Margaritas,Torreón,Coahuila,27130,018717137492,018717137639,018717137765,,Soriana
+1,44,Zacatecas,"Blvd. López Portillo y Calz. García Salinas",1,Fovissste,Zacatecas,Zacatecas,98064,014929231091,014929231089,,014929233357,Soriana
+1,45,Madero,"Av. Domingo Arrieta y Chihuahua",700,"Fraccionamiento Francisco I. Madero",Durango,Durango,34150,016188138670,016188276642,016188276643,,Soriana
+1,46,Delicias,"Calz. Gómez Morín Ote.",S/N,Centro,Delicias,Chihuahua,33000,016394724523,016394724686,016394724533,016394724845,Soriana
+1,47,"Las Fuentes","Calle del Arcángel",20,"La Fuente",Torreón,Coahuila,27280,018717322258,018717219547,,018717630573,Soriana
+1,48,Jardines,"Blvd. Francisco Villa y Magnolia",100,"Jardines de Durango",Durango,Durango,34220,016181434206,016181434208,016181434210,,Soriana
+1,49,"Las Rosas","Blvd. Miguel Alemán",1495,"Las Rosas","Gómez Palacio",Durango,35090,018717373484,018717373479,018717373480,,Soriana
+1,50,Fresnos,"Manuel Herrera",101,"Las Praderas",Apodaca,"Nuevo León",66636,018183299000,Ext5050119,Ext5050120,N/A,Soriana
+1,51,"Las Palmas","Juana B. Tijerina Norte",2033,"Fracc. Las Palmas","Cd. Victoria",Tamaulipas,87140,018343143152,018343143154,018343143157,018343143153,Soriana
+1,52,Pape,"Blvd. Harold Pape",1202,Loma,Monclova,Coahuila,25770,018666339606,018726339608,018726339609,018726339622,Soriana
+1,53,"Las Torres","Av. Lázaro Cárdenas",2801,"Los Rosales",Monterrey,"Nuevo León",64640,018183299000,Ext5053119,Ext5053126,Ext5053111,Soriana
+1,54,"San Agustín","Av. Real de San Agustín",314,"Residencial San Agustín","San Pedro Garza García","Nuevo León",66260,018183299000,Ext5054119,Ext5054126,Ext5054111,Soriana
+1,55,Mirador,"Indiana entre Blvd. Ortiz Mena y Av. Mirador",3300,"Las Águilas",Chihuahua,Chihuahua,31237,016144233573,016144233574,016144233578,016144233576,Soriana
+1,56,Ejército,"Av. Ejército Mexicano y Estadio",1101,Tampico,Tampico,Tamaulipas,89137,018332139447,018332138725,018332178881,018332134554,Soriana
+1,57,Zapopan,"Periférico Norte y Blvd. B. de San Isidro",221-A,"Valle de San Isidro",Zapopan,Jalisco,45130,013333641783,013333641784,013333641785,,Soriana
+1,58,"Lauro Villar","Av. Lauro Villar y Acción Cívica",1203,"Las Arboledas",Matamoros,Tamaulipas,87448,018688143584,018688143585,018688143586,,Soriana
+1,59,"La Puerta","Calle Urano",2620,"Puerta del Sol","Santa Catarina","Nuevo León",66367,018183299000,Ext5059119,Ext5059126,Ext5059111,Soriana
+1,60,Fresnillo,"Av. Plateros y Paseo del Mineral (antes Libramiento de tránsito pesado)",429,"Barrio Alto",Fresnillo,Zacatecas,99070,014939328642,,,014939328577,Soriana
+1,61,Cordilleras,"Av. Manuel J. Clouthier y Av. Patria",888,"Jardines de Guadalupe",Zapopan,Jalisco,45050,013336203282,013336202887,,,Soriana
+1,62,Quintana,"Prol. Ezequiel Montes",8,"San Pablo Tecnológico",Querétaro,Queretaro,76130,014422178822,014422175826,,014422175826,Soriana
+1,63,"Santa Cruz","Carretera Monterrey - Reynosa",101,"29 de Julio",Guadalupe,"Nuevo León",65196,018183299000,Ext5063119,Ext5063126,Ext5063111,Soriana
+1,64,Carrizo,Belden,7435,"Buena Vista","Nuevo Laredo",Tamaulipas,88120,018677100506,018687100645,,018687100460,Soriana
+1,65,Lourdes,"Blvd. Antonio Cárdenas y Luis Echeverría",999,Lourdes,Saltillo,Coahuila,25090,018444171148,018444172148,,,Soriana
+1,66,Estanzuela,"Carretera Nacional y Calle la Estanzuela",7877,"La Estanzuela",Monterrey,"Nuevo León",64988,018183299000,Ext5066119,Ext5066126,Ext5066111,Soriana
+1,67,Mante,"Calle Vicente Guerrero y Av. Libertad Ote.",900,Centro,"Cd. Mante",Tamaulipas,89800,018312340165,018312340166,018312340167,018312328150,Soriana
+1,68,Acuña,"Libramiento José de las Fuentes Rodríguez y Libramiento Emilio Mendoza",595,"Fraccionamiento La Amistad",Acuña,Coahuila,26200,018777722062,018777725930,,018777726019,Soriana
+1,69,"El Paseo","Salvador Nava esquina con Rutilio Torres",435,"Fraccionamiento Central","San Luis Potosí","San Luis Potosí",78399,014448187151,014448187159,,014448187199,Soriana
+1,70,Porvenir,"Av. Manuel J. Cloutier esq. con Manuel Gómez Morín",450,"Río Grande","Cd. Juárez",Chihuahua,32574,016566821602,016566821628,,,Soriana
+1,71,"Río Bravo","Av. Francisco I. Madero Pte. entre 27 de Febrero y Ferrocarril",1160,"Del Valle","Río Bravo",Tamaulipas,88950,018999348328,018999348330,018999348331,018999348329,Soriana
+1,72,"El Palmar","Av. Universidad y Diagonal Las Palmas Nte.",101,"Paraíso Coatzacoalcos",Coatzacoalcos,Veracruz,96520,019212186452,,,,Soriana
+1,73,"Boca del Río","Av. Adolfo Ruiz Cortinez y Av. Juan Pablo II",1350,"Frac. Sutsem",Veracruz,Veracruz,94299,012299226970,012299226971,012299226972,012299226976,Soriana
+1,74,Tlaxcala,"Carretera Tlaxcala a Ocotlán y Calle Volcanes",20,Ocotlán,Tlaxcala,Tlaxcala,90100,012464661080,012464661081,,,Soriana
+1,75,Tamatán,"Calzada General Luis Caballero Esq. Río Corona",250,Zozaya,"Cd. Victoria",Tamaulipas,87070,018343153561,018343153562,018343153563,018343153567,Soriana
+1,76,Aeropuerto,"Carretera a Tampico Mante",6905,"Francisco Javier Mina",Tampico,Tamaulipas,89318,018332283912,018332284029,,018332285196,Soriana
+1,77,"Fuentes Mares","José Fuentes Mares esq. Independencia",300,"Santa Rosa 10° sector",Chihuahua,Chihuahua,31050,016144590080,,,,Soriana
+1,78,Satélite,"Div. Miguel Cervantes Saavedra y Torres Landa",1701,"La Piscina",León,Guanajuato,37430,014777784241,014777784242,,,Soriana
+1,79,Uruapan,"Paseo de la Revolución y Camino de la Fundación",3753,"Emiliano Zapata",Uruapan,Michoacan,60180,014525271015,014525270272,014525270303,014525270393,Soriana
+1,80,Colima,"Ave. María Ahumada de Gómez y Enrique Corona Morfin",39,Campestre,Colima,Colima,28988,013123111276,013123111277,,013123111280,Soriana
+1,81,"Poza Rica","Ave. Puebla y Calle Alamo",502,"Palma Sola","Poza Rica",Veracruz,93320,017828263390,,,,Soriana
+1,82,Culiacán,"Ave. Emiliano Zapata y Manuel J. Cloutier",S/N,"El Vallado",Culiacán,Sinaloa,80180,016677148626,016677148627,,016677148610,Soriana
+1,83,Villahermosa,"Periférico Carlos Pellicer Cámara esq. Usumacinta",205-A,"Plutarco Elías Calles",Villahermosa,Tabasco,86090,019933143805,019933149951,019933144162,019933123997,Soriana
+1,84,Estadio,"Calzada Independencia Norte y Eutimio Pinzón",2955,"Rancho Nuevo",Guadalajara,Jalisco,44240,013331680267,013331682802,,,Soriana
+1,85,Zaragoza,"Blvd. Oscar Flores esq. Blvd. Zaragoza",6751,"Nuevo Hipódromo","Cd. Juárez",Chihuahua,32674,016566203249,016566203695,016566203752,,Soriana
+1,86,Pachuca,"Av. Luis Donaldo Colosio y Blvd. Nuevo Hidalgo",1501,"Venta Prieta",Pachuca,Hidalgo,42080,017717130215,017717130831,017717130225,017717144650,Soriana
+1,87,Capu,"Héroes 5 de Mayo",1101,"Santa María",Puebla,Puebla,72080,012222239300,012222239301,,012222239302,Soriana
+1,88,"Las Quintas","Av. López Mateos y Antiguo camino a San Rafael",S/N,"Las Quintas",Guadalupe,"Nuevo León",67167,018183299000,Ext5088119,Ext5088126/127,Ext59088111,Soriana
+1,89,Saucito,"Av. de la Juventud",6300,"El Saucito",Chihuahua,Chihuahua,31165,016144395900,,,016144395902,Soriana
+1,90,Iglesias,"Av. Ejército Nacional",5230,"Benito Juárez","Cd. Juárez",Chihuahua,32390,016566295700,016566295702,016566295705,016566295700,Soriana
+1,91,Bachoco,"Blvd. Morelos",432,Bachoco,Hermosillo,Sonora,83148,016622593100,016622593110,,016622593102,Soriana
+1,92,Solidaridad,"Luis Donaldo Colosio",1900,"Barrio de San Luis",Escobedo,"Nuevo León",66050,018183299000,Ext5092119,Ext5092126/127,Ext5092111,Soriana
+1,93,Hamburgo,"Periférico Torreón – Gómez Km. 6.7",501,"Fraccionamiento Residencial Hamburgo","Gómez Palacio",Durango,35010,018717373574,018717373575,018717373576,,Soriana
+1,94,Ribereña,"Av. José Zertuche",1100,Contry,Reynosa,Tamaulipas,88620,018999249613,018999240872,,,Soriana
+1,95,Mazatlán,"Ave. Insurgentes Esq. con Carr. Internacional Nte.",1198,"Villa del Estero",Mazatlán,Sinaloa,82156,016699832813,016699832916,,016699832429,Soriana
+1,96,Torrecillas,"Ave. Municipio Libre y Calle Nayarit",555,"Infonavit Loma Bella",Puebla,Puebla,72490,012222239310,012223991326,012223991329,012222239311,Soriana
+1,97,Juventud,"Av. de la Juventud",401,"Paseos de Chihuahua",Chihuahua,Chihuahua,31119,016144832757,016144832758,016144832759,,Soriana
+1,98,Encinas,"Periférico Poniente y Blvd. Jesús García Morales",2,"El Llano",Hermosillo,Sonora,83210,016622629036,016622629037,016622629038,016622593113,Soriana
+1,99,"Bella Vista","Blvd. Rodolfo Elías Calles y Calle Jesús García París",S/N,París,Obregon,Sonora,85130,016444124524,016444124525,016444124526,016444124529,Soriana
+1,100,Cigarrera,"Ave. Los Insurgentes entre Ave. Gaviota y 12 de Octubre",368,"Los Llanitos",Tepic,Nayarit,63170,013112100321,013112100325,013112100327,,Soriana
+1,101,,,,,,Morelos,,,,,,Soriana
+1,102,Celaya,"Av. 12 de Octubre",200,"Fraccionamiento Celaya",Celaya,Guanajuato,38020,014616092504,014616092505,014616092506,014616092507,Soriana
+1,103,"Los Pinos","Ave. Rafael Cuervo entre Playa Sola y Playa del Rey",60,"Playa Linda",Veracruz,Veracruz,91810,012299249090,,,,Soriana
+1,104,"San Joaquín","Av. Periférico Carlos Pellicer y Av. Reforma",S/N,"18 de Marzo",Villahermosa,Tabasco,86140,019933800361,019933800362,,019933800393,Soriana
+1,105,Oaxaca,"Ave. Jorge L. Tamayo Castillejo y Ave. Universidad",500,"Ex-Hacienda Candiani",Oaxaca,Oaxaca,68000,019515060001,019515060003,019515060004,,Soriana
+1,106,Maravillas,"Blvd. Juan Alonso de Torres",3702,"Fraccionamiento San Cayetano de Medina",León,Guanajuato,37235,014777803031,014777803032,014777803033,014777803029,Soriana
+1,107,Manzanillo,"Blvd. Miguel de la Madrid y Paseo de las Gaviotas",1580,"Valle de las Garzas",Manzanillo,Colima,28869,013143339053,013143340571,,013143340185,Soriana
+1,108,Mochis,"Av. Independencia entre Prol. Veracruz y Zacatecas",1949,"Rubén Jaramillo","Los Mochis",Sinaloa,81230,016688126144,016688127622,,,Soriana
+1,109,Laguneta,"Prol. González y Av. Leyes de Reforma",2035,"Parque Industrial",Matamoros,Tamaulipas,87479,018688126203,018688126204,018688126206,018688126207,Soriana
+1,110,Canek,"Ave. Jacinto Canek y Calle 128",277,"Fracc. Yucal peten",Mérida,Yucatán,97248,019999457530,019999457531,019999457532,,Soriana
+1,111,Huinalá,"Carretera a Huinalá y Av.Teléfonos",1300,"Hacienda de Huinalá",Apodaca,"Nuevo León",66648,018183299000,Ext5111119,Ext5111126/127,Ext5111111,Soriana
+1,112,Progreso,"Blvd. Progreso y Blvd. Solidaridad",663,Solidaridad,Hermosillo,Sonora,83117,016622645805,016622645806,,,Soriana
+1,113,Cimatario,"Carretera a Huimilpam",1001,"Plaza del Sol 3era. Sección",Querétaro,Queretaro,76040,014422229573,014422229557,014422229554,,Soriana
+1,114,Poliforum,"Blvd. Ángel Albino Corso y Blvd. Andrés Serra Rojas",250,"El Retiro","Tuxtla Gutiérrez",Chiapas,29040,019616141911,019616142574,,,Soriana
+1,115,Triana,"Blvd. Rodríguez Triana entre calle Vasconcelos y Clzda. División del Norte",950,"Las Misiones",Torreón,Coahuila,27276,018717311319,018717311666,018717311554,,Soriana
+1,116,"Sendero Escobedo","Av. Sendero Norte y Prol. Alfonso Reyes",S/N,"Bella Vista",Escobedo,"Nuevo León",66428,018183299000,Ext5116126/127,,Ext5116111,Soriana
+1,117,"La Paz","Blvd. Forjadores de SudCalifornia esq. Av. Luis Donaldo Colosio",S/N,"Ex Base Aérea","La Paz","Baja California Sur",23000,016121214771,016121214772,016121214773,,Soriana
+1,118,"San Juan del Río","Av. Moctezuma y Mercedes Camacho",268,"San Cayetano","San Juan del Río",Queretaro,76807,014272642008,014272642009,,014272642009,Soriana
+1,119,Colosio,"Av. Luis Donaldo Colosio y Pioneros de Rochadale.",610,Provivienda,"Sta. Catarina","Nuevo León",66360,018183299000,Ext5119119,Ext5119126/127,Ext5119111,Soriana
+1,120,"Cd. Del Carmen","Ave. Aviación",S/N,Aviación,"Cd. Del Carmen",Campeche,24190,019383813295,019383813311,019383813312,,Soriana
+1,121,Echeverría,"Blvd. Luis Echeverría",630,,Saltillo,Coahuila,25025,018444105919,018444105621,018444105701,018444111202,Soriana
+1,122,Minatitlán,"Blvd. Ávila Camacho entre Lázaro Cárdenas y Estadio de Beisbol",91,Cuauhtémoc,Minatitlán,Veracruz,96880,019222218841,019222218842,019222218843,019222218845,Soriana
+1,123,Salamanca,"Av. Obregón Sur cruz c/ Domingo Lizarde.",S/N,"El Edén",Salamanca,Guanajuato,36780,014646417217,014646417221,014646417222,,MercadoSoriana
+1,124,Navojoa,"Carretera Los Mochis - Navojoa",S/N,Juarez,Navojoa,Sonora,85870,016424211710,016424212831,,,MercadoSoriana
+1,125,Barancos,"Alma Schillerde de Z y Av. Benjamín Hill",5720,"Infonavit Barrancos",Culiacan,Sinaloa,80190,016677109341,016677109343,016677109344,,Soriana
+1,126,Cancún,"Av. Andrés Quintana Roo y Av. Kabah",S/N,Kabah,Cancún,"Quintana Roo",77500,019981931480,,,,Soriana
+1,127,"Los Cabos","Carretera Todos Los Santos y Calle Guajitos",S/N,"Brisas del Pacífico","Los Cabos","Baja California Sur",23473,016241051290,016241051291,016241051292,,Soriana
+1,128,Bosques,"Ave. Xonacatepec y Ave. Puebla",178,"Bosques de San Sebastian",Puebla,Puebla,72310,012222187214,012222187215,012222187216,,MercadoSoriana
+1,129,"Santa Rosa","Carretera Tepic - Culiacán y Ave. Santa Rosa",S/N,,Mazatlán,Sinaloa,82165,016699404446,016699404447,016699404448,,Soriana
+1,130,Guaymas,"Blvd. Benito Juaréz y Calle Guadalupe",S/N,,Guaymas,Sonora,85440,016222224022,016222224036,016222224096,,MercadoSoriana
+1,131,"Sendero Las Torres","Av. Las Torres",2111,"Valle de Bravo","Cd. Juárez",Chihuahua,32574,016566906720,016566906722,016566906731,,Soriana
+1,132,"Topo Chico","C. Bartolomé Mitre y Ave. La Esperanza",S/N,"Libertadores de América",Monterrey,"Nuevo León",64215,018183299000,Ext5132119,Ext5132126/127,Ext5132111,Soriana
+1,133,"San Jerónimo","C. José Garza Ramírez y Rogelio Cantú Gómez",S/N,"San Jerónimo",Monterrey,"Nuevo León",64630,018183299000,Ext5133119,Ext5133126/127,Ext5133111,Soriana
+1,134,Cárdenas,"Periférico CarlosMolina y Av. Framboyanes",589,"Ranchería Paso y Plaza Cárdenas",Cárdenas,Tabasco,86540,019373227504,019373227506,019373227507,Ext5134119120,MercadoSoriana
+1,135,Comalcalco,"Carr. Federal a Paraíso y Calle Guillermo Prieto",402,"López Mateos",Comalcalco,Tabasco,86630,019333349808,019333349809,019333349810,019333349811,MercadoSoriana
+1,136,Tutelar,"Blvd. Del Minero entre Oaxaca y Guadalajara",602,"Venustiano Carranza",Pachuca,Hidalgo,42030,017711071491,017711071492,017711071493,Ext5136111,MercadoSoriana
+1,137,Tula,"Blvd. Tula-Iturbe esq. Calle Tulipanes",118,Salitre,"Tula de Allende",Hidalgo,42800,017731002016,017731002019,017731002020,017731002011,MercadoSoriana
+1,138,Tepatitlán,"Blvd. Lic. Anacleto González Nte. esq. Calle Zaragoza",27,"San Miguel",Tepatitlán,Jalisco,47660,013787825971,013787825972,013787825828,Ext5138126/127,MercadoSoriana
+1,139,"La Paz","Av. de la Paz",220,"Barrio de Santiago","San Luis Potosí","San Luis Potosí",78000,014448127703,014448124502,014448128855,,MercadoSoriana
+1,140,Nogales,"Blvd. Luis Donaldo Colosio M. Entre Blvd. EL Greco y Calle Hidra",2700,"Unidad Deportiva",Nogales,Sonora,84065,016313149864,016313149866,016313149867,,Soriana
+1,141,"Cd. Valles","Carr. México Laredo esq. Blvd. Antonio Esquer",2200,"Fraccionamiento Lomas Yuejaten","Cd. Valles","San Luis Potosí",79095,014813756403,014813756404,014813756405,,MercadoSoriana
+1,142,Parral,"Blvd. Niños Héroes Km 1015",S/N,"Carretera a Santa Bárbara",Parral,Chihuahua,33840,016275255107,016275255108,016275255109,,MercadoSoriana
+1,143,Ocotlán,"Av. Fco. Zarco entre Cd. Victoria y Sor Juana Inés de la Cruz",S/N,"San Vicente",Ocotlán,Jalisco,47850,013929232915,013929232919,013929232955,Ext5143126127,MercadoSoriana
+1,144,Pitillal,"Av. Fco. Villa entre José González y Río el Pitillal",1642,"Centro Pitillal","Puerto Vallarta",Jalisco,48318,013222930400,013222930432,,Ext5144126,Soriana
+1,145,Orizaba,"Ave. Oriente 31 entre Norte 4 y Norte 6",263,Centro,Orizaba,Veracruz,94300,012727215600,012727215601,012727215602,Ext5145126,MercadoSoriana
+1,146,"San José del Cabo","Carretera Transpeninsular km.34.5 esq. con Ave. Las Palmas",S/N,Guaymitas,"San José del Cabo","Baja California Sur",23407,016241426214,016241426228,016241426103,Ext5146126127,Soriana
+1,147,"Sendero Periférico","Libramiento Sur Reynosa, entre Av. De los Ebanos y C.Hidalgo",S/N,"Fracc. Lomas del Real Jarachina",Reynosa,Tamaulipas,88720,018999468510,018999468511,018999468512,Ext5147126127,Soriana
+1,148,Zamora,"Av. Francisco I. Madero esquina con Río Bravo",2001,"Río Nuevo",Zamora,Michoacan,59680,013515153269,013515154538,013515157129,Ext5148126/127,MercadoSoriana
+1,149,"San Andrés Tuxlta","Carretera Costera del Golfo",934,"3 de Mayo","San Andrés Tuxtla",Veracruz,95780,012949428088,012949428089,012949428090,Ext5149126/127,MercadoSoriana
+1,150,Chapala,"Av. Francisco I. Madero",699,"Las Redes",Chapala,Jalisco,45900,013767652921,013767652147,013767655389,Ext5150126127,MercadoSoriana
+1,151,Matehuala,"Gral. Mariano Matamoros esq. Carretera 57",S/N,Centro,Matehuala,"San Luis Potosí",78700,014888829110,014888829111,014888829112,014888829109,MercadoSoriana
+1,152,Linares,"Hidalgo pte.",960,Centro,Linares,"Nuevo León",67700,018212144822,018183299000,,N/A,MercadoSoriana
+1,153,"La Barca","Adolfo Ruiz Cortines",750,"La Joyita","La Barca",Jalisco,47910,013939351554,013939354661,013939354665,,MercadoSoriana
+1,154,Libramiento,Blvd.Independencia,1510,Zaragoza,"Cd. Juárez",Chihuahua,32599,016561713880,016561713881,016561713882,,Soriana
+1,155,"Dolores Hidalgo","Calzada Mariano Balleza",40,"Mariano Balleza","Dolores Hidalgo",Guanajuato,37800,014181827161,014181827162,014181827163,,MercadoSoriana
+1,156,"Nueva Rosita","Profesor Héctor Hernández",1002-A,"11 de Julio","Nueva Rosita",Coahuila,26870,018616146993,018616146078,,018616147160,MercadoSoriana
+1,157,Sahuayo,"Blvd. Lázaro Cárdenas Cruz con San Rafael",745,"San Rafael",Sahuayo,Michoacan,69000,013535318762,013535318763,013535318765,Ext5157119,MercadoSoriana
+1,158,Cuauhtémoc,"Blvd. Fernando Baeza y Río Concho",2835,"Barrio Lerdo",Cuauhtémoc,Chihuahua,31520,016255715018,016255715019,016255715020,,MercadoSoriana
+1,159,Altamira,"Blvd. Al Puerto Industrial esq.Vía de Ferrocarril Mty-Tampico",105,Centro,Altamira,Tamaulipas,89600,018331620092,018331620093,,,MercadoSoriana
+1,160,"Cd. Guzmán","Calzada Francisco I. Madero y Carranza",570,Centro,"Cd. Guzmán",Jalisco,49000,013414105991,013414105992,013414105993,5160111,MercadoSoriana
+1,161,"Valle Soleado","Carretera a Dulces Nombres",400,"Valle Soleado",Guadalupe,"Nuevo León",64117,018183299000,Ext5161119,Ext5161126,Ext5161111,Soriana
+1,162,"Chihuahua 2000","Av. Los Arcos de la Estrella entre Portal de Ebano Av. Los Arcos Nte.",17101,"Fraccionamiento Los Arcos",Chihuahua,Chihuahua,31137,016144935127,016144935128,016144935129,,Soriana
+1,163,Coacalco,"Ave. Vial Lopez Portillo esq. 16 de Septiembre",34,"San Francisco, Coacalco",Coacalco,"Edo. de México",55700,015521597603,015521597604,,,MercadoSoriana
+1,164,"Cd. Azteca","Ave. Central entre calle Aguila y calle Paricutin",65,"Josefa Ortiz de Dominguez",Ecatepec,"Edo. de México",55100,015524590886,015524590891,015524590894,,MercadoSoriana
+1,165,"La Joya","Ave. Vial López Portillo entre calle Progreso",431,"Guadalupe Victoria",Ecatepec,"Edo. de México",55210,015525939682,015525939698,015525939672,,MercadoSoriana
+1,166,Placetas,"Blvd. Rodolfo Chávez casi esq. con Av. Javier Mina",S/N,Centro,Colima,Colima,28000,013123307292,013123307388,013123307456,,MercadoSoriana
+1,167,Maestros,"Ave. de los Maestros",60,"San Andrés Atenco",Tlalnepantla,"Edo. de México",54040,015511063254,015511063255,015511063256,,MercadoSoriana
+1,168,"Sendero San Luis Potosí","Av. Benito Juárez entre Carretera 57",2005,"Estrella de Oriente","San Luis Potosí","San Luis Potosí",78394,014448301194,014448301553,014448301927,,Soriana
+1,169,Ixtapaluca,"Carr. Fed. Mexico-cuautla ent. aut. Mexico-Puebla y Río San Fco.",s/n,Ixtapaluca,Ixtapaluca,"Edo. de México",56530,015525967033,015525967034,015525967035,5169111,Soriana
+1,170,"Centro Maya","Carretera Federal Chetumal Cancún",2100,"Ejido, Lote 1","Playa del Carmen","Quintana Roo",77712,019848039057,019848039058,019848039084,,Soriana
+1,171,Cuautlitlán,"Calzada Guadalupe",301,Cerrito,Cuautitlán,"Edo. de México",54800,015558728614,015558728029,015558727890,,MercadoSoriana
+1,172,"Lázaro Cárdenas","Av. Tulipanes",548,"Unidad 7.4","Lázaro Cárdenas",Michoacan,60950,017535379496,017535379497,017535379498,,MercadoSoriana
+1,173,Cunduacán,"Carretera Juárez Chiapas a 2 Bocas Paraíso",S/N,Tlajomulco,Cunduacán,Tabasco,86690,019143362195,019143362160,019143362159,,MercadoSoriana
+1,174,Nichupté,"Super manzana 512 y manzana 16","lote 1",,Cancún,"Quintana Roo",77500,019988478410,019988478411,019988478412,,Soriana
+1,175,"Río Mayo","Ave. Río Mayo",6001,"Lomas de Jeréz",León,Guanajuato,37538,014771486706,014771486707,014771486708,,Soriana
+1,176,"Santo Tomás","Blvd. Matamoros Torreón",2555,"Valle Hermoso",Matamoros,Coahuila,27440,018711823477,018711823478,018711823479,5176111,MercadoSoriana
+1,177,"Santa Fe","Av. Las Américas esq. Blvd. Tegucigalpa",S/N,"Hacienda Santa Fé","Tlajomulco de Zúñiga",Jalisco,45655,013311896701,013311896704,,,MercadoSoriana
+1,178,Irapuato,"Blvd. Gustavo Díaz Ordaz",1016,Centro,Irapuato,Guanajuato,36500,014626930804,014626930810,,,MercadoSoriana
+1,179,"Lagos de Moreno","Blvd. Orozco y Jiménez",S/N,"Colinas de San Javier","Lagos de Moreno",Jalisco,47463,014744032866,014744032868,014744032869,,MercadoSoriana
+1,180,"San Vicente","Carretera Mexico-Texcoco Km. 29",S/N,"Cabecera Municipal","San Vicente Chicoloapan","Edo. de México",56370,015559217918,,,,MercadoSoriana
+1,181,Ampliación,"Av. Monterrey",7000,"Ampliación Unidad Nacional","Cd. Madero",Tamaulipas,89510,018331265916,018331265917,018331265918,018331265919,Soriana
+1,182,"Ramos Arizpe","Carretera Monterrey-Saltillo Km 11.5",s/n,Centro,"Ramos Arizpe",Coahuila,27900,018444903068,018444903069,018444903070,,MercadoSoriana
+1,183,"San Pedro de las Colonias","Torreón-San Pedro",58,"Tierras del Ejido el Ancóra","San Pedro de las Colonias",Coahuila,27800,018727727649,018727727650,018727727652,,MercadoSoriana
+1,184,Cortazar,"Av. Casuarinas","101 pt",Alameda,Cortazar,Guanajuato,38359,014111190013,014111190014,,,MercadoSoriana
+1,185,Frontera,"Blvd. San Buena Aventura entre calle Progreso",105,"10 de Mayo",Frontera,Coahuila,25660,018666346445,018666346806,018666350081,,Soriana
+1,186,Paraíso,"Carretera Federal Paraíso Km 117 +360",s/n,"Villa Puerto Ceiba Paraíso",Tabasco,Tabasco,86600,019333334954,019333334955,019333334956,,MercadoSoriana
+1,187,"La Cuesta","Av. Tecnológico",5311,"La Cuesta","Cd. Juárez",Chihuahua,32650,016566379874,016566379875,016566379876,016566379877,Soriana
+1,188,Cofradías,"Ave. Huehuetoca",s/n,"Claustos de San Miguel","Cuautitlán Izcalli","Edo. de México",54715,015558899880,015558899881,015558899882,,Soriana
+1,189,Insurgentes,"Boulevard Instituto Tecnólogico Km24",S/N,"Insurgentes Norte",Minatitlán,Veracruz,96710,019222417545,019222417546,019222417547,,MercadoSoriana
+1,190,Centenario,"Boulevard Miguel Alemán",117,"Ricardo Flores Magon","Gomez Palacio",Durango,35000,018717502024,018717502466,,,Soriana
+1,191,Talleres,"Av. Puerto Juárez",s/n,"Super Manzana 209 Mza 1 lote 2903",Cancún,"Quintana Roo",77500,019981464058,019981464059,019981464060/64,,MercadoSoriana
+1,192,"La Asunción","Siglo XXI",2302,"Villa de Nuestra Señora de la Asunción",Aguascalientes,Aguascalientes,20126,014491588765,014491588766,,,MercadoSoriana
+1,193,Tangamanga,"Av. Santos Degollado esq.con Av. Jesús Goytortua",229-A,FraccionamientoTangamanga,"San Luis Potosí","San Luis Potosí",78129,014441623116,,,,Soriana
+1,194,Rosales,"Blvd. Centenario",705,Centro,"Los Mochis",Sinaloa,81200,016688174901,016688174902,016688174903,,Soriana
+1,195,"14 Sur","Prolongación 14 Sur",1130,"ExHacienda de Chapulco",Puebla,Puebla,72590,012223112237,012223112260,012223112275/79,,MercadoSoriana
+1,196,"La Sierra","Calzada Silvestre Terrazas",9001,"Ramón Reyes",Chihuahua,Chihuahua,31410,016144189698,,,,MercadoSoriana
+1,197,"Sendero Toluca","Paseo Tolloacan",55,"Parque Industrial Lerma",Lerma,"Edo. de México",5000,017223278141,017223278142,017223278133,017223278140,Soriana
+1,198,Aviación,"Av.  Aviación",s/n,"La Mojonera",Zapopan,Jalisco,45150,013338364930,013338364939,,,Soriana
+1,199,Calafia,"Blvd. Adolfo López Mateos",1100,"Zona Industrial",Mexicali,"Baja California",21000,016865572428,016865571071,016865574103,,Soriana
+1,200,Colín,"Prolongación Toltecas",4,"Los Reyes de Ixtacala",Tlalnepantla,"Edo. de México",54000,015516659000,015516659002,015516659003,,MercadoSoriana
+1,201,"Las Villas","Blvd. Nuevo Hidalgo Km 7+ 100",S/N,"Rancho La Colonia",Pachuca,Hidalgo,42080,017717107583,017717107316,017717107694,,MercadoSoriana
+1,202,Otay,"Rampa Aeropuerto",16000,Produsa,Tijuana,"Baja California",22390,016646238217,016646238283,,,Soriana
+1,203,"San Roque","Av. Eloy Cavazos",101,,"Villa Benito Juárez","Nuevo León",67289,018183299000,Ext5203111,,,Soriana
+1,204,"Tres Ríos","Blvd. Universitarios","433 Pt","Desarrollos Tres Ríos",Culiacán,Sinaloa,80027,016677532880,016677536886,016677537498,,Soriana
+1,205,Huehuetoca,"Blvd. Huehuetoca Jorobas",S/N,Saltillo,Huehuetoca,"Edo. de México",54680,015939180096,015939180771,015939180248,,MercadoSoriana
+1,206,Hermosillo,"Periférico Oriente",1274,Perisur,Hermosillo,Sonora,83290,016622503739,016622504364,016622504480,,Soriana
+1,207,Tecomán,"Av. Playa de la Manzanilla",81,Bugambilias,Tecomán,Colima,28190,013133247592,013133246981,013133248807,,MercadoSoriana
+1,208,"Plaza Morelia","Av. Camelinas",5030,"Jardines del Rincón",Morelia,Michoacan,58270,014433339821,014433339823,014433339825,,Soriana
+1,209,Acámbaro,"Ave. 1ero. Mayo",1652,"San Isidro",Acámbaro,Guanajuato,38670,014176098338,014176098339,014176098340,,MercadoSoriana
+1,210,Alamedas,"Ave. Alamedas",69,"Zona Industrial. Izcalli del Valle",Tultitlán,"Edo. de México",54940,015516655754,015516655755,015516655759,,MercadoSoriana
+1,211,"Sendero Querétaro","Av. Revolución",99,"El Sol",Querétaro,Queretaro,76113,014422204268,014422204216,014422204274,,Soriana
+1,212,Landin,"Porfirio Luis Echeverría",s/n,Landin,Saltillo,Coahuila,25070,018441113140,018441113143,,,MercadoSoriana
+1,213,"Playa de Oro","Francisco Medina Asencio",2735,"Zona Hotelera","Puerto Vallarta",Jalisco,48310,013222211585,013222213300,013222213320,,SupermercadoSoriana
+1,214,Tizayuca,"Juárez Sur",39,"Barrio Atempa",Tizayuca,Hidalgo,43800,017791008152,017791008153,017791008154,,MercadoSoriana
+1,215,Texcoco,"Ave. Blvd.Dr. Jiménez Cantu y Barranquilla",,"El Ahuehuete",Texcoco,"Edo. de México",56158,015959557764,015959557744,015959557736,,MercadoSoriana
+1,216,Tultitlán,"Blvd. Tultitlán",200,"Barrio de los Reyes",Tultitlán,"Edo. de México",54900,015522393965,015522393967,015522393968,,MercadoSoriana
+1,217,Abastos,"Ave. Patria , Esq. Blvd. Luis F. Molina",3140,"Lazaro Cárdenas",Culiacan,Sinaloa,80290,016677271826,016677271845,016677271646,,Soriana
+1,218,"Río Sonora","Blvd. Paseo Río Sonora Nte.",128,"Proyecto Río Sonora",Hermosillo,Sonora,83270,016622136195,016622136681,016622136836,,Soriana
+1,219,Tapachula,"Blvd. Díaz Ordaz",182,Coapante,Tapachula,Chiapas,30740,019621184062,019621184063,019621184064,,MercadoSoriana
+1,220,"Rancho Viejo","Av. Niños Héroes",s/n,"Región 233 Mza 8 Lote 1","Benito Juárez","Quintana Roo",77510,019988932431,019988932438,019988932441,,MercadoSoriana
+1,221,"Quinta Real","Av. Constituyentes Esq. Blvd. Casa Blanca",,"Fracc. Casa Blanca",Matamoros,Tamaulipas,,018688456258,018688456259,018688456260,,Soriana
+1,222,Atizapán,"Carretera Progreso Industrial",s/n,"Exhacienda Pedregal Atizapán","Atizapán de Zaragoza","Edo. de México",52900,015558224680,015558224682,015558224736,,MercadoSoriana
+1,223,"Sendero Saltillo","Carretera Los González",365,"Fraccionamiento ExHacienda Los Cerritos",Saltillo,Coahuila,25203,018444318161,018444318162,018444318163,,Soriana
+1,224,Providencia,"Blvd. Vicente Suárez",1011,Cristo,Puebla,Puebla,72340,012222138880,,,,MercadoSoriana
+1,225,"Los Olivos","Ave. Baja California",148,"Fracc. San Agustín Atlapulco",Chimalhuacan,"Edo. de México",56330,015526429674,015526429808,015526429899,,MercadoSoriana
+1,226,"Camino Real","Camino a Sauceda de la Borda esq. Calle de Derecho",S/N,Spaguaz,"Cd. Guadalupe",Zacatecas,98615,014929234382,014929235682,014929236238,,MercadoSoriana
+1,227,Ermita,"Ermita Iztapalapa Esq. Ave. Cuauhtémoc",S/N,"Santa Martha Acatitla","Distrito Federal","Distrito Federal",9510,015557329006,015557329076,015557329020,,MercadoSoriana
+1,228,"Sendero Lincoln","Av. Lincoln",4001,"Puerta de Hierro",Monterrey,"Nuevo León",64461,018183299000,Ext5228126,,,Soriana
+1,229,"El Real","Av. Torreón Esq. Periferico Paseo de la República",1001,"El Realito",Morelia,Michoacan,,014432991760,014432991764,014433597395,Ext5229111,MercadoSoriana
+1,230,Pátzcuaro,"Libramiento Ignacio Zaragoza esq. Prolongación Libertad",233,Centro,Pátzcuaro,Michoacan,61601,014343422946,014343423139,014343424092,Ext5230111,MercadoSoriana
+1,231,"Las Américas","Blvd. Las Américas",114,"Colinas del Sur",Querétaro,Queretaro,76900,014422222396,,,,MercadoSoriana
+1,232,Borlaug,"Av. Dr. Norman E. Bourlong Entre CTM y 400",7301,"Fracc. Hacienda del Sol","Cd. Obregón",Sonora,85050,016441202745,016441202753,,5232111,MercadoSoriana
+1,233,"La Capilla","Prolo.Zaragoza Entre Autopista Queretaro Celaya",280,Ensueño,Queretaro,Queretaro,76178,014422156334,,,5233111,Soriana
+1,234,Anáhuac,"Calzada Anáhuac",1301,"Fracc.Villa Residencial Casa Magna",Mexicali,"Baja California",21354,016868382239,016868382286,016868382293,,Soriana
+1,235,Héroes,"Av. 20 Noviembre",,"Super Manzana 215 y Manzana 1 Lote 157",Cancún,"Quintana Roo",97500,019982082071,019982080294,019982080366,,MercadoSoriana
+1,236,Iguala,"Carretera Iguala Taxco Km 2+120",S/N,"Ampliación San José",Iguala,Guerrero,40050,017331106698,017331106693,017331106636,,MercadoSoriana
+1,237,Portales,"Calzada Luis Echeverría Álvarez",,,Saltillo,Coahuila,,018444343287,018444347150,,,MercadoSoriana
+1,238,"Plaza Fiesta Anáhuac","Ave. Manuel L. Barragán Esq. Ecatepec",S/N,Anáhuac,"San Nicolás de los Garza","Nuevo León",,018183299000,Ext5238119,Ext5238126,Ext5238111,SupermercadoSoriana
+1,239,"Cd. Hidalgo","Blvd. Adrián Peña Soto",3,Centro,Michoacan,Michoacan,,017861564201,,,,MercadoSoriana
+1,240,Galerías,"Blvd. Uriangato",240,"La Joyita",Uriangato,Guanajuato,,014454532662,014454532663,014454532664,014454532662,MercadoSoriana
+1,241,"Sendero Apodaca","Ave. Concordia y antiguo camino a Sta. Rosa",,Ebanos,Apodaca,"Nuevo León",,018183299000,Ext5241119,Ext5241126,Ext5241111,Soriana
+1,242,"Sendero Juárez","Av. las Torres y Av. Gómez Morín",,,"Cd. Juárez",Chihuahua,,016566663382,016566663385,,,Soriana
+1,243,"La Aurora","Carretera Torreón-San Pedro Km 3.7 con entronque a La Unión",1005,"Rincón de San Ángel",Torreón,Coahuila,27105,018717508496,018717526276,,,SupermercadoSoriana
+1,244,"Sendero Ecatepec","Carr. México-Tepexpan esq. Los Reyes Texcoco",8,"San Isidro Atlautenco","Ecatepec de Morelos","Edo. de México",55064,015559314108,015524860044,015524860279,,Soriana
+1,245,"Sendero Mérida","14 Circuito Colonias por 19 y 20",,Chuminopolis,Mérida,Yucatán,97158,019991881001,019991881002,019991881003,,Soriana
+1,246,"Sendero Acapulco","Carretera Puerto Márquez",,"Las Cruces",Acapulco,Guerrero,,017444061395,017444061396,017444061397,017444061398,Soriana
+1,247,"Paseo La Joya","C. Fco. I Madero entre Tlaltepan  y José Ma. Morelos",,,Cuautitlán,"Edo. de México",,015526203431,015526204010,015526204913,015526204890,Soriana
+1,248,"Chapultepec 1200","Av. Chapultepec",1200,"Fraccionamiento Alpes","San Luis Potosí","San Luis Potosí",,014442100302,014442100304,014442100305,014442100306,SupermercadoSoriana
+1,249,"Plaza Diez","Ave. Cerdán entre Calle 10 y 11",S/N,,Guaymas,Sonora,,016222240396,016222240415,016222240420,016222240452,MercadoSoriana
+1,250,Mixcoac,"Miguel Angel",170,"Mixcoac delg. Benito Juarez",Mexico,"Distrito Federal",3910,015555634800,015555634483,015555634484,,Soriana
+1,251,"La Viga","Calz. la Viga",1805,Mexicaltzingo,Mexico,"Distrito Federal",9080,015555825155,015555829234,015556977487,015555813681,Soriana
+1,252,Polanco,"Av. Ejército Nacional",769,"Nueva Granada del. Miguel Hidalgo",Mexico,"Distrito Federal",11520,015591260960,,,,Soriana
+1,253,Cuitláhuac,"Av. Cuitláhuac",372,"Sector Naval del Azcapotzalco",México,"Distrito Federal",2800,015553544280,015555561609,015555561600,,Soriana
+1,254,"Division Nte.","Av. Municipio Libre",314,"Nueva Santa Cruz Atoyac",Mexico,"Distrito Federal",3310,015556885420,015556885588,,,Soriana
+1,255,"La Villa","Calz. de Guadalupe",192,"Vallejo Delg. Gustavo A Madero",Mexico,"Distrito Federal",7870,015555376195,015555376196,015555376197,,Soriana
+1,256,Altares,"Ave. Xolot entre Templo de Mitla y Fracción Segunda",S/N,"Valle del Marqués",Hermosillo,Sonora,,016622374363,016622374364,,,SupermercadoSoriana
+1,257,Tacubaya,"José Morán esquina P.A. de los Santos",3,"San Miguel Chapultepec",Mexico,"Distrito Federal",11980,015555158814,015555158815,015555158816,,Soriana
+1,258,"Lomas Verdes","Colina de la Paz",25,"Lomas Verdes",Naucalpan,"Edo. de México",53120,015553747890,,,,Soriana
+1,259,Tlálpan,"Calz. de Tlalpan",2050,"Campestre Churubusco",Mexico,"Distrito Federal",4200,015555448500,,,,Soriana
+1,260,Echegaray,"Gustavo Baz",250,"Bosques de Echegaray",Naucalpan,"Edo. de México",53310,015553736844,015553736848,015553736874,,Soriana
+1,261,Rosario,"Lázaro Cárdenas",1341,"Unidad del Rosario",México,"Distrito Federal",2430,015553824143,015553824922,,,Soriana
+1,262,Iztapalapa,"Calz. Ermita Iztapalapa",1863,"Los Ángeles",México,"Distrito Federal",9830,015556121611,,,,Soriana
+1,263,Campestre,"Puerta de Oro Del Bajío",203,"Jardines de Celaya",Celaya,Guanajuato,38080,014616134034,014616134126,014616134238,,Soriana
+1,264,"Miguel Alemán","Prol. Madero Oriente",4422,Libertad,Monterrey,"Nuevo León",67130,018183299000,Ext5264119,Ext5264126,Ext5264111,Soriana
+1,265,Colón,"Av. Colón pte.",790,Centro,Monterrey,"Nuevo León",64000,018183726175,018183299000,Ext5265,N/A,SorianaExpress
+1,266,"Fidel Velázquez","Av. Fidel Velazquez y Rio Sena",2401,Federal,Monterrey,"Nuevo León",64120,018183734260,018183734416,018183299000,018183734312,Soriana
+1,267,Constituyentes,"Ejército Republicano",148,"Plaza de las Américas",Querétaro,Queretaro,76040,014422235630,014422130011,014422130851,,Soriana
+1,268,Aragón,"Av. Central",263,"Fracc. Valle de Aragón",Ecatepec,"Edo. de México",55780,015557803550,015557803781,015557803891,,Soriana
+1,269,Zaragoza,"Calz. Ignacio Zaragoza",1886,"Juan Escutia Del. Iztapalapa",México,"Distrito Federal",9100,015557451251,015557454631,015557452666,,Soriana
+1,270,Abasolo,"Av. Luis Echeverría",1032,Guanajuato,Saltillo,Coahuila,25280,018444162756,018444160600,018444160660,,Soriana
+1,271,Metepec,"Leona Vicario esq. Guadalupe Victoria",916,"Plaz de las Americas Metepec",Toluca,"Edo. de México",52140,017222702333,017222193087,017222193113,,SupermercadoSoriana
+1,272,Coapa,"Calz. de Acoxpa",1666,"Ejidos de Villa Coapa",México,"Distrito Federal",14390,015555948099,015555949134,015555949169,,Soriana
+1,273,"Santa Cecilia","Av. Abraham Lincoln pte.",5000,"Villas de Santa Cecilia",Monterrey,"Nuevo León",64150,018183299000,Ext5273119,Ext5273126,Ext5273111,Soriana
+1,274,"Acapulco Costera","Costera Miguel Alemán",240,"Fracc. Hornos",Acapulco,Guerrero,39350,017444696160,,,,Soriana
+1,275,"Galerías Mty.",Insurgentes,3911,"Colinas de San Jerónimo",Monterrey,"Nuevo León",64630,018183299000,Ext5275119,Ext5275126,Ext5275111,Soriana
+1,276,"La Luna","Av. La Luna Nichupté y Kondulich","Mza 1","Super Manzana 49",Cancún,"Quintana Roo",77533,019988481456,019988481447,019988481311,,SupermercadoSoriana
+1,277,"San Mateo","Alcanfores esq. Av. de las Torres",61,"Fracc. Jardines de San Mateo",Naucalpan,"Edo. de México",53240,015553630526,015553631151,015553631747,,Soriana
+1,278,Ánimas,"Blvd. Atlixco",3154,"Las Ánimas",Puebla,Puebla,72400,012222300900,012222300909,012222300919,,Soriana
+1,279,Eugenia,"Eugenia  esq. Gabriel Mancera",901,"Del Valle",México,"Distrito Federal",3100,015556695090,015556695091,015556695092,,SupermercadoSoriana
+1,280,Silao,"Av. 5 de Mayo",s/n,"Fraccionamiento La Joyita",Silao,Guanajuato,36130,014727232196,014727232197,014727225417,,Soriana
+1,281,"Peri Norte","Carretera Mexico-Queretaro KM. 30.5",,"Fracc. Haciendas del Parque",Cuatitlan,"Edo. de México",54769,015558939483,015558939484,015558939485,,Soriana
+1,282,"Sol Tuxtla Gutiérrez","Avenida 5 Norte Poniente",2650,"1ero. de Mayo esq. Libramiento Norte","Tuxtla Gutiérrez",Chiapas,29000,019611251641,019611251642,019611251643,,Soriana
+1,283,"San Miguel de Allende","Carretera a Querétaro Km 1",,"Casco de Landeta","San Miguel de Allende",Guanajuato,37700,014151204711,,,,SupermercadoSoriana
+1,284,Torriello,"Calz. de Tlálpan",4515,"Toriello Guerra delegación Tlálpan",México,"Distrito Federal",,015554244311,015554245282,015554245669,,SupermercadoSoriana
+1,285,"Vía Morelos","Av. Vía Morelos esq. Av. Industrias",S/N,"Santa Clara Cuatitla entre Av. Industrial y Via Morelos",Ecatepec,"Edo. de México",54190,015557749337,015557749442,015557749488,,MercadoSoriana
+1,286,"El Salado","Calz. Ignacio Zaragoza esq. a Salazar",3254,"La Colmena",Mexico,"Distrito Federal",9520,015557337621,015557337690,015557337800,,Soriana
+1,287,Apizaco,"Barberan U. Collar",306,"San Martín Centro",Apizaco,Tlaxcala,90300,012414171774,012414172190,012414172819,,Soriana
+1,288,"Plaza del Valle","Av. Universidad",139,Candiani,Oaxaca,Oaxaca,68130,019515148045,019515148091,019515148124,,MercadoSoriana
+1,289,"Espacio Tlaquepaque","Carretera Chapala",3221,"El Tapatío",Tlaquepaque,Jalisco,45580,013336590127,013336590124,,,SupermercadoSoriana
+1,290,"Lomas Virreyes","Águilas y Seijas",5,"Lomas Virreyes",Mexico,"Distrito Federal",111000,015555203901,015555203143,,,SupermercadoSoriana
+1,291,Atzoacalco,"Fernando Amilpa",80,"C.T.M. Atzacoalco",Mexico,"Distrito Federal",7090,015557153231,015557690817,,,SupermercadoSoriana
+1,292,Piramide,"Blvd. de los Aztecas esq. Tonathiuh",S/N,"Ciudad Azteca",Ecatepec,"Edo. de México",55120,015557747436,015557753125,015557787822,,SupermercadoSoriana
+1,293,Río,"Av. Solidaridad",350,"Lexis Ireta",Morelia,Michoacan,,014433133857,014433133865,014433133901,,Soriana
+1,294,Floresta,"Paseo de la Armada",450,Floresta,Veracruz,Veracruz,,012299358982,012299359562,012299359564,,Soriana
+1,295,"Centro Histórico","Calzada Madero",115,Centro,Oaxaca,Oaxaca,68000,019515144519,019515148005,019515148172,,MercadoSoriana
+1,296,"Colegio Militar","Heroico Colegio Militar",1010,Reforma,Oaxaca,Oaxaca,68050,019515157466,019515134314,019515134320,,MercadoSoriana
+1,297,"Calle Real","Madero y Oriente",61,Centro,Orizaba,Veracruz,94300,012727261783,012727261817,012727254988,,MercadoSoriana
+1,298,"Plaza Inn","Guillermo Valle No. 66",,Centro,Tlaxcala,Tlaxcala,,012464625100,,,,MercadoSoriana
+1,299,Centro,"Av. Juárez",231,Centro,Toluca,"Edo. de México",50000,017222151030,,,017222159400,MercadoSoriana
+1,300,Miramontes,"Av. Canal de Miramontes",2600,"Exhacienda San Antonio Coapa",México,"Distrito Federal",4850,015556844651,015556844894,015556846169,,Soriana
+1,301,Tepeyac,"Av. Patria  y Cloutier",5505,"Prados Tepeyac",Zapopan,Jalisco,45050,013336289994,013336282061,,,Soriana
+1,302,"Plaza Universidad","Pablo Neruda",4341,"Villa Universitaria",Zapopan,Jalisco,45110,013336100876,013336101617,,013336101425,SupermercadoSoriana
+1,303,"El Sauz","Av. Patria esq. Colón",2825,"El Sauz",Zapopan,Jalisco,44520,013336453434,013336450509,013336456527,,MercadoSoriana
+1,304,"Plaza Guadalupe","Av. Nicolás Copérnico",2831,"Residencial Guadalupe",Zapopan,Jalisco,45020,013336286007,013336286135,013336285111,,SupermercadoSoriana
+1,305,Tlaquepaque,"Av. Niños Héroes",242,"Prados del Nilo",Tlaquepaque,Jalisco,45500,013336353519,,,,SupermercadoSoriana
+1,306,Zapotlán,"Ing. Alberto Cárdenas Jiménez",565,Centro,"Zapotlán el Grande",Jalisco,49000,013414130044,013414131940,013414133219,,MercadoSoriana
+1,307,"San Marcos","Av. Convención esq. Fundición",S/N,"Fracc. San Cayetano",Aguacalientes,Aguascalientes,20010,014499142239,014499142266,014499142283,,Soriana
+1,308,"Cruz Sur","Av. Cruz del sur",3689,"Residencial Loma Bonita",Zapopan,Jalisco,44509,013336348992,013336349052,013336349061,,SupermercadoSoriana
+1,309,Gavilanes,"Blvd. López Portillo",S/N,"Dependencias Federales",Guadalupe,Zacatecas,98600,014929231590,014929231940,014928992021,,SupermercadoSoriana
+1,310,Tepic,"Camino Viejo al Tecolote",89,Centro,Tepic,Nayarit,63137,013112130069,013112134093,013112100621,,SupermercadoSoriana
+1,311,"Gobernador Curiel","Av. Gobernador Curiel",4832,Miravalle,Tlaquepaque,Jalisco,44990,013336707117,013336707121,013336707124,,Soriana
+1,312,"Plaza Sol","Centro Comercial Plaza del Sol",,"Ciudad del Sol",Zapopan,Jalisco,45050,013336473021,013331211320,013331211613,,Soriana
+1,313,"Américas Gdl.","Av. Américas",848,"Del Contry",Guadalajara,Jalisco,44210,013336423985,013336413311,013336413312,,Soriana
+1,314,Calzada,"Calz. Independencia Norte, Sector Libertad",362,"La Perla",Guadalajara,Jalisco,44330,013336178583,013336178612,013336189567,,SorianaExpress
+1,315,"Rosas Gdl.","Av. Adolfo López Mateos Sur",1952,Chapalita,Zapopan,Jalisco,45080,013331227465,013331227516,013336477580,,SupermercadoSoriana
+1,316,"Pablo Neruda","Pablo Neruda",2954,Providencia,Guadalajara,Jalisco,44630,013336417721,013336423060,013336427255,,SupermercadoSoriana
+1,317,Belenes,"Av. de Maíz",1300,"Santa Margarita",Zapopan,Jalisco,45130,013336337606,013336337995,013336338306,,Soriana
+1,318,Oblatos,"Av. Circunvalación",2700,"Circunvalación Oblatos",Guadalajara,Jalisco,44700,013336442131,013336442578,013336447979,,Soriana
+1,319,"Bosque Gdl.","Av. Niños Héroes",2546,"Jardines del Bosque",Guadalajara,Jalisco,44520,013331217561,013331217773,013331219607,,SupermercadoSoriana
+1,320,Tolsa,"Av. Niños Héroes",1506,Moderna,Guadalajara,Jalisco,44520,013338257138,013338257607,013338257868,,SupermercadoSoriana
+1,321,Circunvalación,"Av. Circunvalación Norte entre Fco. Lizardi y Normalistas",415,Miraflores,Guadalajara,Jalisco,44810,013338241100,013338248068,013338248550,,Soriana
+1,322,Palomar,"KM. 3.5 Carretera Guadalajara-Morelia",,"El Palomar, sección Jockey Club","Tlajomulco de Zúñiga",Jalisco,45643,013336843086,013336843342,013336843598,,SupermercadoSoriana
+1,323,Terranova,Terranova,2929,Terranova,Guadalajara,Jalisco,44689,013336420101,013336420108,013336425202,,SupermercadoSoriana
+1,324,Juárez,"Av. Juárez",573,"Zona Centro",Guadalajara,Jalisco,,013336134006,013336136396,013336136734,,SupermercadoSoriana
+1,325,"Plaza Camichines","Carretera cuota Guadalajara Zaplotanejo",1351,Camichines,Tlaquepaque,Jalisco,,013336001990,013336000172,013336000300,,MercadoSoriana
+1,326,"San Jorge",Homero,51,"Vallarta San Jorge",Guadalajara,Jalisco,,013336478063,013336478713,013336471720,,SupermercadoSoriana
+1,327,"Plaza Caracol","Carretera Aeropuerto KM. 2.5",,"Fracc. Los Tules","Puerto Vallarta",Jalisco,,013222244060,013222244061,013222244062,,Soriana
+1,328,Chapalita,"San Ignacio",33,Chapalita,Zapopan,Jalisco,45020,013331227730,013331227731,,,SupermercadoSoriana
+1,329,"El Toreo","Av. Rafael Balbuena esq. Toreo",103,"El Toreo",Mazatlan,Sinaloa,82120,016699836198,016699861504,016699862774,,Soriana
+1,330,Tránsito,Alcalde,3555,"Santa Elena Alcalde",Guadalajara,Jalisco,44220,013338237780,013338248050,013338248051,,MercadoSoriana
+1,331,Patria,"Prolongación Av. Américas",1950,"Centro Comercial Plaza Patria",Zapopan,Jalisco,,013336410616,013336410386,013336410910,,Soriana
+1,332,Águilas,"Juan Kepler y López Mateos Sur",3553,"Las Arboledas",Zapopan,Jalisco,45080,013336323417,,,,Soriana
+1,333,"Torres Gdl.","Av. 8 de Julio",1896,Morelos,Guadalajara,Jalisco,,013338115416,013338115468,013338119444,,Soriana
+1,334,"Justo Sierra","Av. Fco. López Montejano",1400,"Jardines del Valle",Mexicali,"Baja California",21270,016865667691,016865661366,016865662910,,SupermercadoSoriana
+1,335,"Villa Fontana",Universidad,1700,"Conjunto Urbano Universitario",Mexicali,"Baja California",21180,016865562203,016865562201,016865562205,,SupermercadoSoriana
+1,336,Transpeninsular,"Carretera Transpeninsular",100,"Carlos Pacheco",Ensenada,"Baja California",22890,016461762677,016461764385,016461205950,,Soriana
+1,337,"Tijuana 5 y 10","Blvd. Lázaro Cárdenas",405,"Las Brisas",Tijuana,"Baja California",22115,016646276628,,,,MercadoSoriana
+1,338,"Río Tijuana","Blvd. Sánchez Taboada",1600,"Zona del Río",Tijuana,"Baja California",22000,016646340278,016646340277,016646340266,,SupermercadoSoriana
+1,339,Misión,"Av. Reforma",1122,Ulbrich,Ensenada,"Baja California",22830,016461771800,016461771801,016461771802,,Soriana
+1,340,"San Luis Potosí","Carretera Central Frente a Glorieta Juárez",S/N,,"San Luis Potosí","San Luis Potosí",78436,014448166922,014448165148,014448165173,,Soriana
+1,341,Fundidora,"Calzada Madero Oriente",1515,"Terminal Zona Centro",Monterrey,"Nuevo León",64020,018183299000,Ext5341,,,SupermercadoSoriana
+1,342,Valle,"Río Missisipi Ote.",130,"Del Valle","San Pedro Garza García","Nuevo León",66220,018183299000,Ext5342,,,SupermercadoSoriana
+1,343,"Garza Sada","Eugenio Garza Zada",699,"La Florida",Monterrey,"Nuevo León",64000,018183584606,018183584608,018183584610,N/A,Soriana
+1,344,Mitras,"Av. Ruiz Cortines",2401,"Fracc. Bernardo Reyes",Monterrey,"Nuevo León",64190,018183716526,018183705407,,N/A,Soriana
+1,345,"Vista Hermosa","Enrique C. Livas",801pte,"Vista Hermosa",Monterrey,"Nuevo León",64620,018183299000,Ext5345119,Ext5345127,Ext5345111,SupermercadoSoriana
+1,346,Marne,"Humberto Lobo Sur",855,"Del Valle","San Pedro Garza García","Nuevo León",66230,018183299000,Ext5346,,,SupermercadoSoriana
+1,347,"Plaza Tutuli","Guerrero S/N entre Quintana Roo y California",,Cumuripa,Obregón,Sonora,85140,016444155195,016444132384,,,Soriana
+1,348,"Benito Juárez","AV. Lázaro Cárdenas y Juárez Pte.",S/N,"Riveras del Río",Monterrey,"Nuevo León",67160,018183299000,Ext5348,,,Soriana
+1,349,"Montes Berneses","Montes Berneses",1101,"Fraccionamiento Valle de las Flores","San Nicolas de los Garza","Nuevo León",,018183299000,Ext5349,,,Soriana
+1,350,"Seguro Social","Blvd. Hidalgo y Praxedis Balboa",,Hidalgo,Reynosa,Tamaulipas,88670,018999230135,018999230818,018999550924,,Soriana
+1,351,Canales,"Calle Primera Cruz y Calle Canales",S/N,Lucero,Matamoros,Tamaulipas,87730,018688161610,018688161080,,8133559,Soriana
+1,352,Carrera,"Av. Carretera Oriente",,Obrera,"Cd. Victoria",Tamaulipas,87090,018343168002,018343168082,018343168022,,Soriana
+1,353,Durango,"Aquiles Serdan Ote.",1100,"Nueva Vizcaya Plaza Centauro",Durango,Durango,34080,016188175297,016188175298,016188184632,,Soriana
+1,354,Maldonado,"Donato Guerra",3830,Juárez,"Nuevo Laredo",Tamaulipas,88000,018677153018,018677153117,018677153177,,SupermercadoSoriana
+1,355,Centla,"Carretera Federal Frontera-Villahermosa",,Frontera,Centla,Tabasco,86751,019133326218,019133226219,,,SorianaExpress
+1,356,"Los Ángeles","Av. Felix Galván Ote.",400,"Fidel Velázquez","San Nicolás de los Garza","Nuevo León",67164,018183299000,Ext5356,,,Soriana
+1,357,"Plaza Fiesta","Av. Pedro Cárdenas",S/N,"Fracc. Victoria",Matamoros,Tamaulipas,87400,018688176320,018688176379,018688176404,,SupermercadoSoriana
+1,358,"La Pastora","Eloy Cavazos",2000,"Contry Sol",Guadalupe,"Nuevo León",67140,018183299000,Ext5658,,,Soriana
+1,359,"Los Girasoles","Av. Parque Industrial",3300,"2° Sector",Escobedo,"Nuevo León",66050,018183299000,Ext5359,,,MercadoSoriana
+1,360,Aztlán,"Av. Solidaridad",200,"Nueva Galicia",Monterrey,"Nuevo León",66450,018183113248,018183113120,018183113121,,MercadoSoriana
+1,361,Satélite,"Blvd. Adolfo López Mateos Ote.",15,Centro,"Cd. Victoria",Tamaulipas,,018343141142,,,,Soriana
+1,362,"Lauro Villar Palmas","Av. Lauro Villar km.2",,"Lauro Villar",Matamoros,Tamaulipas,87400,018688121768,018688121796,018688161080,,Soriana
+1,363,"Central Camionera","Calle Paris",s/n,Beati,Reynosa,Tamaulipas,88500,018999226190,018999223254,018999223154,,SupermercadoSoriana
+1,364,"Bella Vista","Av. Antonio Cárdenas",s/n,"Burócratas del Estado",Saltillo,Coahuila,25048,018444179432,018444162756,018444162756,,Soriana
+1,365,"San Miguel","Av. Acapulco",121,"Hacienda de San Miguel",Guadalupe,"Nuevo León",67117,018183299000,Ext5365,,,Soriana
+1,366,Descubridores,"Paseo de los Descubridores",s/n,Cumbres,Monterrey,"Nuevo León",64610,018183299000,Ext5366,,,SupermercadoSoriana
+1,367,"Eva Sámano","Av. Eva Sámano",7201,"La Fe","Nuevo Laredo",Tamaulipas,88000,018677107838,018677108172,018677108486,,Soriana
+1,368,"Simón Bolívar","Av. Simón Bolívar Norte",1750,"Mitras Centro",Monterrey,"Nuevo León",64460,018183464199,,,,SupermercadoSoriana
+1,369,Insurgentes,"Av. Insurgentes Poniente",1600,"San Jerónimo",Monterrey,"Nuevo León",64630,018183299000,,,,SupermercadoSoriana
+1,370,"San Fernando","Carretera Reynosa a San Fernando km 116",,"Carlos Cantu",Reynosa,Tamaulipas,88797,018999550405,018999550408,018999550409,,Soriana
+1,371,"Acapulco Sol","Av. Costera Miguel Alemán",2803,"Fraccionamiento Costa Azul",Acapulco,Guerrero,39850,017444813849,017444813845,017444813846,,SupermercadoSoriana
+1,372,Cibeles,"Boulevar Villas de Irapuato",1493,"Ejido de Irapuato",Irapuato,Guanajuato,36690,014626233237,014626231529,014626233238,,SupermercadoSoriana
+1,373,"La Ocho","Av. Constitución",1125,"Zona Centro",Tijuana,"Baja California",2200,016646851172,016646851189,,,SupermercadoSoriana
+1,374,"Francisco Villa","Toribio Ortega",299,"Fracc. Villa",Tijuana,"Baja California",22150,016646377076,016649753455,,,SupermercadoSoriana
+1,375,Florido,"Blvd. Insurgentes",9802,"Fracc. El Florido",Tijuana,"Baja California",22500,016646258040,016646258905,016646258927,,SupermercadoSoriana
+1,376,Rubí,"Blvd. Fundadores",5393,"Valle El Rubí",Tijuana,"Baja California",22190,016646846445,016646846446,016646846589,,SupermercadoSoriana
+1,377,Libertad,"Rampa Ruiz Cortinez",S/N,Libertad,Tijuana,"Baja California",22300,016646831609,016646831843,,,SupermercadoSoriana
+1,378,"Mesa Limón","Blvd. Díaz Ordaz esq. López Lucio",135110,"La Mesa",Tijuana,"Baja California",22450,016646811821,016646811805,016646216943,,SupermercadoSoriana
+1,379,Brisas,"Blvd. Díaz Ordaz -27",1200,"Las Brisas",Tijuana,"Baja California",22610,016646860278,,,,SupermercadoSoriana
+1,380,Capistrano,"Blvd. Insurgentes",2120,Capistrano,Tijuana,"Baja California",22587,016646251054,016646251055,016646250849,,SupermercadoSoriana
+1,381,"Pinos Tij.","Carretera Tecate KM. 14.5",,"Los Pinos",Tijuana,"Baja California",22680,016646895513,016646895514,016646895936,,SupermercadoSoriana
+1,382,Industrial,"Blvd. Industrial local 20 esq. blvd. Manuel J. Cloutier",,"De la Mesa de Otay",Tijuana,"Baja California",22500,016646074219,016646074220,016646074221,,SupermercadoSoriana
+1,383,Indeco,"Calz. Tecate esq. Universidad",s/n,"Mesa de Otay",Tijuana,"Baja California",22390,016646249928,016649736247,,,SupermercadoSoriana
+1,384,Bahía,"Av. Cortez y Reforma",S/N,"Fracc. Bahía",Ensenada,"Baja California",22830,016461205076,016461205077,016461205079,,SupermercadoSoriana
+1,385,Gastelum,"C. Gastelum y Sexta ent. 6 y 7",S/N,"Zona Centro",Ensenada,"Baja California",22880,016461783633,016461782055,016461759587,,SupermercadoSoriana
+1,386,"La Primera","Av. Gastelum",172,"Zona Centro",Ensenada,"Baja California",22800,016461782644,016461759586,,,SupermercadoSoriana
+1,387,Pipila,"Av. Pipila",S/N,"Vivienda Popular",Ensenada,"Baja California",22880,016461772527,016461762272,016461773991,,SupermercadoSoriana
+1,388,Valle,"Esq. Transpeninsular",S/N,"Valle Dorado",Ensenada,"Baja California",22890,016461766193,016461766192,016461208581,,SupermercadoSoriana
+1,389,Soler,"Ignacio Altamirano",4567,"Fracc. Soler",Tijuana,"Baja California",22105,016646304986,016646305041,016646305054,,SupermercadoSoriana
+1,390,Revolución,"Av. Revolución entre Calle 2da. y 3ra.",,"Zona Centro",Tijuana,"Baja California",22000,016646880155,016646880143,016646384758,,SupermercadoSoriana
+1,391,"Gato Bronco","Boulevard Gato Bronco",18651,"Fracc. El Lago de la Presa",Tijuana,"Baja California",22450,016646601453,016646601130,016646250335,,SupermercadoSoriana
+1,392,Cucapah,"Blvd. Cucapah",,"Fracc. Jardín Dorado esq. con Blvd. Florido",Tijuana,"Baja California",22000,016641035055,016641035057,016649016107,,SupermercadoSoriana
+1,393,Parroquia,"Ruta Hidalgo",9411,"Mariano Matamoros Sur",Tijuana,"Baja California",22500,016647012113,016647012108,016647012109,,SupermercadoSoriana
+1,394,Encinos,"Av. Nuevo León Poniente esq. con Dr. Arturo Guerra",79,"Los Encinos",Tecate,"Baja California",21506,016656548356,016656548357,016656548358,,SupermercadoSoriana
+1,395,Ferias,"Ave. de las Ferias",,"Fracc. La Herradura (a espaldas de Hipódromo Agua Caliente)","La Mesa","Baja California",22470,016646813109,016646813958,016646814862,,SupermercadoSoriana
+1,396,"Agua Caliente","Boulevar Agua Caliente",10506,"Aviación Zona Centro",Tijuana,"Baja California",22420,016646249930,016646821755,016646249928,,SupermercadoSoriana
+1,397,"Parque Delta","Av. Obrero Mundial",320,"Narvarte delg. Benito Juárez",Mexico,"Distrito Federal",3020,015554403587,015554401185,,,Soriana
+1,398,"Acapulco Centro","Cuauhtémoc y J.R. Cabrillo",S/N,"Fraccionamiento Hornos",Acapulco,Guerrero,39300,017444860251,017444860843,017444860191,,MercadoSoriana
+1,399,"Acapulco Renacimiento","Carretera México-Acapulco Km. 4.5",S/N,Renacimiento,Acapulco,Guerrero,39715,017444412232,017444418507,017444419093,,MercadoSoriana
+1,400,Tultepec,"Av. Hacienda Flor de Canela",S/N,"Fracc. Hacienda Real de Tultepec esq. calle hacienda",Tultepec,"Edo. de México",,015526223251,015526223252,015526223255,,MercadoSoriana
+1,401,"Plaza 2000","Av. López Portillo  y Tulum","Mza 24","Super Manzana 63 Lote 10",Cancún,"Quintana Roo",77500,019988873602,,,,MercadoSoriana
+1,402,"Abastos Tultitlán","Av. Mexiquense",S/N,"Casco Providencia Exhacienda Portales",Tultitlán,"Edo. de México",,015558676814,015558676815,015558676816,,MercadoSoriana
+1,403,"Los Arcos","Vía López Portillo KM. 26.5",,"Parque Residencial Coacalco",Coacalco,"Edo. de México",55700,015558651827,015558652017,015558652019,,SorianaExpress
+1,404,"Pedro Moreno",Zaragoza,1107,Centro,Coatzacoalco,Veracruz,96400,019212145713,019212145719,019212148422,,MercadoSoriana
+1,405,"Romero Rubio","Ave. 16 de Septiembre",106,"Cuautitlán Centro","Cuautitlán de Romero Rubio","Edo. de México",,015558726735,015558725044,015558721256,,SupermercadoSoriana
+1,406,Cuautitlán,"Av. Jiménez Cantú",S/N,"Corredor Urbano Comercial","Cuautitlán Izcalli","Edo. de México",54720,015558715255,015558715296,015558715847,,Soriana
+1,407,Cuernavaca,"Apolo XI No. 2 Base Tranquilidad",2,"Del Empleado",Cuernavaca,Morelos,62250,017773135533,017771021348,017771021376,,SupermercadoSoriana
+1,408,"Vicente Guerrero","Justo Sierra",S/N,"Col. Centro",Minatitlan,Veracruz,96700,019222230017,019222230089,019222235296,,MercadoSoriana
+1,409,Naucalpan,"Av. Morelos",8,"San Bartolo",Naucalpan,"Edo. de México",53000,015553580817,015553581949,015553588008,,SupermercadoSoriana
+1,410,"Ruiz Cortinez","Blvd. Adolfo Ruiz Cortinez",S/N,"Fraccionamiento Palmas","Poza Rica",Veracruz,93340,017828244346,017828220021,017828229835,,Soriana
+1,411,Viaducto,"Av. Revolucion",169,Tacubaya,Mexico,"Distrito Federal",11870,015555155593,015555157282,015555165421,,SupermercadoSoriana
+1,412,"Boulevard Tuxtla","Blvd. Belisario Domíguez",305,Xamaipak,"Tuxtla Gutiérrez",Chiapas,29000,019616025319,019616025321,019616025322,,SupermercadoSoriana
+1,413,"Hernán Cortez","Av. Bravo Esq. Hernán Cortez",S/N,Centro,Veracruz,Veracruz,91700,012299312494,012299312619,012299317385,,MercadoSoriana
+1,414,"Plaza Real","Av. Corregidora Plaza Real",S/N,"Asa Poniente","Cd. del Carmen",Campeche,24199,019382860344,,,,SupermercadoSoriana
+1,415,"Santa Bárbara","Av. Cuauhtémoc Esq. Calle Acozac",2000,"Santa Bárbara",Ixtapaluca,"Edo. de México",562538,015559720186,015559720331,015559720353,,MercadoSoriana
+1,416,Nava,"Venustiano Carranza con Muzquiz",585,Centro,Nava,Coahuila,26170,018626245605,018626245603,,,SorianaExpress
+1,417,"Villa Verde","Calle 18 Oriente Fracc. Villa Verde",5605,"Carretera Lib. a Tehuacán",Puebla,Puebla,72300,012222361529,012222360195,,,SorianaExpress
+1,418,Consulado,"Av. Río Consulado",2355,"Simón Bolivar",México,"Distrito Federal",14510,015557608355,015557608190,015557608336,,Soriana
+1,419,"Plaza Cantil","Ave. Aztecas",270,"Los Reyes Coyoacán",México,"Distrito Federal",4330,015556107181,015556107182,015556107183,,Soriana
+1,420,Prados,"Magnolias Nte.",S/N,"San Pablo de las Salinas",Tultitlán,"Edo. de México",,015558745733,015558745858,015558749595,,MercadoSoriana
+1,421,"Abastos Atizapan","Carr. a Atizapan",3,"Mexico Nuevo",Atizapan,"Edo. de México",54500,015558221712,015558254577,015558254579,,Soriana
+1,422,"Villa Nicolás Romero","Lago de Patzcuaro",4,Hidalgo,"Villa Nicolás Romero","Edo. de México",11520,015558230070,015558230744,015558230802,,MercadoSoriana
+1,423,"La Viga Recreo","Calzada La Viga",672,"Barrio Zapotla Delgación Iztacalco",México,"Distrito Federal",8610,015556968112,015556968113,015556968114,,MercadoSoriana
+1,424,Chalco,"Alfredo del Mazo",151,"Alfredo Baranda","Valle de Chalco","Edo. de México",56610,015559718064,015559718065,015559718066,,MercadoSoriana
+1,425,"Santa Lucía","Av. Tamaulipas esq. Privada de Cantera",1236,"Estado de Hidalgo",México,"Distrito Federal",1500,015556372583,015554232183,015554232583,,MercadoSoriana
+1,426,Peñon,Acalote,S/N,Xochitenco,Chimalhuacan,"Edo. de México",56360,015558521023,015558521231,015558531683,,MercadoSoriana
+1,427,Gobernadora,"Av. Adolfo Lopez Mateos",1-A,"Las Industrias Tultepec",Ecatepec,"Edo. de México",55107,015557742646,,,,MercadoSoriana
+1,428,Transístmica,"Av. Juan Osorio López",S/N,"Héroes de Nacozari",Coatzacoalcos,Veracruz,96599,019212173506,019212173507,019212173508,,MercadoSoriana
+1,429,Pachuca,"Blvd. Luis Donaldo Colosio","Km 7.7","Fraccionamiento Colinas de Plata",Pachuca,Hidalgo,42080,017717912529,017717912014,,,MercadoSoriana
+1,430,Salvatierra,"Blvd.  Juan Jesús Posadas Ocampo y Prol. Juárez",300,Centro,Salvatierra,Guanajuato,38900,014666632497,014666632662,,,SorianaExpress
+1,431,"Mérida Centro","Calle 56",514,Centro,Mérida,Yucatán,97000,019999236344,019999275635,,,SupermercadoSoriana
+1,432,"Buena Vista","Calle 60 Norte",30,Buenvista,Mérida,Yucatán,97200,019999275635,019999263860,,,SupermercadoSoriana
+1,433,"Plaza Oriente","Calle 65",197-A,Sarmiento,Mérida,Yucatán,97167,019999830379,019999830273,,,SupermercadoSoriana
+1,434,"Fiesta Mérida","Calle 6 Depto. B",400,"Díaz Ordaz",Mérida,Yucatán,97130,019999432254,019999432208,,,SupermercadoSoriana
+1,435,"Plaza Dorada","Calle 50 Depto. B",143,"Fracc. Hidalgo",Mérida,Yucatán,97220,019999871348,019999871391,,,SupermercadoSoriana
+1,436,Campeche,"Ave. Agustín Melgar Depto.",68,"Bosques de Campeche",Campeche,Campeche,24030,019818112597,,,,SupermercadoSoriana
+1,437,"Villa Palmira","Calle 95  N x 62",502,"Delio Moreno Cantón",Mérida,Yucatán,97268,019999283824,019999283753,,,SupermercadoSoriana
+1,438,Valladolid,"Calle 39","229 B","Centro Comercial Bazar Oriente",Valladolid,Yucatán,97780,019858562325,019858562830,,,SorianaExpress
+1,439,"Avenida 39","Calle 39 por 20 y 22 Centro",12,,"Ciudad del Carmen",Campeche,24100,019383826061,,,,SupermercadoSoriana
+1,440,Granada,"Blvd. Adolfo López Mateos",S/N,"Fraccionamiento Santo Domingo",Comacalco,Tabasco,86340,019333341908,,,,SorianaExpress
+1,441,Villahermosa,"Francisco I. Madero",S/N,Centro,Villahermosa,Tabasco,86000,019933121006,,,,SupermercadoSoriana
+1,442,Cozumel,"Av. Pedro Joaquín Coldwell",S/N,"10 de Abril",Cozumel,"Quintana Roo",77600,019878722116,,,,SupermercadoSoriana
+1,443,"Playa del Carmen","Av. Andres Quintana Roo",S/N,"Col Zazil-Ha","Playa del Carmen","Quintana Roo",,019848430620,,,,SupermercadoSoriana
+1,444,"Avenida 128","Predio 810 de la calle 43",S/N,"Xoclan Santos",Mérida,Yucatán,97246,019991672546,019991672547,019991672548,019991672547,Soriana
+1,445,"Pino Suárez","Valentín Gómez Farías",22,"San Juan del Río",Querétaro,Queretaro,76800,014272724815,014272724959,,,SorianaExpress
+1,446,Irapuato,"Blvd. San Roque",S/N,"Fraccionamiento San Roque",Irapuato,Guanajuato,36580,014626263095,014626263573,014626277915,,SorianaExpress
+1,447,Tláhuac,"Av. Tláhuac",390,"Valle de las Luces","Delegación Iztapalapa","Distrito Federal",9840,015556461150,015556468723,,,MercadoSoriana
+1,448,Macultepec,"Agapito de Jesús y Carr. Federal Frontera",,"Villa Macultepec",Macultepec,Tabasco,,019931584793,,,,SorianaExpress
+1,449,Castaños,"Blvd. Hidalgo y Calle Mazatlán",,California,Castaños,Coahuila,,018666972782,018666972795,,,SorianaExpress
+1,450,"San Felipe","Belisario Domínguez",429,Revolución,"San Felipe",Guanajuato,37600,014286852945,014286851973,014286851297,,SorianaExpress
+1,451,Jalpa,"Prolongación 27 de Febrero",S/N,Encarnación,"Jalpa de Mendez",Tabasco,,019143362156,019143372325,,,SorianaExpress
+1,452,Muzquiz,"Calle José Ma.  Morelos y Santa Rosa",,Centro,Muzquiz,Coahuila,26340,018646163919,,,,SorianaExpress
+1,453,Iturbide,"Carr. Entronque y Carr. Constitución",13,"Zona Centro","San José Iturbide",Guanajuato,,014191989934,,,,SorianaExpress
+1,454,Huimanguillo,"Ignacio Zaragoza y Carr. Federal",187,Centro,Huimanguillo,Tabasco,86400,019173752855,,,,SorianaExpress
+1,455,Allende,"Juárez Nte.",602,Centro,Allende,Coahuila,,018626213806,018626213783,,,SorianaExpress
+1,456,Tequisquiapan,"Carr. San Juan del Río-Tequisquiapan y Carr. Paseo del Jardín",83,Centro,Tequisquiapan,Queretaro,,014142731610,014142731991,,,SorianaExpress
+1,457,Oxkutzcab,"Calle 495 Entre 40 y 42",69,Centro,Oxkutzcab,Yucatán,97880,019979752059,019979751322,019979752432,019979752428,SorianaExpress
+1,458,"Ixtlán del Río",Mercado,129,"Everardo Peña Navarro","Ixtlán del Río",Nayarit,,013242437521,013242437522,013242437523,,SorianaExpress
+1,459,"El Rosario","Calle Mineros Esq. Carretera Agua Verde",42,"Alfonso G. Calderón","El Rosario",Sinaloa,,016949522894,016949526135,016949526133,,SorianaExpress
+1,460,Tizimin,51,366,Centro,Tizimin,Yucatán,97700,019868637128,,,,SorianaExpress
+1,461,Sayula,"Ave. Manuel Ávila Camacho",211,"San Sebastián",Sayula,Jalisco,49300,013424211991,013424212012,013424211184,,SorianaExpress
+1,462,"Las Choapas","Boulevard Antonio M. Quirasco, lote 4",,"Campo Nuevo","Las Choapas",Veracruz,96980,019232375454,,,,SorianaExpress
+1,463,Cintalapa,"Boulevard Rodolfo Figueroa",875,"Barrio Guadalupe",Cintalapa,Chiapas,30400,019686846539,,,,SorianaExpress
+1,464,"Celaya Centro","Boulevard Adolfo López Mateos",1023,Centro,Celaya,Guanajuato,30400,014616155236,014616155031,,,SupermercadoSoriana
+1,465,"San Javier","Carr. Panorámica tramo carrizo San Javier",s/n,"San Javier",Guanajuato,Guanajuato,36000,014731092236,014731092237,014731092238,,SupermercadoSoriana
+1,466,"San Mateo Atenco","Ave. Bénito Juárez",1030,"Barrio San Lucas","San Mateo Atencio","Edo. de México",50200,017282847780,,,,MercadoSoriana
+1,467,Tuxpan,Cuauhtémoc,232,Tropicana,Tuxpan,Veracruz,92870,017831023100,,,,MercadoSoriana
+1,468,Mirasierra,"Boulevard Fundadores",7540,"San José Los Cerritos",Saltillo,Coahuila,25019,018444110060,,,,MercadoSoriana
+1,469,"Santa Fe","El Rosario",10931,"San Antonio de los Buenos",Tijuana,"Baja California",22563,016649751488,016649751513,,,SupermercadoSoriana
+1,470,Acueducto,"Blvd. Guadalajara",15510,Mesa,Tijuana,"Baja California",22611,016646867605,,,,SupermercadoSoriana
+1,471,Guaycura,"Blvd. Cucupah",19713,"Ampliación Loma Bonita",Tiuana,"Baja California",22216,016649785725,016649727777,,,SupermercadoSoriana
+1,472,Quiroga,"Dr. Antonio Quiroga",213,"Nueva Palmira",Hermosillo,Sonora,83170,016622360730,,,,Soriana
+1,473,"Adolfo B. Horn","Adolfo B. Horn",3530,"López Cotilla",Tlaquepaque,Jalisco,45615,013336689240,,,,MercadoSoriana
+1,474,"La Conchita","Blvd. Arturo Montiel Rojas",3,"Barrio La Conchita (entre José María Morelos y Constitución)",Chalco,"Edo. de México",56600,015559729160,,,,MercadoSoriana
+1,475,Tepalcapa,"Av. Hidalgo",140,"Granjas Lomas de Guadalupe","Cuautitlán Izcalli","Edo. de México",54767,015558619660,015558616390,,,MercadoSoriana
+1,476,Cadereyta,"Blvd. Revolución",1103,Centro,Cadereyta,"Nuevo León",67480,018183299000,Ext5476,,,Soriana
+1,477,"Villa Hermosa","Circuito Interior Carlos Pellicer Camara",1020,"Jose María Pino Suarez",Villahermosa,Tabasco,86029,9993313001,,,,Soriana
+1,478,"La Pilita","Hacienda La Quemada","500 N","Barrio San Mateo",Metepec,"Edo. de México",52140,017222350309,017222350308,017222350307,,SupermercadoSoriana
+1,479,Atlixco,"Blvd. Niños Héroes",803,Revolución,Puebla,Puebla,74270,012444469100,,,,MercadoSoriana
+1,480,"La Huasteca","Av. Miguel Hidalgo y Costilla",709,"Lázaro Cárdenas","Santa Catarina","Nuevo León",66350,018183299000,Ext5480,,,SorianaExpress
+1,481,"Campo Militar","Carretera a Salinas Victoria","KM 1.5","7ma Zona Campo Militar",Apodaca,"Nuevo León",66610,018183299000,,,,SorianaExpress
+1,482,"Serafín Peña","Av. Serafín Peña",2055,"Valles de la Silla",Guadalupe,"Nuevo León",67180,018183299000,Ext5482,,,Soriana
+1,483,"Irapuato Centro","Av. Juan José Torres Landa",326,"San Cayetano",Irapuato,Guanajuato,36530,014626602572,,,,SorianaExpress
+1,484,Juchitán,"Carreterera Panamericana Km 819.5",,"Primera Sección","Juchitán de Zaragoza",Oaxaca,7000,019717127500,,,,MercadoSoriana
+1,485,Jeréz,"Del Hospicio entre Vicente Guerrero y E. Carranza",64,Centro,Jeréz,Zacatecas,99300,014949458290,,,,SorianaExpress
+1,486,Ixtlahuaca,"Blvd. Gustavo Baz Prada",S/N,Centro,"Ixtlahuaca de Rayon","Edo. de México",,017122832433,017122832453,,,SorianaExpress
+1,487,Reforma,"Av. Joaquín M. Gutiérrez, Lote 1, Manzana R",69,"Adolfo López Mateos, Zona 5A",Reforma,Chiapas,29500,019173281060,019173281054,,,SorianaExpress
+1,488,Yautepec,"Av. Paseo Tlahuica Esq. Calle Paraiso",122,"Rancho Nuevo","Yautepec de Zaragoza",Morelos,62730,018183299000,,,,SorianaExpress
+1,489,Tala,"Carretera Tala-San Juan de los Arcos",97,Centro,Tala,Jalisco,15300,013847381025,013847380477,013847380613,,SorianaExpress
+1,490,Zapotiltic,Juarez,161,Centro,Zapotiltic,Jalisco,49600,013414143865,,,,SorianaExpress
+1,491,Coatzintla,"Carretera Poza Rica -Coatzintla",100,"Del Valle",Coatzintla,Veracruz,93160,017828250638,017828250641,,,SorianaExpress
+1,492,"Lerdo de Tejada","Blvd. Juan de Luz Enriquez",258,"El Chamizal","Lerdo de Tejada",Veracruz,95280,012845492126,012845492114,012845492115,,SorianaExpress
+1,493,"Río Grande","Blvd. Maestros Ilustres",29,"Vicente Guerrero","Río Grande",Zacatecas,98400,014981010631,014989821827,014989825581,,SorianaExpress
+1,494,Sombrerete,"Jardín Constitución",30,Centro,Sombrerete,Zacatecas,99100,014339352265,014339352533,,,SorianaExpress
+1,495,"Santiago Ixcuintla","Ramón Corona Esq. Mariano Matamoros",111,Juárez,"Santiago Ixcuintla",Nayarit,63300,013232351963,013232354660,,,SorianaExpress
+1,496,Naranjos,"Prolongación Morelos",1,Naranjos,"Naranjos Amatlán",Veracruz,92300,017688554557,017688554352,,,SorianaExpress
+1,497,Tlajomulco,Vallarta,4,Centro,"Tlajomulco de Zúñiga",Jalisco,45640,013337985294,,,,SorianaExpress
+1,498,"Delicias Poniente","Tercera Poniente",1501,"Sector Poniente",Delicias,Chihuahua,33000,016394799160,,,,MercadoSoriana
+1,499,Camargo,"Ave. Benito Juárez",1200,Lagunita,Camargo,Chihuahua,33739,6484622762,,,,SorianaExpress
+1,500,"Las Flores","Via Jose Lopez Portillo",105,Zacuautitla,"Coacalco de Berriozabal","Edo. de México",55710,015558989160,,,,MercadoSoriana
+1,501,"Ciénega de Flores","Carretera a Zuazua","KM 0.6",Centro,"Ciénega de Flores","Nuevo León",65550,018114420120,,,,MercadoSoriana
+1,502,"Tijuana Villa Fontana","Blvd. Cucapah",,"Villa Fontana",Tijuana,"Baja California",22205,016649728455,,,,SupermercadoSoriana
+1,503,"Tijuana Reforma","Blvd. Reforma",S/N,Reforma,Tijuana,"Baja California",22180,016646891188,016646898190,,,SupermercadoSoriana
+1,504,"Apaseo El Grande","Ignacio Allende",465,Centro,"Apaseo el Grande",Guanajuato,38160,014131583381,014131585031,,,SorianaExpress
+1,505,Montemorelos,"Av. Carlos Cantú",504,"Barrio de Zaragoza",Montemorelos,"Nuevo León",67530,018183299000,,,,SorianaExpress
+1,506,"Villa de Santiago","Carretera Nacional Nte.",209,Centro,Santiago,"Nuevo León",67300,018112230650,,,,MercadoSoriana
+1,507,"Torreón Los Ángeles","Blvd. Independencia Pte.",20,"Ampliación Los Ángeles",Torreón,Coahuila,27140,018717138546,018717932623,,,SupermercadoSoriana
+1,508,Uman,,,,Uman,Yucatán,,,,,,SorianaExpress
+1,509,Serdán,"Ave. Revolución Esq. Calle 2 Pte.",202,Centro,"Chalchicomula de Sesma",Puebla,75520,018183299000,,,,SorianaExpress
+1,510,"San José Viejo","Carretera Transpeninsular Lote 16","KM. 39","San José Viejo","San José del Cabo","Baja California Sur",23437,016241442160,,,,Soriana
+1,511,"Cerro Azul","Rafael Nieto Esq. los Cedros",110,"Lázaro Cárdenas","Cerro Azul",Veracruz,92511,017858524157,017858524082,,,SorianaExpress
+1,512,Ameca,Morelos,110,"Ameca Centro",Ameca,Jalisco,46600,013757559457,013757586389,,,SorianaExpress
+1,513,Balneario,"Ave. Concordia y Siglo XXI",,"Barrio de Santa Lucía",Campeche,Campeche,,019818171378,019818276843,,,SorianaExpress
+1,514,"CTM Campeche","Ave. Fidel Velázquez (CTM) Entre Aries y Anastacio Bustamante",42,"Sector Justicia Social",Campeche,Campeche,24080,018183299000,,,,SorianaExpress
+1,515,Chimalhuacan,"Ave. Nezahualcóyotl y Fco. I. Madero",200,"Santa María Nativitas",Chimalhuacan,"Edo. de México",,015558522899,,,,MercadoSoriana
+1,516,"Celaya Tecnológico","Ave. México Japón y Ave. Tecnológico",,Industrial,Celaya,Guanajuato,,018183299000,,,,Soriana
+1,517,"Plaza 500 Uruapan","Blvd. Industrial",2199,"La Cofradía",Uruapan,Michoacan,60125,018183299000,,,,Soriana
+1,518,"Villa de García","Sor Juana Inés de la Cruz",1350,"Colonia Arboledas",García,"Nuevo León",66001,018181240440,,,,MercadoSoriana
+1,519,"El Dorado","Mexico Pte.",390,Centro,Culiacán,Sinaloa,80450,016677242263,,,,SorianaExpress
+1,520,Nacozari,"Monte Himalaya S/N Local 9",,"Lomas de Nacozari","Nacozari de Garcia",Sonora,84340,018183299000,,,,SorianaExpress
+1,521,"Cola de Ballena","Libramiento Sur L-521",1515,"El Zacatal","La Paz","Baja California Sur",23088,018183299000,,,,Soriana
+1,522,"Buena Vista","Eje 1 Norte Mosqueta Local A-02",259,"Buena Vista",Cuauhtemoc,"Distrito Federal",6350,015555470213,,,,Soriana
+1,523,Altabrisa,"Calle 7",451,"Fraccionamiento Altabrisa",Mérida,Yucatán,97130,019993410230,,,,Soriana
+1,524,"Periférico  de la Juventud","Av. De la Juventud",5909,"La Cantera",Chihuahua,Chihuahua,31001,018183299000,,,,Soriana
+1,525,"Tecamac I","Jòse Maria Pino Suàrez",4,"Los Heroes de Tecamac",,"Edo. de México",55765,015558369950,,,,MercadoSoriana
+1,526,"Tecamac II",Mexiquense,31,"Los Heroes de Tecamac",Tecamac,"Edo. de México",55765,015558369960,,,,MercadoSoriana
+1,527,Chetumal,"Av. Erick Paolo Martínez",120,"EL SOL",CHETUMAL,"Quintana Roo",77026,018183299000,,,,Soriana
+1,528,Chilpancingo,"Blvd. René Juárez Cisneros",64,"Ciudad de los Servicios","Chilpancingo de los Bravos",Guerrero,39074,017474942030,,,,Soriana
+1,529,Pichucalco,"Blvd. Ignacio Zaragoza",234,"Lomas de Pichucalco",Pichucalco,Chiapas,29520,018183299000,,,,SorianaExpress
+1,530,Tuxpan,"Ave. José Ángel Ceniceros (esq. Ave. Periférico)",203,Centro,Tuxpan,Jalisco,49800,013714172802,013714176451,,,SorianaExpress
+1,531,Caborca,"Calzada 6 de Abril Nte (entre Calle 7 y Calle 8)",60,Centro,Caborca,Sonora,83600,016373724433,,,,SorianaExpress
+1,532,"Vicente Centro","Juan Hernández y Marín (entre Luis Moya y Regato)",100,"Vicente Guerrero Centro","Vicente Guerrero",Durango,34890,016758652148,,,,SorianaExpress
+1,533,"Puente Silao","Blvd. Luis H. Ducoing",144,Centro,Silao,Guanajuato,36100,014727223723,,,,SorianaExpress
+1,534,Teocaltiche,"Blvd. Juan Pablo II (entre López Mateos y Ave. Benito Juárez)",2,"El Puente",Teocaltiche,Jalisco,47200,013467873787,,,,SorianaExpress
+1,535,Huixtla,"Rodulfo Figueroa Pte",2,Centro,Huixtla,Chiapas,30640,019646420688,,,,SorianaExpress
+1,536,Huamantla,"Av. Matamoros Pte.",105,Centro,Huamantla,Tlaxcala,90500,012474723916,,,,SorianaExpress
+1,537,Champoton,"Av. Luis Donaldo Colosio Murrieta",126,"Los Manguitos",Champotón,Campeche,24400,019828280351,019828282872,,,SorianaExpress
+1,538,Amalucan,Independencia,202,Chapultepec,Puebla,Puebla,72310,012222138100,,,,MercadoSoriana
+1,539,"Casas Grandes","Av. Tecnológico",903,Centro,"Nuevo Casas Grandes",Chihuahua,31700,016366929810,,,,MercadoSoriana
+1,540,"Central Saltillo","Periférico Luis Echeverría Alvarez",290,"Bella Vista",Saltillo,Coahuila,25060,018441715200,,,,MercadoSoriana
+1,541,"Casa Blanca","Pda. Águila Silbona",19510,"Baja Maq El Águila",Tijuana,"Baja California",22215,016649785199,016649785068,,,SupermercadoSoriana
+1,542,Jardines,"Blvd. Gustavo Díaz Ordaz",17415,"Jardines de la Mesa",Tijuana,"Baja California",22126,016649698536,016649698763,,,SupermercadoSoriana
+1,543,"San Marino","Av. J. de J. Clark Flores Esq. Teniente Azuela",11390,Playitas,Ensenada,"Baja California",22860,016461759021,016461759002,,,SupermercadoSoriana
+1,544,"Jardines del Sur","Ave. 135 Lote 3 Manzana 40 Supermanzana",327,"Jardines del Sur","Benito Juárez","Quintana Roo",77536,016649698536,016649698763,,,SupermercadoSoriana
+1,545,"Valle Poniente","Camino a la Banda",201,"Valle Poniente","Santa Catarina","Nuevo León",66196,018180342126,018180342125,,,SupermercadoSoriana
+1,546,Pánuco,"Blvd. Díaz Mirón entre Guillermo Prieto y José Velarde",2001,Peralta,Pánuco,Veracruz,93995,018462662393,018462663749,,,SorianaExpress
+1,547,Meneses,"Calzada Ignacio Zaragoza",1026,"Col. Agrícola Pantitlán",Iztacalco,"Distrito Federal",8100,015557581975,015557583184,,,SorianaExpress
+1,548,Tepalcates,,,,Iztapalapa,"Distrito Federal",,,,,,MercadoSoriana
+1,549,Caribe,,,,"Cabo San Lucas","Baja California Sur",,,,,,Soriana
+1,550,"La Obrera",Libramiento,10001,"Oaxaca Angel Fernandez del San Antonio D",Tijuana,"Baja California",22620,,,,,SupermercadoSoriana
+1,551,"Libramiento Ensenada","Carretera Ojos Negros",SN,"Emiliano Zapata",Ensenada,"Baja California",22810,,,,,SupermercadoSoriana
+1,552,Geranios,"Ave. Geranios (entre Cucupah y Cochimi)",131,"Fracc. Colinas de la Presa",Ensenada,"Baja California",22813,016461749126,016461749312,,,SupermercadoSoriana
+1,553,Ocoyoacac,"Ave. Martín Chimaltecatl esq. Juan Escutia",67,"Barrio de Santa María",Ocoyoacac,"Edo. de México",52740,017282878109,017282878131,,,SorianaExpress
+1,554,Arbol,"Av. del Arbol",131,"Consejo Agrarista Mexicano",Iztapalapa,"Distrito Federal",9760,,,,,SorianaExpress
+1,555,Encarnación,"Lucía Solis esq. con Benito Juárez",134,Arboledas,"Encarnación de Díaz",Jalisco,47270,014759536856,014759532440,,,SorianaExpress
+1,556,"Pie de la Cuesta","Carretera Acapulco Zihuatanejo",243,"Balcones al Mar","Acapulco de Juárez",Guerrero,39430,7444600227,7444607025,,,SorianaExpress
+1,557,Jiquilpan,"Av. Las Palmas",255,Guadalupe,Jiquilpan,Michoacan,59510,013535335853,03535334358,,,SorianaExpress
+1,558,"San Buena Ventura",Juárez,444,Centro,"San Buenaventura",Coahuila,25500,,,,,SorianaExpress
+1,559,"Del Lago","Blvd. Manuel Perez Treviño",1800,"Del Lago","Piedras Negras",Coahuila,26069,018781040432,018787867394,,,SupermercadoSoriana
+1,560,Monterreal,"Calz. Paseo del Tecnologico Ote.",2300,"Villas de las Perlas",Torreón,Coahuila,27277,018717635944,018717634164,,,SupermercadoSoriana
+1,561,"Libertad Coahuila","Blvd. De la Libertad Sur",10,"Valle Oriente",Torreón,Coahuila,27277,018712225650,,,,MercadoSoriana
+1,562,Lerdo,"Libramiento Periferico Nte.",450,"Filiberto Garcia","Cd. Lerdo",Durango,35159,018717481550,,,,MercadoSoriana
+1,563,Mapastepec,"Av. Francisco Sarabia Nte.",190,"Barrio Malucal",Mapastepec,Chiapas,30560,019186432022,019186432023,,,SorianaExpress
+1,564,"Bahía de Banderas",Constitución,101,"Localidad San Vicente","Nuevo Vallarta",Nayarit,63737,013292988475,013292988478,,,SorianaExpress
+1,565,Guamúchil,"Nicolas Bravo Pte. (entre Benito Juárez y Callejón Angostura)",519,Juárez,Guamuchil,Sinaloa,81450,016737321975,016737324431,,,SorianaExpress
+1,566,Motul,"Calle 28 (entre Calle 31 y Calle 33)",308-A,Centro,Motul,Yucatán,97432,019919151775,019919151776,,,SorianaExpress
+1,567,Rosarito,,,,Tijuana,"Baja California",,,,,,MercadoSoriana
+1,568,Delante,"Ave. Delante y Libramiento Sur",2880,"Fracc. Jalisco",Ensenada,"Baja California",22875,016461209240,016461209242,,,SupermercadoSoriana
+1,569,Alianza,"Ave. Antiguos Ejidatarios",709,"La Alianza",Monterrey,"Nuevo León",64100,018181210430,,,,SorianaExpress
+1,570,"Tierra Propia","Ave. Sierra de Lampazos",1330,"Parque Industrial Acueducto",Guadalupe,"Nuevo León",67190,018181270240,,,,MercadoSoriana
+1,571,"Ron Batey","Av. 1",3511,"Zona Industrial",Córdoba,Veracruz,94690,012717170360,,,,Soriana
+1,572,"Prado Norte","Av. Yaxche Lote 1-03","MZ. 07","SM 256","Benito Juárez","Quintana Roo",77517,,,,,MercadoSoriana
+1,573,"Valle Alto","Carretera México-Laredo",1353,"Valle Alto","Cd. Valles","San Luis Potosí",79026,4813829010,,,,MercadoSoriana
+1,574,"Tres Puentes",,,,Morelia,Michoacan,,,,,,SorianaExpress
+1,575,"Nucleo Deportivo","Av. Dieciséis",634,"Pocitos y Rivera",Veracruz,Veracruz,91729,012292010760,,,,MercadoSoriana
+1,576,Altaria,,,,Aguascalientes,Aguascalientes,,,,,,Soriana
+1,577,"La Piedad","Av. Juan Pablo II",901,México,"Cd. Piedad",Michoacan,59310,013525262101,013525263262,,,MercadoSoriana
+1,578,Comitan,"Blvd. Belisario Domínguez Sur",404,30028,"Comitan de Dominguez",Chiapas,,,,,,MercadoSoriana
+1,579,Álamo,"Blvd. Quintana Roo",422,"Francisco I. Madero",Álamo,Veracruz,92734,017658449929,017658449517,,,SorianaExpress
+1,580,"Juan Pablo II","Periférico Vicente Lombardo Toledano",8400,Aeropuerto,Chihuahua,Chihuahua,31380,016144291830,,,,MercadoSoriana
+1,581,"Ruiz Cortines",,,,Monterrey,"Nuevo León",,,,,,SorianaExpress
+1,582,"San Cristóbal de las Casas","Blvd. Juan Sabines Carretera Panamericana KM 1.178",,Fátima,"San Cristóbal de las Casas",Chiapas,29264,019676749440,,,,Soriana
+1,583,Sabinas,"Francisco I. Madero Ote.",447,Centro,Sabinas,Coahuila,26700,018616123641,018616129471,,,SorianaExpress
+1,584,"Miguel Alemán","Av. Emiliano Zapata Pte.",445,"Centro Miguel Alemán","Miguel Alemán",Tamaulipas,88300,018979721702,,,,SorianaExpress
+1,585,Ometepec,"Prolongación Cuauhtémoc",S/N,"El Tancón",Ometepec,Guerrero,41700,017414120769,017414123931,017411122711,,SorianaExpress
+1,586,Catemaco,"Carretera Costera del Golfo",1,"Tío Tin",Catemaco,Veracruz,95870,012949437065,012949437084,,,SorianaExpress
+1,587,Pacífico,"Blvd. Pacífico esq. Con Libramiento Oriente",7501,"Fracc. Parque Industrial Pacífico",Tijuana,"Baja California",22572,016646083023,016646214523,,,SupermercadoSoriana
+1,588,"El Tejar","Carretera Veracruz - El Tejar",6114,"El Tejar",Medellín,Veracruz,94273,012851130008,,,,MercadoSoriana
+1,589,Hecelchakán,"Calle 20",32,Conquista,Hecelchakán,Campeche,24800,019968270709,019968270716,,,SorianaExpress
+1,590,Cacahoatan,"6a. Calle Oriente",62,Centro,Cacahoatan,Chiapas,30890,019626221312,019626221313,,,SorianaExpress
+1,591,"Santa Rosa","Camino Mezquital-Santa Rosa",7591,"Villas de Santa Rosa",Apodaca,"Nuevo León",66610,018111036090,,,,Soriana
+1,592,Misantla,"Av. Ávila Camacho (esq. Calle 16)",300,Centro,Misantla,Veracruz,93320,012353231720,012353231795,,,SorianaExpress
+1,593,Escuinapa,"Gabriel Leyva",19,Centro,Escuinapa,Sinaloa,82400,6959530151,6959530172,,,SorianaExpress
+1,594,"Tonalá Chiapas","Av. Hidalgo",45,"Barrio Nuevo",Tonalá,Chiapas,30500,,,,,SorianaExpress
+1,595,Ocosingo,"Periferico Oriente Sur 2da",9,"El Herradero",Ocosingo,Chiapas,29950,9196732508,9196732503,,,SorianaExpress
+1,596,"Puerto Progreso","Calle 80 Esq. 93",256,Centro,Progreso,Yucatán,97320,9699357763,9699357759,,,SupermercadoSoriana
+1,597,Jimenez,"Av. Juarez",317,Centro,Jimenez,Chihuahua,33980,6295425426,6295424667,,,SorianaExpress
+1,598,"18 de Marzo","Carretera a los Altos",1490,"San Pedrito",Tlaquepaque,Jalisco,45580,3336002919,3336002817,,,SorianaExpress
+1,599,Jilotepec,"Ave. Revolución",,,"Jilotepec de Molina Enriquez Abasol","Edo. de México",,,,,,SorianaExpress
+1,600,"Tecoman II","Av. Insurgentes",925,Unión,Tecomán,Colima,28130,3133266190,3133265266,,,SorianaExpress
+1,601,"Juan de la Barrera","Av. Juan de la Barrera",6160,Romita,Tlaquepaque,Jalisco,45590,3336928209,3336064904,,,SorianaExpress
+1,602,"Cuatro Cienegas","Jose Carlos Garza",704,"Benito Juárez",Cuatrocienegas,Coahuila,27640,8696961749,8696961730,,,SorianaExpress
+1,603,Yurécuaro,"Francisco J. Mujica",90,Centro,Yurécuaro,Michoacan,59250,,,,,SorianaExpress
+1,604,Huetamo,"16 de Septiembre",2,Cahuaro,"Huetamo de Nuñez",Michoacan,61940,,,,,SorianaExpress
+1,605,"Ojo Caliente","Cervantes Corona",44,Centro,"Ojo Caliente",Zacatecas,98700,4589444668,4589445861,,,SorianaExpress
+1,606,Oluta,"Carretera Oluta - Acayucan",502,Centro,Oluta,Veracruz,96160,,,,,MercadoSoriana
+1,607,Huajuapan,"Ave. 5 de Febrero",227,Tepeyac,"Heroica Ciudad de Huajuapan de León",Oaxaca,69000,,,,,MercadoSoriana
+1,608,"Glorieta Benito Juárez","Av. Teófilo Salinas Garza",525,Centro,Juarez,"Nuevo León",67250,,,,,MercadoSoriana
+1,609,Pedregal,"Ave. Las Torres",S/N,,"Ciudad General Escobedo","Nuevo León",,,,,,SorianaExpress
+1,610,Tehuacan,"Libramiento San Lorenzo - Tecnólogico",3324,"Santa María Coapan",Tehuacan,Puebla,75857,,,,,MercadoSoriana
+1,611,"Martínez de la Torre","Blvd. Luis Donaldo Colosio",1007,"Lomas del Mirador","Martinez de la Torre",Veracruz,93600,,,,,MercadoSoriana
+1,612,"Lopez Rayon","Prolongación Ignacio Lopez Rayon",1015,Morelos,Comalcalco,Tabasco,86300,,,,,MercadoSoriana
+1,613,"Morelos Sur","Av. Morelos",153,Bondies,Cuernavaca,Morelos,62059,,,,,SupermercadoSoriana
+1,614,"Loreto Sol y Mar","Av. Benito Juarez",,Centro,Loreto,"Baja California Sur",23880,,,,,SupermercadoSoriana
+1,615,"Sanini La Gloria","Carretera Tijuana - Ensenada Lote II-C2 Manzana 498",,"San Antonio de los Buenos",Tijuana,"Baja California",22114,,,,,SupermercadoSoriana
+1,616,Acaponeta,"Av. Morelos Poniente",79,Centro,Acaponeta,Nayarit,63400,,,,,SorianaExpress
+1,617,"Dos Ríos","Privada Camino a las Escobas",3500,"Hacienda las Escobas",Guadalupe,"Nuevo León",67196,,,,,SorianaExpress
+1,618,"Graciano Sanchez","Av.San Pedro",1807,"San Francisco","Soledad de Graciano Sanchez","San Luis Potosí",78435,,,,,MercadoSoriana
+1,619,Tarimbaro,"Carretera Federal Morelia - Zinapecuaro",KM.3.6,"Fraccionamiento El Prado",Tarimbaro,Michoacan,58880,,,,,MercadoSoriana
+1,620,"Camino Real","Blvd. Forjadores de Sudcalifonia",S/N,"El Palmar II","La Paz","Baja California Sur",23084,,,,,SupermercadoSoriana
+1,621,"El Mezquito","Blvd. Forjadores de Sudcalifonia",250,"El Mezquito","La Paz","Baja California Sur",23083,,,,,SupermercadoSoriana
+1,622,"San Francisco del Rincón","Blvd. Juventino Rosas",510,,"San Francisco del Rincón Centro",Guanajuato,36300,,,,,MercadoSoriana
+1,623,"Salina Cruz","Av. Transismica",,,"Salina Cruz",Oaxaca,,,,,,MercadoSoriana
+1,624,"Diego Díaz de Berlanga","Av. Diego Díaz de Berlanga",402,"Bosques de Anáhuac","San Nicolas de los Garza","Nuevo León",66463,,,,,Soriana
+1,625,"Metro Rosario","Avenida El Rosario",901,"Rosario Azcapotzalco",México,"Distrito Federal",2100,,,,,SupermercadoSoriana
+1,626,Pórticos,"Blvd. General Lázaro Cárdenas",310,"Parque Industrial Chapultepec",Ensenada,"Baja California",22785,,,,,SupermercadoSoriana
+1,627,"Terán Terán","Blvd. Bellas Artes",20486,"Ciudad Industrial",Tijuana,"Baja California",22444,,,,,SupermercadoSoriana
+1,628,"Valle de Bravo","Ave. Benito Juárez",S/N,,"Valle de Bravo","Edo. de México",,,,,,SupermercadoSoriana
+1,629,"Huatulco (Fonatur)","Boulevard Chahue",Lote10,"Sector T","Santa María Huatulco",Oaxaca,70989,,,,,Soriana
+1,630,Ford,Contador,S/N,Centro,Guanajuato,Guanajuato,,,,,,SupermercadoSoriana
+1,631,Gentor,,,,"San Pedro Garza García","Nuevo León",,,,,,SupermercadoSoriana
+1,632,Jiutepec,"Eje Nte y Sur",S/N,,Jiutepec,Morelos,,,,,,Soriana
+1,633,"Plaza Cuautitlán","Av. Centro Urbano Poniente, Esq. Av. Jorge Jiménez Cantú",S/N,"Bosques de la Hacienda 1a Sección","Cuautitlán Izcalli","Edo. de México",54715,,,,,SorianaExpress
+1,634,Pijijiapan,"1era Calle Oriente Norte",4,Centro,Pijijiapan,Chiapas,30540,,,,,SorianaExpress
+1,635,"Guadalupe Victoria","Ave. Ricardo Castro Ote.",902,Centro,"Guadalupe Victoria",Durango,34700,,,,,SorianaExpress
+1,636,Rinconada,"Blvd. Príncipe Akishino",204,"Rinconada del Carmen",Tapachula,Chiapas,30796,,,,,SorianaExpress
+1,637,"La Noria","Antiguo Camino a Huinalá",740,"Noria Norte",Apodaca,"Nuevo León",66633,,,,,SorianaExpress
+1,638,"Pueblo Nuevo","Ave. Tréboles",500,Tréboles,Apodaca,"Nuevo León",66646,,,,,SorianaExpress
+1,639,"Camino Real Escobedo","Ave. Enrique Rangel Melendez",,,Escobedo,"Nuevo León",,,,,,MercadoSoriana
+1,640,"Díaz Ordaz","Blvd. Gustavo Díaz Ordaz",,,"Santa Catarina","Nuevo León",,,,,,MercadoSoriana
+1,641,Tulancingo,"Carretera México- Tuxpan",,,Tulancingo,Hidalgo,,,,,,MercadoSoriana
+1,642,Tantoyuca,"Carretera Nacional",,,Tantoyuca,Veracruz,,,,,,SorianaExpress
+1,643,Papantla,"Carretera Nacional Papantla- Gu",,,Papantla,Veracruz,,,,,,SorianaExpress
+1,644,Zacapu,"Ave. Prolongación Morelos",1369,,Zacapu,Michoacan,58600,,,,,SorianaExpress
+1,645,Guacamayas,"Carretera Nacional Tecoman",,,"Cd. Lázaro Cárdenas",Michoacan,,,,,,MercadoSoriana
+1,646,"Villa Juarez","Arturo B. de la Garza",,"Ex Comunidad de Vaquerías","Cd. Benito Juárez","Nuevo León",,,,,,Soriana
+1,647,Ojinaga,"Blvd. Libre Comercio",1512,"2 de Octubre",Ojinaga,Chihuahua,32885,,,,,SupermercadoSoriana
+1,648,"Prolongación Juárez","Av. Benito Juárez",508,,"General Escobedo","Nuevo León",66059,,,,,SupermercadoSoriana
+1,1001,"City Club Torreón","Av. Revolución y Calzada Saltillo",400,"Fraccionamiento Los Ángeles",Torreón,Coahuila,27267,018717216540,018717215387,018717215151,018717216660,CityClub
+1,1002,"City Club Monclova",Huemac,1101,Anáhuac,Monclova,Coahuila,27750,018666361096,018666314271,,018666314105,CityClub
+1,1003,"City Club Chihuahua","Av. Periférico de la Juventud Esq. Av. Francisco Villa",6302,"Los Mezquites",Chihuahua,Chihuahua,31125,016144222193,016144222194,016144222196,016144222261,CityClub
+1,1004,"City Club Saltillo","Blvd. Luis Echeverría entre 26 de Marzo y prolongación Pérez Treviño",6385,"San Ramón",Saltillo,Coahuila,25020,018444105633,018444106306,018444127526,,CityClub
+1,1005,"City Club Pachuca","Blvd. Nuevo Hidalgo esq. Luis Donaldo Colosio",202,"Puerta de Hierro",Pachuca,Hidalgo,42080,017711070463,017711070464,017711040467,017711070468,CityClub
+1,1006,"City Club Villahermosa","Carlos Pellicer Cámara Esq. Paseo Uzumacinta",205,"Plutarco Elías Calles",Villahermosa,Tabasco,86090,019933144162,019933143997,019933143805,019333145414,CityClub
+1,1007,"City Club San Jerónimo","Rogelio Cantú Gómez esq- José Garza Rámírez",900-B,"Colinas de San Jerónimo",Monterrey,"Nuevo León",64630,018181438901,018181438902,018181438905,018181438901,CityClub
+1,1008,"City Club Tuxtla","Blvd. Andrés Serra Rojas esq. con Blvd. Albino Corso",250,"El Retiro","Tuxlta Gutiérrez",Chiapas,29040,019616141313,019616144116,,019616144668,CityClub
+1,1009,"City Club Colima","Av. María Ahumada de Goméz esq. Fco. Cárdenas Barajas",371,Campestre,Colima,Colima,28988,013123964797,013123964798,,013123964800,CityClub
+1,1010,"City Club Los Cabos","Blvd. Lázaro Cárdenas esq. Paseo del Pescador",S/N,Centro,"Los Cabos","Baja California Sur",23450,016241434294,016241434888,,016241439492,CityClub
+1,1011,"City Club Tampico","Ave. Ejército Mexicano y Diagonal Norte Sur",S/N,Tampico,Tampico,Tamaulipas,89137,018332175008,018332174597,,,CityClub
+1,1012,"City Club La Paz","Blvd. Forjadores de Sudcalifornia, esq. Luis Donaldo Colosio",S/N,"Col. ExBase Aèrea","La Paz, Baja California Sur","Baja California Sur",23050,016121654990,016121654992,016121654993,016121654991,CityClub
+1,1013,"City Club Nuevo Laredo","Av.Reforma y 15 de Septiembre",S/N,Campestre,"Nuevo Laredo",Tamaulipas,88278,018677150184,018677150325,,,CityClub
+1,1014,"City Club Reynosa","Blvd. Hidalgo y Fuentes de Diana KM 101",S/N,"Las Fuentes",Reynosa,Tamaulipas,88710,018999954083,018999954084,018999954085,Ext5414119,CityClub
+1,1015,"City Club Durango","Av. Heróico Colegio Militar y Av. 20 de Noviembre",109,"Nueva Vizcaya",Durango,Durango,34080,016188189871,016188189856,016188189726,,CityClub
+1,1016,"City Club Cancún","Ave. Andrés Quintana Roo entre Ave. Kohunlich, calle Farallon y Ave. Itzamal",s/n,"Súper Manzana 39, Manzana 10 Lote 1",Cancun,"Quintana Roo",77500,019988492607,019988492608,019988492609,,CityClub
+1,1017,"City Club Coacalco","Vía  José López Portillo esq. 16 de Septiembre",34,"San Francisco",Coacalco,"Edo. de México",55700,015521597962,015521597967,015521597968,,CityClub
+1,1018,"City Club Ixtapaluca","Carretera Federal-México-Cuautla km 32.5",S/N,"Santa Bárbara",Ixtapaluca,"Edo. de México",56530,015525967016,015525967017,015525967019,,CityClub
+1,1019,"City Club Gómez Palacio","Blvd. Miguel Alemán Ote.",117,"Ricardo Flores Magón","Gómez Palacio",Durango,35000,018717501159,018717502110,018717500995,,CityClub
+1,1020,"City Club Toluca","Blvd. Aeropuerto Miguel Alemán esq. Paseo Tollocan",55,"Parque Industrial Lerma","San Mateo Atenco","Edo. de México",50200,017223173179,017223173180,,,CityClub
+1,1021,"City Club Lincoln","Av. Abraham Lincoln entre José Eleuterio Gzz. y San Fernando",3501-A,"Mitras Norte",Monterrey,"Nuevo León",64320,018183701262,018183701582,018183702529,Ext5421111,CityClub
+1,1022,"City Club Hermosillo","Blvd.Paseo Rio Sonora Nte#128 y Blvd. Solidaridad",188,"Proyecto Rio Sonora",Hermosillo,Sonora,83270,016622121576,016622122160,016622123982,,CityClub
+1,1023,"City Club Culiacán","Blvd. Universitarios pte. Esq Blvd.Enrique Sánchez Alonso",435,"Desarrollo Urbano 3 Ríos 3a.Etapa",Culiacán,Sinaloa,80027,016677531761,016677532730,016677532728,,CityClub
+1,1024,"City Club Playa Del Carmen","Carretera Federal Chetumal-Cancún KM. 2.3",2100,Ejidal,"Playa del Carmen","Quintana Roo",77712,019848039901,019848039902,019848039905,,CityClub
+1,1025,"City Club San José","Carretera Transpeninsular San José Aeropuerto","KM 39","San José Viejo","San José del Cabo","Baja California Sur",23437,016241434888,,,,CityClub
+1,1026,"City Club Ecatepec","Av. Vía Morelos esq. Av. Industrias",S/N,"Santa Clara","Ecatepec de Morelos","Edo. de México",,015557748479,015557747640,015557747656,,CityClub
+1,1027,"City Club Santa Mónica","Carretera México Querétaro  km 23.5",S/N,"Santa Mónica","Tlanepantla de Baz","Edo. de México",54050,015553661630,015553661637,,,CityClub
+1,1028,"City Club Querétaro","Prolongación Zaragoza","62- A","La Capilla",Querétaro,Queretaro,76170,014422425514,014422425516,014422425517,,CityClub
+1,1029,"City Club Universidad","Av. Universidad",103,"Residencial El Roble","San Nicolás de los Garza","Nuevo León",66450,018183325546,018183325516,,,CityClub
+1,1030,"City Club Revolución","Av. Revolución esq. José Alvarado",1009,"Jardín Español",Monterrey,"Nuevo León",64820,018112344905,018112344909,018112344906,,CityClub
+1,1031,"City Club Puebla","Blvd. 5 de Mayo",418,Xanenetla,Puebla,Puebla,72290,012222329050,012222328745,,012222421278,CityClub
+1,1032,"City Club Puerta de Hierro","Av. Abraham Lincoln",4001-A,"Puerta de Hierro",Monterrey,"Nuevo León",64346,018181210270,,,,CityClub
+1,1033,"City Club Piedras Negras","Blvd. República y Libramiento Manuel Pérez Treviño",1800,"El Lago","Piedras Negras",Coahuila,26069,018787954761,,,,CityClub
+1,5513,"CEDIS Tultitlán Secos","Av. Mexiquense",6,"Casco la Providencia Ex Hacienda Los Portales",Tultitlán,"Edo. de México",54910,015513340000,,,Ext5047,Cedis
+1,5514,"CEDIS Tultitlán Perecederos","Av. Mexiquense",6,"Casco La Providencia ExHacienda Los Portales",Tultitlán,"Edo. de México",54910,015513340000,,,,Cedis
+1,5516,"CEDIS Guadalajara Secos","Periférico Sur Manuel Gómez Morín",5890,Artesanos,Tlaquepaque,Jalisco,45598,013334782010,,,,Cedis
+1,5519,"CEDIS Tijuana Secos","Ave. Juan Alessio y Blvd. Acapulco",S/N,"Parque Industrial Pacífico",Tijuana,"Baja California",22643,016646276605,,,EXT6736,Cedis
+1,5521,"CEDIS Villahermosa Perecederos","Carretera Villahermosa-Cárdenas km 164.1",,"Ranchería Anacleto Canabal",Villahermosa,Tabasco,86280,019933100680,,,019933100681,Cedis
+1,5525,"CEDIS Tijuana Perecederos","Prolongación Club de Leones",10535,"Fraccionamiento La Joya (La Gloria)",Tijuana,"Baja California",22674,016647003308,,,,Cedis
+1,5530,"CEDIS Monterrey Perecederos","Av. Los Ángeles Ote.",1732,"Juana de Arco","San Nicolás","Nuevo León",64510,018183299353,018183299274,,018183292086,Cedis
+1,5541,"CEDIS Mérida","Calle 59 C",368x12,"Fracc. Yucaltepec, Central de Abastos",Mérida,Yucatán,,019999450236,019999450237,019999450238/39,,Cedis
+1,5542,"CEDIS México Tultitlán City Club","Av. Mexiquense",6,"Col. Casco La Providencia ExHacienda Los Portales",Tultitlán,"Edo. de México",54910,015513340000,,,,Cedis
+1,5558,"CEDIS Guadalajara Perecederos SIP","Periférico Sur Manuel Gómez Morín",5890,Artesanos,Tlaquepaque,Jalisco,45598,013334782010,,,,Cedis
+1,5567,"CEDIS Hermosillo Perecederos","Av. Chetumal entre Guatemala y Belice",1121,"Álvaro Obregón",Hermosillo,Sonora,83070,016622197492,016622198535,,,Cedis
+1,5578,"CEDIS Querétaro Secos","Autopista México-Querétaro Km 186",S/N,"Entronque El Ahorcado La Palma","Pedro Escobedo",Queretaro,76700,014482752000,,,014482752012,Cedis
+1,5582,"Almacén Central Secos Querétaro","Autopista México-Querétaro Km 186",S/N,"Entronque El Ahorcado La Palma","Pedro Escobedo",Queretaro,76700,014482752000,,,,Cedis
+1,5586,"CEDIS Chihuahua","Calle 14",1607,"Primero de Mayo",Chihuahua,Chihuahua,31390,016144205192,,,,Cedis
+1,5589,"CEDIS MÉXICO","Autopista México-Querétaro km 36.8",,,"Cuautitlán Izcalli","Edo. de México",54700,015558641600,015558641620,,,Cedis
+1,5598,"CEDIS Salinas (Monterrey)","Carretera Salinas-Victoria km. 5.5",,Satelite,"Salinas Victoria","Nuevo León",65500,018183299000,Ext2162,,018183292086,Cedis
+1,5613,"CEDIS Guadalajara City Club","Periférico Sur Manuel Gómez Morín",5890,Artesanos,Tlaquepaque,Jalisco,45598,013334782010,,,,Cedis
+1,5680,"CEDIS Villahermosa Secos","Carretera Villahermosa-Cárdenas Km. 164.1",,"Ranchería Anacleto Canabal",Villahermosa,Tabasco,86280,019933100680,,,019933100681,Cedis
