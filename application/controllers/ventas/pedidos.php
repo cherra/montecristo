@@ -951,7 +951,7 @@ class Pedidos extends CI_Controller {
             $presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
             $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
             $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
-            $presentaciones[$key]['codigo_cliente'] = $presentacion_cliente->codigo;
+            //$presentaciones[$key]['codigo_cliente'] = $presentacion_cliente->codigo;
         }
         $this->tbs->MergeBlock('presentaciones', $presentaciones);
         
