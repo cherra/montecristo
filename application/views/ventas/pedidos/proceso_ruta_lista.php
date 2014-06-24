@@ -21,6 +21,12 @@
         </div>
     </div>
     <div class="control-group">
+        <label class="control-label hidden-phone" for="fecha">Fecha programada</label>
+        <div class="controls">
+          <input type="text" name="fecha" id="fecha" placeholder="Fecha programada" value="<?php if(isset($fecha)) echo $fecha; ?>" class="fecha" >
+        </div>
+    </div>
+    <div class="control-group">
         <label class="control-label hidden-phone" for="filtro">Filtros</label>
         <div class="controls">
           <input type="text" name="filtro" id="filtro" placeholder="Filtros de busqueda" value="<?php if(isset($filtro)) echo $filtro; ?>" >

@@ -516,7 +516,7 @@ class Pedidos extends CI_Controller {
                     array('data' => number_format($d->peso,2).'kg', 'style' => 'text-align: right;'),
                     array('data' => number_format($d->piezas,2), 'style' => 'text-align: right;'),
                     array('data' => number_format($d->total,2), 'style' => 'text-align: right;'),
-                    array('data' => anchor($this->folder.$this->clase.'pedidos_proceso_ruta/' . $d->id_ruta, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Pedidos')), 'style' => 'text-align: right;')
+                    array('data' => anchor($this->folder.$this->clase.'pedidos_proceso_ruta/' . $d->id_ruta.'/'.$d->fecha, '<i class="icon-list"></i>', array('class' => 'btn btn-small', 'title' => 'Pedidos')), 'style' => 'text-align: right;')
             );
     	}
     	$data['table'] = $this->table->generate();
@@ -524,7 +524,7 @@ class Pedidos extends CI_Controller {
     	$this->load->view('ventas/lista', $data);
     }
     
-    public function pedidos_proceso_ruta( $id_ruta = NULL, $offset = 0 ){
+    public function pedidos_proceso_ruta( $id_ruta = NULL, $fecha = NULL,  $offset = 0 ){
         $this->load->model('pedido','p');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
@@ -548,12 +548,13 @@ class Pedidos extends CI_Controller {
                 $data['filtro'] = $filtro;
 
             $page_limit = $this->config->item("per_page");
-            $datos = $this->p->get_by_ruta($id_ruta, '2', $page_limit, $offset, $filtro)->result();
+            $datos = $this->p->get_by_ruta_fecha_programada($id_ruta, $fecha, '2', $page_limit, $offset, $filtro)->result();
 
+            //die($this->db->last_query());
             // generar paginacion
             $this->load->library('pagination');
             $config['base_url'] = site_url($this->folder.$this->clase.'index');
-            $config['total_rows'] = $this->p->count_by_ruta($id_ruta, '2', $filtro);
+            $config['total_rows'] = $this->p->count_by_ruta_fecha_programada($id_ruta, $fecha, '2', $filtro);
             $config['per_page'] = $page_limit;
             $config['uri_segment'] = 5;
             $this->pagination->initialize($config);
@@ -564,7 +565,7 @@ class Pedidos extends CI_Controller {
             $this->table->set_empty('&nbsp;');
             $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
             $this->table->set_template($tmpl);
-            $this->table->set_heading('','Núm.','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Peso','Piezas','Total', '');
+            $this->table->set_heading('','Núm.','Fecha','Fecha programada','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Peso','Piezas','Total', '');
             $total_peso = 0;
             $total_piezas = 0;
             $total_importe = 0;
@@ -577,6 +578,7 @@ class Pedidos extends CI_Controller {
                         '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
                         $d->id,
                         $d->fecha,
+                        $d->fecha_programada,
                         $cliente->nombre,
                         $sucursal->numero.' | '.$sucursal->nombre,
                         $sucursal->municipio,

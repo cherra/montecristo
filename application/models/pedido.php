@@ -335,6 +335,72 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl.' p', $limit, $offset);
     }
     
+    function count_by_ruta_fecha_programada( $id_ruta, $fecha, $estado = '1', $filtro = NULL){
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('OrdenSalida os', 'p.id_orden_salida = os.id');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        $this->db->join('Rutas r','p.id_ruta = r.id');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_ruta',$id_ruta);
+        $this->db->where('DATE(os.fecha_programada) = "'.$fecha.'"');
+        $this->db->where('p.estado',$estado);
+        $this->db->group_by('p.id');
+        $this->db->order_by('p.id','desc');
+        $query = $this->db->get($this->tbl.' p');
+        return $query->num_rows();
+    }
+    
+    function get_by_ruta_fecha_programada( $id_ruta, $fecha,  $estado = '1', $limit = NULL, $offset = 0, $filtro = NULL){
+        $this->db->select('p.*, SUM(pp.cantidad * ppr.peso) AS peso, SUM(pp.cantidad) AS piezas, DATE(os.fecha_programada) AS fecha_programada');
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('OrdenSalida os', 'p.id_orden_salida = os.id');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        $this->db->join('Rutas r','p.id_ruta = r.id');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_ruta',$id_ruta);
+        $this->db->where('DATE(os.fecha_programada) = "'.$fecha.'"');
+        $this->db->where('p.estado',$estado);
+        $this->db->group_by('p.id');
+        $this->db->order_by('c.nombre, p.id','desc');
+        return $this->db->get($this->tbl.' p', $limit, $offset);
+    }
+    
     /**
     * Alta
     */
