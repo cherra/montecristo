@@ -363,6 +363,7 @@ class Pedidos extends CI_Controller {
     	$data['action'] = $this->folder.$this->clase.'pedidos_consolidar_ruta/'.$id_ruta;
         $data['link_back'] = anchor($this->folder.$this->clase.'pedidos_consolidar/'.$offset,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['rutas'] = $this->r->get_all()->result();
+        $data['link_concentrado'] = anchor_popup($this->folder.$this->clase.'concentrado_documento/'.$id_ruta, '<i class="icon-print"></i> Concentrado', array('class' => 'btn', 'title' => 'Concentrado'));
         
         if(!empty($id_ruta)){
             $data['almacenes'] = $this->a->get_all()->result();
@@ -993,6 +994,96 @@ class Pedidos extends CI_Controller {
             }
         }else{
             redirect($this->folder.$this->clase.'pedidos_proceso_ruta');
+        }
+    }
+    
+    // Genera el formato de pedido para impresión
+    private function concentrado_render_template( $id_ruta ){
+        $this->load->model('pedido', 'p');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('contacto','co');
+        $this->load->model('ruta','r');
+        $this->load->model('cliente_presentacion','cp');
+        $this->load->model('producto_presentacion','pp');
+        $this->load->model('preferencias/usuario','u');
+        
+        $this->load->library('tbs');
+        $this->load->library('numero_letras');
+
+        // Nombres de meses en español (config/sitio.php)
+        $meses = $this->config->item('meses');
+
+        // Se carga el template predefinido para los recibos (tabla Configuracion)
+        $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_concentrado_pedidos_cliente'));
+
+        //$fecha = date('Y/m/d');
+        // Se sustituyen los campos en el template
+        $this->tbs->VarRef['dia'] = date('d');
+        $this->tbs->VarRef['mes'] = $meses[date('n')-1];
+        $this->tbs->VarRef['ano'] = date('Y');
+        
+        $ruta = $this->r->get_by_id($id_ruta)->row();
+        $this->tbs->VarRef['ruta'] = $ruta->nombre;
+
+        $i = $total_cantidad = $total = $total_cantidad_cliente = $total_cliente = 0;
+        
+        $clientes = $this->c->get_all()->result_array();
+        foreach($clientes as $key => $value){
+            $resultado = $this->p->get_presentaciones_by_cliente($clientes[$key]['id'], $id_ruta, array('1'));
+            if($resultado->num_rows() > 0){
+                $presentaciones = $resultado->result_array();
+                $listado[$i] = array('nombre' => $clientes[$key]['nombre'], 'total_cantidad' => 0, 'total' => 0);
+                foreach($presentaciones as $key2 => $value){
+                    $presentacion_cliente = $this->cp->get_presentacion($clientes[$key]['id'], $presentaciones[$key2]['id_producto_presentacion'])->row();
+                    $presentacion = $this->pp->get_by_id($presentaciones[$key2]['id_producto_presentacion'])->row();
+                    $listado[$i]['presentaciones'][] = array(
+                        'codigo' => $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo,
+                        'nombre' => $presentacion_cliente->producto,
+                        'cantidad' => number_format($presentaciones[$key2]['cantidad'],2,'.',','),
+                        'presentacion' => $presentacion_cliente->presentacion,
+                        'precio' => number_format($presentaciones[$key2]['precio'],2,'.',','),
+                        'importe' => number_format($presentaciones[$key2]['cantidad'] * $presentaciones[$key2]['precio'],2,'.',',')
+                        );
+                    $total_cantidad_cliente += $presentaciones[$key2]['cantidad'];
+                    $total_cliente += $presentaciones[$key2]['cantidad'] * $presentaciones[$key2]['precio'];
+                }
+                $listado[$i]['total_cantidad_cliente'] = number_format($total_cantidad_cliente, 2, '.', ',');
+                $listado[$i]['total_cliente'] = number_format($total_cliente, 2, '.', ',');
+                $i++;
+                $total += $total_cliente;
+                $total_cantidad += $total_cantidad_cliente;
+            }
+        }
+        $this->tbs->VarRef['total'] = number_format($total,2);
+        $this->tbs->VarRef['total_cantidad'] = number_format($total_cantidad,2);
+//        var_dump($listado);
+//        die();
+        $this->tbs->MergeBlock('clientes', $listado);
+        
+        
+//        $this->tbs->VarRef['subtotal'] = number_format($this->p->get_subtotal($pedido->id),2,'.',',');
+//        $this->tbs->VarRef['iva'] = number_format($this->p->get_iva($pedido->id),2,'.',',');
+//        $total = $this->p->get_importe($pedido->id);
+//        $this->tbs->VarRef['total'] = number_format($total,2,'.',',');
+//        $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($total);
+//        $this->tbs->VarRef['peso'] = number_format($this->p->get_peso($pedido->id),2,'.',',').'kg';
+//        $this->tbs->VarRef['piezas'] = number_format($this->p->get_piezas($pedido->id),2,'.',',');
+        // Render sin desplegar en navegador
+        $this->tbs->Show(TBS_NOTHING);
+        // Se regresa el render
+        return $this->tbs->Source;
+    }
+    
+    // Impresión de concentrado de productos por ruta
+    public function concentrado_documento( $id_ruta ){
+        $this->layout = "template_pdf";
+        if( $this->session->flashdata('pdf') ){
+            $data['contenido'] = $this->concentrado_render_template( $id_ruta );                    
+            $this->load->view('documento', $data);
+        }else{
+            $this->session->set_flashdata('pdf', true);
+            redirect($this->folder.$this->clase.'concentrado_documento/'.$id_ruta); // Se recarga el método para imprimirlo como PDF
         }
     }
 }

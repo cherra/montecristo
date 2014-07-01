@@ -1,0 +1,56 @@
+<h4 style="text-align: center;">CONCENTRADO DE PEDIDOS POR CLIENTE</h4>
+<table style="width: 30%; height: 23px;">
+<tbody>
+<tr>
+<td style="width: 70%;"><strong>Fecha de reporte:</strong></td>
+<td style="width: 30%; text-align: left;">[onshow.dia]/[onshow.mes]/[onshow.ano]</td>
+</tr>
+<tr>
+<td style="width: 70%;"><strong>Ruta:</strong></td>
+<td style="width: 30%; text-align: left;">[onshow.ruta]</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: right;">&nbsp;</p>
+<div>Cliente: <strong>[clientes.nombre;block=div;sub1=presentaciones]</strong>
+<table class="table table-condensed table-bordered" style="height: 23px;" width="100%">
+<tbody>
+<tr>
+<td style="width: 10%; text-align: center;"><strong>C&oacute;digo</strong></td>
+<td style="width: 50%; text-align: center;"><strong>Descripci&oacute;n</strong></td>
+<td style="width: 10%; text-align: center;"><strong>Cantidad</strong></td>
+<td style="width: 10%; text-align: center;"><strong>Presentaci&oacute;n</strong></td>
+<td style="width: 10%; text-align: center;"><strong>Precio</strong></td>
+<td style="width: 10%; text-align: center;"><strong>Importe</strong></td>
+</tr>
+<tr>
+<td style="width: 10%;">[clientes_sub1.codigo; block=tr]</td>
+<td style="width: 50%;">[clientes_sub1.nombre; block=tr] [clientes_sub1.codigo_cliente; block=tr]</td>
+<td style="width: 10%; text-align: right;">[clientes_sub1.cantidad; block=tr]</td>
+<td style="width: 10%; text-align: center;">[clientes_sub1.presentacion; block=tr]</td>
+<td style="width: 10%; text-align: right;">[clientes_sub1.precio; block=tr]</td>
+<td style="width: 10%; text-align: right;">[clientes_sub1.importe; block=tr]</td>
+</tr>
+<tr>
+<td style="width: 10%;">&nbsp;</td>
+<td style="width: 50%;">Total cliente</td>
+<td style="width: 10%; text-align: right;"><strong>[clientes.total_cantidad_cliente; block=tr;sub1=presentaciones]</strong></td>
+<td style="width: 10%; text-align: center;">&nbsp;</td>
+<td style="width: 10%; text-align: right;">&nbsp;</td>
+<td style="width: 10%; text-align: right;"><strong>[clientes.total_cliente;block=tr;sub1=presentaciones]</strong></td>
+</tr>
+</tbody>
+</table>
+<table class="table table-condensed" style="height: 23px;" width="30%">
+<tbody>
+<tr>
+<td style="width: 20%; text-align: left;">Cantidad total:</td>
+<td style="width: 80%; text-align: right;"><strong>[onshow.total_cantidad]</strong></td>
+</tr>
+<tr>
+<td style="width: 20%; text-align: left;">Importe total:</td>
+<td style="width: 80%; text-align: right;"><strong>[onshow.total]</strong></td>
+</tr>
+</tbody>
+</table>
+</div>

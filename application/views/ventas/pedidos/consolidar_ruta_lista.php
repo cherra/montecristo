@@ -52,6 +52,9 @@
     <div class="span2">
         <input type="checkbox" id="marcar_todos"/> Marcar todos
     </div>
+    <div class="offset8 span2">
+        <p class="text-right"><?php echo $link_concentrado; ?></p>
+    </div>
 </div>
 <div class="row-fluid">
     <div class="span12">

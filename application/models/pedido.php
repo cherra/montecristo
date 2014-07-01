@@ -90,6 +90,31 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl.' p');
     }
     
+    function get_presentaciones_by_cliente( $id_cliente, $id_ruta, $estado = array('1'), $limit = NULL, $offset = 0){
+        $this->db->select('pp.*');
+        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr', 'pp.id_producto_presentacion = ppr.id');
+        $this->db->join('Productos pro', 'ppr.id_producto = pro.id');
+        $this->db->join('Presentaciones pre', 'ppr.id_presentacion = pre.id');
+        $this->db->join('ClienteSucursales cs', 'p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c', 'cs.id_cliente = c.id');
+        $this->db->where('c.id', $id_cliente);
+        $this->db->where('p.id_ruta', $id_ruta);
+        $estados = "(";
+        $i = 0;
+        foreach($estado as $e){
+            if($i > 0)
+                $estados .= ' OR ';
+            $estados .= 'p.estado = '.$e;
+            $i++;
+        }
+        $estados .= ")";
+        $this->db->where($estados);
+        $this->db->group_by('pre.id, pro.id');
+        $this->db->order_by('pre.nombre, pro.nombre');
+        return $this->db->get($this->tbl.' p', $limit, $offset);
+    }
+    
     function get_importe($id){
         $this->db->select('SUM(pp.cantidad * pp.precio) + SUM(pp.cantidad * pp.precio * pp.iva) AS total', FALSE);
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
