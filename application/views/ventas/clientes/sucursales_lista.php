@@ -43,10 +43,12 @@
         </div>
     <?php echo form_close(); ?>
 </div>
-<?php if(isset($pagination)){ ?>
+
 <div class="row-fluid">
     <div class="span10">
+        <?php if(isset($pagination)){ ?>
         <div class="pagination"><?php echo $pagination; ?></div>
+        <?php } ?>
     </div>
     <div class="span2">
         <?php if(isset($link_add)){ ?>
@@ -54,6 +56,7 @@
         <?php } ?>
     </div>
 </div>
+<?php if(isset($pagination)){ ?>
 <div class="row-fluid">
     <div class="span12">
         <div class="data"><?php echo $table; ?></div>

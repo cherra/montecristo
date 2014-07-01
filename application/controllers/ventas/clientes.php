@@ -275,8 +275,8 @@ class Clientes extends CI_Controller{
                 }
 
                 $data['table'] = $this->table->generate();
-                $data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
             }
+            $data['link_add'] = anchor($this->folder.$this->clase.'sucursales_agregar/' . $id,'<i class="icon-plus icon-white"></i> Agregar', array('class' => 'btn btn-inverse'));
         }
         
         $this->load->view('ventas/clientes/sucursales_lista', $data);
