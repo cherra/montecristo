@@ -1053,6 +1053,7 @@ class Pedidos extends CI_Controller {
                 $i++;
                 $total += $total_cliente;
                 $total_cantidad += $total_cantidad_cliente;
+                $total_cantidad_cliente = $total_cliente = 0;
             }
         }
         $this->tbs->VarRef['total'] = number_format($total,2);
