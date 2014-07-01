@@ -717,6 +717,7 @@ class Clientes extends CI_Controller{
                         
                         $precio['codigo'] = $alias->codigo;
                         $precio['nombre'] = $alias->presentacion;*/
+                        $precio->precio = $precio->precio * (1 + ($cliente->precio_incremento / 100));
                         echo json_encode($precio);
                     }else{
                         echo json_encode(FALSE);
