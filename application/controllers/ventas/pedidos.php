@@ -148,6 +148,7 @@ class Pedidos extends CI_Controller {
                 }else{  // Si se está editando el pedido
                     $edicion = TRUE;
                     $id_pedido = $id;
+                    unset($pedido['id_usuario']); // Se quita el usuario para respetar al que registró el pedido originalmente.
                     $this->p->update($id, $pedido);
                     $this->p->delete_presentaciones($id);  // Se borran los productos
                     $mensaje = 'Se actualizó el pedido no. '.$id_pedido;
