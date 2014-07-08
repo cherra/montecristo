@@ -8,7 +8,7 @@
   <div class="span12">
     <form class="form-horizontal" name="form" id="form" action="<?php echo $action; ?>" class="form-horizontal" method="post">
         <div class="control-group">
-                <textarea name="plantilla" id="plantilla" class="required" rows="20"><?php echo (isset($plantilla) ? $plantilla : ''); ?></textarea>
+                <textarea name="plantilla" id="plantilla" class="required span12" rows="20"><?php echo (isset($plantilla) ? $plantilla : ''); ?></textarea>
         </div>
         <div class="control-group">
                 <button type="submit" id="guardar" class="btn btn-primary">Guardar</button>
@@ -23,6 +23,9 @@
 </div>
 
 <script type="text/javascript" src="<?php echo asset_url(); ?>tinymce/tinymce.min.js"></script>
+<?php 
+if(empty($formato) || $formato != 'txt'){
+?>
 <script type="text/javascript">
     $(document).ready(function(){
         /*tinymce.init({
@@ -46,8 +49,11 @@
                 "insertdatetime nonbreaking save table contextmenu directionality",
                 "template paste"
             ],
-            toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image | print preview"
+            toolbar1: "insertfile undo redo copy cut paste | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image | print preview"
         });
     });
 
 </script>
+<?php
+}
+?>

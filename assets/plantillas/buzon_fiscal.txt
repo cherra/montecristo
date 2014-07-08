@@ -1,0 +1,276 @@
+HOJA
+########################################################################
+
+                            
+
+[Datos Generales]
+serie|
+folio|
+asignaFolio|[onshow.asignaFolio]
+
+
+
+[Datos del Emisor]
+emRegimen| 
+emRfc|
+emNombre|
+emCalle|
+emNoExterior|
+emNoInterior|
+emColonia|
+emLocalidad|
+emReferencia|
+emMunicipio|
+emEstado|
+emPais|
+emCodigoPostal|
+emProveedor|[onshow.numProveedor; noerr]
+emGLN|
+
+[Datos de Expedicion SUCURSALES]	
+exAlias|
+exTelefono|		
+exCalle|	
+exNoExterior|	
+exNoInterior|		
+exColonia|Centro		
+exLocalidad|		
+exReferencia|		
+exMunicipio|		
+exEstado|	
+exPais|		
+exCodigoPostal|
+
+[Datos del Receptor]	
+reRfc|[onshow.rfc]
+reNombre|[onshow.cliente]
+reCalle|[onshow.calle]
+reNoExterior|[onshow.noexterior]
+reNoInterior|[onshow.nointerior]
+reColonia|[onshow.colonia]
+reLocalidad|[onshow.poblacion]
+reReferencia|
+reMunicipio|[onshow.municipio]	
+reEstado|[onshow.estado]
+rePais|[onshow.pais]
+reCodigoPostal|[onshow.cp]
+reNoCliente|
+reEmail|		
+reTelefono|		
+reFax|	
+reComprador|
+reNIM|			
+
+
+[Datos del Remitente]	
+remRfc|			
+remNombre|
+remClaveIdentificacion|	
+remCalle|	
+remNumero|	
+remReferencia|		
+remColonia|		
+remCiudad|		
+remMunicipio|
+remEstado|	
+remPais|	
+remCodigoPostal|	
+
+
+
+
+
+[Datos de Conceptos]
+[conceptos;block=begin]
+cantidad|[conceptos.cantidad]
+unidad|[conceptos.unidad; noerr]
+numIdentificacion|
+descripcion|[conceptos.nombre]
+valorUnitario|[conceptos.precio]
+importe|[conceptos.importe]
+[conceptos;block=end]
+
+#1  Cuenta Predial, 
+cpNumero|	
+
+#2  Informacion Aduanera
+iaNumero|
+iaFecha|
+iaAduana|
+
+#3  Parte
+parteCantidad|
+parteUnidad|
+parteNumIdentificacion|
+parteDescripcion| 
+parteValorUnitario|
+parteImporte|
+
+#Bloque de Datos opcionales para
+# introducir la informacion aduanera
+parteIaNumero|		
+parteIaFecha|		
+parteIaAduana|	
+
+
+
+#4 Complemento Concepto
+
+[Datos Complementarios para especificar la venta de vehiculos]
+claveVehicular|
+vehiculoIaNumero|		
+vehiculoIaFecha|		
+vehiculoIaAduana|
+
+#PARTES
+vehiculoparteCantidad|
+vehiculoparteUnidad|
+vehiculopartenoIdentificacion|
+vehiculoparteDescripcion|
+vehiculoparteValorUnitario|
+vehiculoparteImporte|
+vehiculoparteIaNumero|		
+vehiculoparteIaFecha|		
+vehiculoparteIaAduana|	
+
+[Complemento Dutty Free]
+
+dutFreeVersion| 
+dutFreeFechaTran| 
+dutFreeTipoTran| 
+# Datos Transito
+dutFreeDatVia| 
+dutFreeDatTipoID|
+dutFreeDatNumeroId| 
+dutFreeDatNacio|
+dutFreeDatTransporte| 
+dutFreeDatidTransporte| 
+
+
+
+
+
+[Datos Extra Conceptos]
+ConExReferencia1|	
+ConExReferencia2|	
+ConExIndicador|		
+ConExDescripcionIngles|	
+ConExNumRemision|	
+ConExCargo|		
+ConExDescuento|		
+ConExMensaje|		
+ConExTasaImpuesto|	
+ConExImpuesto|		
+ConExValorUnitarioMonedaExtranjera|
+ConExImporteMonedaExtranjera|	
+ConExtunitarioBruto|	
+ConExtImporteBruto|	
+ConExCvDivisas|		
+ConExtItemIdAlterno|	
+
+
+
+[Datos Complementarios del Comprobante a nivel global]	
+subtotalConceptos|[onshow.subtotal]
+descuentoPorcentaje|
+descuentoMonto|
+descuentoMotivo|	
+cargos|
+totalConceptos||[onshow.total]
+pagoForma|
+pagoCondiciones|
+pagoMetodo|
+numCtaPago|
+lugarExpedicion|Colima, Colima
+
+
+
+[Datos Complementarios para especificar el pago en parcialidades]
+folioFiscalOrig|
+serieFolioFiscalOrig|
+fechaFolioFiscalOrig|
+montoFolioFiscalOrig|
+
+
+
+[Datos Complementarios del Comprobante a nivel global para casos de importacin o exportacin de bienes]
+#Datos Globales de Aduana, el bloque es opcional y se constituye por los siguientes tres datos, el bloque se repite para cada aduana que aplique.
+comiaNumero|
+comiaFecha|
+comiaAduana|
+embarque|		
+fob|Destino	
+
+
+
+[Datos Comerciales del Comprobante a nivel global]	Datos adicionales de tipo comercial comnmente usados.
+refID|
+tipoDocumento|
+ordenCompra|
+agente|			
+observaciones|		
+nombreMoneda|	
+tipoCambio|
+
+
+[Impuestos Trasladados]	
+trasladadoImpuesto|	
+trasladadoImporte|
+trasladadoTasa|
+subtotalTrasladados|
+
+
+
+[Impuestos Retenidos]	
+retenidoImpuesto|	
+retenidoImporte|	
+subtotalRetenidos|
+
+
+
+[IMPUESTOS LOCALES]
+version|
+totalTraslados|
+totalRetenciones|
+
+[TRASLADOS LOCALES]
+impLocTrasladado|
+tasaDeTraslado|
+importeTraslados|
+
+[RETENCIONES LOCALES]
+impLocRetenido|
+tasaDeRetencion|
+importeRetenciones|
+
+
+[Datos Totales]		
+montoTotal|
+montoTotalTexto|
+
+
+[Otros]			
+ClaveTransportista|	
+NoRelacionPemex|	
+NoConvenioPemex|	
+NoCedulaPemex|		
+AireacionYSecado|	
+ApoyoEducampo|		
+Sanidad|	
+
+
+[Otros]	
+LeyendaEspecial1|
+LeyendaEspecial2|	
+LeyendaEspecial3|	
+LeyendaEspecial4|	
+LeyendaEspecial5|	
+LeyendaEspecial6|	
+LeyendaEspecial7|	
+LeyendaEspecial8|	
+LeyendaEspecial9|	
+LeyendaEspecial10|	
+LeyendaEspecial11|	
+LeyendaEspecial12|	
+
+
