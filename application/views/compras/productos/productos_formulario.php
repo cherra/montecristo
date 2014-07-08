@@ -48,6 +48,12 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="iva">Causa IVA?</label>
+            <div class="controls">
+                <input type="checkbox" name="iva" value="1" <?php if(isset($datos->iva) && $datos->iva == 1) echo 'checked'; ?>>
+            </div>
+        </div>
+        <div class="control-group">
             <div class="controls">
               <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
