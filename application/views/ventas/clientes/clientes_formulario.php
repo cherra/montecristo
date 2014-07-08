@@ -93,6 +93,12 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="pais">País</label>
+            <div class="controls">
+              <input type="text" name="pais" id="pais" class="required" placeholder="País" value="<?php echo (isset($datos->pais) ? $datos->pais : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label hidden-phone" for="cp">C.P.</label>
             <div class="controls">
               <input type="text" name="cp" placeholder="C.P." value="<?php echo (isset($datos->cp) ? $datos->cp : ''); ?>">
@@ -114,6 +120,25 @@
             <label class="control-label hidden-phone" for="email">E-mail</label>
             <div class="controls">
               <input type="text" name="email" placeholder="E-mail" value="<?php echo (isset($datos->email) ? $datos->email : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="metodo_pago">Método de pago</label>
+            <div class="controls">
+                <select id="grupo" name="metodo_pago" class="required">
+                    <option value="">Selecciona un método...</option>
+                    <option value="efectivo" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'efectivo' ? 'selected' : ''); ?>>Efectivo</option>
+                    <option value="deposito" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'deposito' ? 'selected' : ''); ?>>Depósito</option>
+                    <option value="cheque" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'cheque' ? 'selected' : ''); ?>>Cheque</option>
+                    <option value="tarjeta" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'tarjeta' ? 'selected' : ''); ?>>Tarjeta</option>
+                    <option value="no identificado" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'no identificado' ? 'selected' : ''); ?>>No identificado</option>
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="num_proveedor">Número de proveedor</label>
+            <div class="controls">
+              <input type="text" name="num_proveedor" placeholder="Número de proveedor" value="<?php echo (isset($datos->num_proveedor) ? $datos->num_proveedor : ''); ?>">
             </div>
         </div>
         <div class="control-group">

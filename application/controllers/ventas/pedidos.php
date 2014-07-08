@@ -1004,16 +1004,12 @@ class Pedidos extends CI_Controller {
         $this->load->model('pedido', 'p');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
-        $this->load->model('contacto','co');
         $this->load->model('cliente_presentacion','cp');
         $this->load->model('producto_presentacion','pp');
-        $this->load->model('preferencias/usuario','u');
             
         $pedido = $this->p->get_by_id($id)->row();
         $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
         $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
-        $contacto = $this->co->get_by_id($pedido->id_contacto)->row();
-        $usuario = $this->u->get_by_id($pedido->id_usuario)->row();
         
         $this->load->library('tbs');
         $this->load->library('numero_letras');
@@ -1035,7 +1031,6 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['mes'] = $meses[date_format($fecha,'n')-1];
         $this->tbs->VarRef['ano'] = date_format($fecha,'Y');
          */
-        //$this->tbs->VarRef['usuario'] = $usuario->nombre;
         
         $this->tbs->VarRef['cliente'] = $cliente->nombre;
         $this->tbs->VarRef['rfc'] = $cliente->rfc;
@@ -1046,15 +1041,10 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['poblacion'] = $cliente->poblacion;
         $this->tbs->VarRef['municipio'] = $cliente->municipio;
         $this->tbs->VarRef['estado'] = $cliente->estado;
+        $this->tbs->VarRef['pais'] = $cliente->pais;
         $this->tbs->VarRef['cp'] = $cliente->cp;
-        //$this->tbs->VarRef['sucursal'] = $sucursal->numero.' '.$sucursal->nombre;
-//        $this->tbs->VarRef['domicilio_sucursal'] = $sucursal->calle.' '.$sucursal->numero_exterior.' '.$sucursal->numero_interior;
-//        $this->tbs->VarRef['colonia_sucursal'] = $sucursal->colonia;
-//        $this->tbs->VarRef['poblacion_sucursal'] = $sucursal->poblacion;
-//        $this->tbs->VarRef['municipio_sucursal'] = $sucursal->municipio;
-//        $this->tbs->VarRef['estado_sucursal'] = $sucursal->estado;
-//        $this->tbs->VarRef['cp_sucursal'] = $sucursal->cp;
-//        $this->tbs->VarRef['contacto'] = $contacto->nombre . ' ('. $contacto->puesto . ')';
+        $this->tbs->VarRef['metodo_pago'] = $cliente->metodo_pago;
+        $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
 
         $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
         foreach($presentaciones as $key => $value){
@@ -1070,13 +1060,12 @@ class Pedidos extends CI_Controller {
         }
         $this->tbs->MergeBlock('conceptos', $presentaciones);
         
-        $this->tbs->VarRef['subtotal'] = number_format($this->p->get_subtotal($pedido->id),2,'.',',');
-        $this->tbs->VarRef['iva'] = number_format($this->p->get_iva($pedido->id),2,'.',',');
+        $this->tbs->VarRef['tasa_iva'] = $this->configuracion->get_valor('iva')*100;
+        $this->tbs->VarRef['subtotal'] = $this->p->get_subtotal($pedido->id);
+        $this->tbs->VarRef['iva'] = $this->p->get_iva($pedido->id);
         $total = $this->p->get_importe($pedido->id);
-        $this->tbs->VarRef['total'] = number_format($total,2,'.',',');
+        $this->tbs->VarRef['total'] = $total;
         $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($total);
-        $this->tbs->VarRef['peso'] = number_format($this->p->get_peso($pedido->id),2,'.',',').'kg';
-        $this->tbs->VarRef['piezas'] = number_format($this->p->get_piezas($pedido->id),2,'.',',');
         // Render sin desplegar en navegador
         $this->tbs->Show(TBS_NOTHING);
         // Se regresa el render
@@ -1090,27 +1079,11 @@ class Pedidos extends CI_Controller {
             $this->layout = "empty";
             $this->load->model('pedido', 'p');
             $pedido = $this->p->get_by_id($id)->row();
-            //if( $this->session->flashdata('pdf') ){
-            //if(true){
-                if($pedido){
-//                    $this->output->set_content_type('txt');
-//                    $this->output->set_output($this->buzon_fiscal_render_template($id));
+            if($pedido){
                 force_download($pedido->id.'-BF.txt', $this->buzon_fiscal_render_template($id));
-                    
-                    //$data['contenido'] = $this->buzon_fiscal_render_template($id);                    
-                    //$this->load->view('documento', $data);
-                }else{
-                    redirect($this->folder.$this->clase.'index');
-                }
-//            }else{
-//                $this->session->set_flashdata('pdf', true);
-//                if($pedido){
-//                    if($pedido->estado == '0'){  // Se agrega una marca de agua al PDF
-//                        $this->session->set_flashdata('watermark', 'Cancelado');
-//                    }
-//                }
-//                redirect($this->folder.$this->clase.'pedidos_exportar_buzon_fiscal/'.$id); // Se recarga el método para imprimirlo como PDF
-//            }
+            }else{
+                redirect($this->folder.$this->clase.'index');
+            }
         }else{
             redirect($this->folder.$this->clase.'index');
         }

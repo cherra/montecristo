@@ -24,7 +24,7 @@ emMunicipio|
 emEstado|
 emPais|
 emCodigoPostal|
-emProveedor|[onshow.numProveedor; noerr]
+emProveedor|[onshow.num_proveedor; noerr]
 emGLN|
 
 [Datos de Expedicion SUCURSALES]	
@@ -177,9 +177,9 @@ descuentoMonto|
 descuentoMotivo|	
 cargos|
 totalConceptos||[onshow.total]
-pagoForma|
+pagoForma|Pago en una sola exhibición
 pagoCondiciones|
-pagoMetodo|
+pagoMetodo|[onshow.metodo_pago]
 numCtaPago|
 lugarExpedicion|Colima, Colima
 
@@ -214,10 +214,10 @@ tipoCambio|
 
 
 [Impuestos Trasladados]	
-trasladadoImpuesto|	
-trasladadoImporte|
-trasladadoTasa|
-subtotalTrasladados|
+trasladadoImpuesto|IVA
+trasladadoImporte|[onshow.iva]
+trasladadoTasa|[onshow.tasa_iva]
+subtotalTrasladados|[onshow.iva]
 
 
 
