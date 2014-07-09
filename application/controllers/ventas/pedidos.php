@@ -131,7 +131,8 @@ class Pedidos extends CI_Controller {
         if($this->input->is_ajax_request()){
             $this->load->model('pedido','p');
             $this->load->model('orden_salida','os');
-            if( ($datos = $this->input->post()) ){
+            $this->load->model('producto','pr');
+            if( ($datos = $this->input->post()) || ($datos = $this->input->get()) ){
                 $respuesta = 'OK';
                 $pedido = array(
                     'id_usuario' => $this->session->userdata('userid'),
@@ -156,16 +157,23 @@ class Pedidos extends CI_Controller {
                 }
                 if( $id_pedido ){
                     $pedido = $this->p->get_by_id($id_pedido)->row();
+                    $tasa_iva = $this->configuracion->get_valor('iva');
                     //$salida = $this->os->get_by_id($pedido->id_orden_salida)->row();
                     $this->os->delete_presentaciones($pedido->id_orden_salida);
                     foreach($datos['productos'] as $producto){
+                        $data = $this->pr->get_by_id($producto[4])->row();
+                        if($data->iva == 1)
+                            $iva = $tasa_iva;
+                        else
+                            $iva = 0;
                         // Presentaciones del pedido
                         $presentacion = array(
                             'id_pedido' => $id_pedido,
                             'id_producto_presentacion' => $producto[0],
                             'cantidad' => $producto[1],
                             'precio' => $producto[2],
-                            'observaciones' => $producto[3]
+                            'observaciones' => $producto[3],
+                            'iva' => $iva
                         );
                         if( !($this->p->save_presentacion($presentacion)) ){
                             $respuesta = 'Error';
@@ -1050,9 +1058,9 @@ class Pedidos extends CI_Controller {
         foreach($presentaciones as $key => $value){
             $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $presentaciones[$key]['id_producto_presentacion'])->row();
             $presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
-            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * $presentaciones[$key]['precio'],2,'.',',');
-            $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
-            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * ($presentaciones[$key]['precio'] / (1 + $presentaciones[$key]['iva'])),2,'.','');
+            $presentaciones[$key]['cantidad'] = $presentaciones[$key]['cantidad'];
+            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'] / (1 + $presentaciones[$key]['iva']),2,'.','');
             $presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
             $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
             $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
@@ -1061,10 +1069,10 @@ class Pedidos extends CI_Controller {
         $this->tbs->MergeBlock('conceptos', $presentaciones);
         
         $this->tbs->VarRef['tasa_iva'] = $this->configuracion->get_valor('iva')*100;
-        $this->tbs->VarRef['subtotal'] = $this->p->get_subtotal($pedido->id);
-        $this->tbs->VarRef['iva'] = $this->p->get_iva($pedido->id);
+        $this->tbs->VarRef['subtotal'] = number_format($this->p->get_subtotal($pedido->id),2,'.','');
+        $this->tbs->VarRef['iva'] = number_format($this->p->get_iva($pedido->id),2,'.','');
         $total = $this->p->get_importe($pedido->id);
-        $this->tbs->VarRef['total'] = $total;
+        $this->tbs->VarRef['total'] = number_format($total,2,'.','');
         $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($total);
         // Render sin desplegar en navegador
         $this->tbs->Show(TBS_NOTHING);

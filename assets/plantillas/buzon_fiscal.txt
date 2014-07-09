@@ -245,8 +245,8 @@ importeRetenciones|
 
 
 [Datos Totales]		
-montoTotal|
-montoTotalTexto|
+montoTotal|[onshow.total]
+montoTotalTexto|[onshow.cantidad_letra]
 
 
 [Otros]			

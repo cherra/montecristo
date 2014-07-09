@@ -679,11 +679,12 @@ $(document).ready(function(){
 
         $("#lineas tr").each(function(){
             if($(this).attr("id_producto_presentacion")){
-                productos[i] = new Array(4);
+                productos[i] = new Array(5);
                 productos[i][0] = $(this).attr("id_producto_presentacion");
                 productos[i][1] = $(this).attr("cantidad");
                 productos[i][2] = $(this).attr("precio");
                 productos[i][3] = $(this).attr("observaciones");
+                productos[i][4] = $(this).attr("id_producto");
                 i++;
             }
         });

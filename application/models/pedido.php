@@ -116,7 +116,8 @@ class Pedido extends CI_Model {
     }
     
     function get_importe($id){
-        $this->db->select('SUM(pp.cantidad * pp.precio) + SUM(pp.cantidad * pp.precio * pp.iva) AS total', FALSE);
+        //$this->db->select('SUM(pp.cantidad * pp.precio) + SUM(pp.cantidad * pp.precio * pp.iva) AS total', FALSE);
+        $this->db->select('SUM(pp.cantidad * pp.precio) AS total', FALSE);
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->where('p.id',$id);
         $this->db->group_by('p.id');
@@ -130,7 +131,7 @@ class Pedido extends CI_Model {
     }
     
     function get_iva($id){
-        $this->db->select('SUM(pp.cantidad * pp.precio * pp.iva) AS iva', FALSE);
+        $this->db->select('SUM(pp.cantidad * pp.precio) - SUM(pp.cantidad * pp.precio / (1 + pp.iva) ) AS iva', FALSE);
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->where('p.id',$id);
         $this->db->group_by('p.id');
@@ -144,7 +145,7 @@ class Pedido extends CI_Model {
     }
     
     function get_subtotal($id){
-        $this->db->select('SUM(pp.cantidad * pp.precio) AS total', FALSE);
+        $this->db->select('SUM(pp.cantidad * pp.precio / (1 + pp.iva) ) AS total', FALSE);
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->where('p.id',$id);
         $this->db->group_by('p.id');
