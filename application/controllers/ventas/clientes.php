@@ -500,7 +500,7 @@ class Clientes extends CI_Controller{
             
             // generar paginacion
             $this->load->library('pagination');
-            $config['base_url'] = site_url($this->folder.$this->clase.'sucursales/' . $id);
+            $config['base_url'] = site_url($this->folder.$this->clase.'productos/' . $id);
             $config['total_rows'] = $this->cp->count_all($filtro, $id);
             $config['uri_segment'] = 5;
             $this->pagination->initialize($config);
