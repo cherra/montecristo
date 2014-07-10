@@ -922,6 +922,10 @@ class Pedidos extends CI_Controller {
         // Se carga el template predefinido para los recibos (tabla Configuracion)
         $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_pedidos'));
 
+        //Logotipo
+        $logo = $this->configuracion->get_valor('img_path').$this->configuracion->get_valor('logotipo');
+        $this->tbs->VarRef['logo'] = base_url($logo);
+        
         // Se sustituyen los campos en el template
         $this->tbs->VarRef['numero'] = $pedido->id;
         $fecha = date_create($pedido->fecha);
