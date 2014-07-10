@@ -953,6 +953,8 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['estado_sucursal'] = $sucursal->estado;
         $this->tbs->VarRef['cp_sucursal'] = $sucursal->cp;
         $this->tbs->VarRef['contacto'] = $contacto->nombre . ' ('. $contacto->puesto . ')';
+        
+        $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
 
         $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
         foreach($presentaciones as $key => $value){
