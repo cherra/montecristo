@@ -135,11 +135,12 @@ class Cliente_presentacion extends CI_Model {
     }
     
     function get_presentacion( $id_cliente = NULL, $id_producto_presentacion = NULL ){
-        $this->db->select('IF(LENGTH(cp.presentacion) > 0, cp.presentacion, pr.nombre) AS presentacion, 
+        $this->db->select('p.id AS id_producto,
+            IF(LENGTH(cp.presentacion) > 0, cp.presentacion, pr.nombre) AS presentacion, 
             cp.id,
             pp.id AS id_producto_presentacion,
             IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto,
-            IF(LENGTH(cp.codigo) > 0, cp.codigo, pp.codigo) AS codigo,
+            IF(LENGTH(cp.codigo) > 0, cp.codigo, CONCAT(p.codigo, pr.codigo)) AS codigo,
             IF(LENGTH(cp.sku) > 0, cp.sku, pp.sku) AS sku,
             pre.precio', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');

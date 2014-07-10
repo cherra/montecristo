@@ -216,9 +216,8 @@ class Pedidos extends CI_Controller {
         $this->load->model('ruta','r');
         $this->load->model('sucursal','s');
         $this->load->model('contacto','co');
-        $this->load->model('producto_presentacion','pp');
         $this->load->model('producto','pro');
-        $this->load->model('presentacion','pre');
+        $this->load->model('cliente_presentacion', 'cp');
         
         $data['titulo'] = 'Pedido <small>Editar</small>';
     	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
@@ -235,18 +234,17 @@ class Pedidos extends CI_Controller {
         
         $presentaciones = $this->p->get_presentaciones($id)->result();
         foreach($presentaciones as $p){
-            $pp = $this->pp->get_by_id($p->id_producto_presentacion)->row();
-            if($pp){
-                $producto = $this->pro->get_by_id($pp->id_producto)->row();
-                $presentacion = $this->pre->get_by_id($pp->id_presentacion)->row();
+            $ppc = $this->cp->get_presentacion($data['cliente']->id, $p->id_producto_presentacion)->row();
+            if($ppc){
+                $producto = $this->pro->get_by_id($ppc->id_producto)->row();
                 $data['presentaciones'][] = (object)array(
                     'id_producto_presentacion' => $p->id_producto_presentacion,
                     'cantidad' => $p->cantidad,
                     'precio' => $p->precio,
-                    'producto' => $producto->nombre,
+                    'producto' => $ppc->producto,
                     'id_producto' => $producto->id,
-                    'presentacion' => $presentacion->nombre,
-                    'codigo' => $pp->codigo,
+                    'presentacion' => $ppc->presentacion,
+                    'codigo' => $ppc->codigo,
                     'observaciones' => $p->observaciones);
             }
         }
