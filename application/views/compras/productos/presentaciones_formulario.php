@@ -20,6 +20,12 @@
         </div>
       </div>
       <div class="control-group">
+        <label class="control-label hidden-phone" for="unidad">Unidad</label>
+        <div class="controls">
+          <input type="text" name="unidad" id="unidad" class="required" placeholder="Unidad" value="<?php echo (isset($datos->unidad) ? $datos->unidad : ''); ?>">
+        </div>
+      </div>
+      <div class="control-group">
         <div class="controls">
           <button type="submit" class="btn btn-primary">Guardar</button>
         </div>

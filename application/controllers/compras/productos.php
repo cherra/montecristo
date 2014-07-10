@@ -299,11 +299,12 @@ class Productos extends CI_Controller{
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Nombre', 'Código', '');
+    	$this->table->set_heading('Nombre', 'Código', 'Unidad', '');
     	foreach ($datos as $d) {
     		$this->table->add_row(
                     $d->nombre,
                     $d->codigo,
+                    $d->unidad,
                     array('data' => anchor($this->folder.$this->clase.'presentaciones_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;')
     		);
     	}
