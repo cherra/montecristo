@@ -61,6 +61,22 @@
 </div>
 <?php if(isset($pagination)){ ?>
 <div class="row-fluid">
+    <address>
+        <strong>Sucursal <?php echo $sucursal->numero; ?></strong><br>
+        <?php echo $sucursal->calle.' '.$sucursal->numero_exterior.' '.$sucursal->numero_interior; ?><br>
+        <?php echo $sucursal->colonia; ?><br>
+        <?php echo $sucursal->municipio.', '.$sucursal->estado; ?> <br>
+        <abbr title="Teléfonos">Tels:</abbr> <?php echo $sucursal->telefono; ?>
+        <?php
+        for($i = 2; $i < 10; $i++){
+            if(!empty($sucursal->{'telefono'.$i})){
+                echo ', '.$sucursal->{'telefono'.$i};
+            }
+        }
+        ?>
+    </address>
+</div>
+<div class="row-fluid">
     <div class="span10">
         <div class="pagination"><?php echo $pagination; ?></div>
     </div>
