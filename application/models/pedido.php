@@ -83,10 +83,16 @@ class Pedido extends CI_Model {
     }
     
     function get_presentaciones( $id ){
-        $this->db->select('pp.*');
+        $this->db->select('pp.*, IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
+        $this->db->join('ProductoPresentaciones ppr', 'pp.id_producto_presentacion = ppr.id');
+        $this->db->join('Productos pro', 'ppr.id_producto = pro.id');
+        $this->db->join('Presentaciones pre', 'ppr.id_presentacion = pre.id');
+        $this->db->join('ClienteSucursales cs', 'p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c', 'cs.id_cliente = c.id');
+        $this->db->join('ClientePresentaciones cp', 'ppr.id = cp.id_producto_presentacion AND c.id = cp.id_cliente', 'left');
         $this->db->where('p.id', $id);
-        $this->db->order_by('pp.id');
+        $this->db->order_by('producto, pre.nombre');
         return $this->db->get($this->tbl.' p');
     }
     
