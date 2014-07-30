@@ -1056,6 +1056,7 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['cp'] = $cliente->cp;
         $this->tbs->VarRef['metodo_pago'] = $cliente->metodo_pago;
         $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
+        $this->tbs->VarRef['comprador'] = $sucursal->numero;
 
         $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
         foreach($presentaciones as $key => $value){
