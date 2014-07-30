@@ -1068,7 +1068,7 @@ class Pedidos extends CI_Controller {
             $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
             $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
             $presentaciones[$key]['codigo_cliente'] = $presentacion_cliente->codigo;
-            $presentaciones[$key]['unidad'] = $presentacion->unidad;
+            $presentaciones[$key]['unidad'] = $presentacion->nombre;
         }
         $this->tbs->MergeBlock('conceptos', $presentaciones);
         
