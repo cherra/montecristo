@@ -364,7 +364,7 @@ class Pedido extends CI_Model {
         $this->db->where('p.id_ruta',$id_ruta);
         $this->db->where('p.estado',$estado);
         $this->db->group_by('p.id');
-        $this->db->order_by('c.nombre, p.id','desc');
+        $this->db->order_by('p.id','desc');
         return $this->db->get($this->tbl.' p', $limit, $offset);
     }
     
