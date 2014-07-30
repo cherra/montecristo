@@ -127,11 +127,11 @@
             <div class="controls">
                 <select id="grupo" name="metodo_pago" class="required">
                     <option value="">Selecciona un método...</option>
-                    <option value="efectivo" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'efectivo' ? 'selected' : ''); ?>>Efectivo</option>
-                    <option value="deposito" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'deposito' ? 'selected' : ''); ?>>Depósito</option>
-                    <option value="cheque" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'cheque' ? 'selected' : ''); ?>>Cheque</option>
-                    <option value="tarjeta" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'tarjeta' ? 'selected' : ''); ?>>Tarjeta</option>
-                    <option value="no identificado" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'no identificado' ? 'selected' : ''); ?>>No identificado</option>
+                    <option value="EFECTIVO" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'efectivo' ? 'selected' : ''); ?>>Efectivo</option>
+                    <option value="DEPOSITO EN CUENTA" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'deposito' ? 'selected' : ''); ?>>Depósito</option>
+                    <option value="CHEQUE" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'cheque' ? 'selected' : ''); ?>>Cheque</option>
+                    <option value="TARJETA DE CREDITO" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'tarjeta' ? 'selected' : ''); ?>>Tarjeta</option>
+                    <option value="NO IDENTIFICADO" <?php echo (isset($datos->metodo_pago) && $datos->metodo_pago == 'no identificado' ? 'selected' : ''); ?>>No identificado</option>
                 </select>
             </div>
         </div>
