@@ -285,7 +285,7 @@ class Clientes extends CI_Controller{
     /*
      * Agregar una sucursal
      */
-    public function sucursales_agregar( $id = NULL, $origen = NULL ) {
+    public function sucursales_agregar( $id = NULL, $origen = NULL, $referencia = NULL ) {
         if (empty($id)) {
             redirect($this->folder.$this->clase.'sucursales');
         }
@@ -296,16 +296,20 @@ class Clientes extends CI_Controller{
         $data['titulo'] = 'Sucursales <small>Registro nuevo</small>';
         if(empty($origen))
             $data['link_back'] = anchor($this->folder.$this->clase.'sucursales/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
-        elseif($origen == 'pedido')
+        elseif($origen == 'pedido' && empty($referencia))
             $data['link_back'] = anchor('ventas/pedidos/pedidos_agregar/' . $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        elseif($origen == 'pedido' && !empty($referencia))
+            $data['link_back'] = anchor('ventas/pedidos/pedidos_editar/' . $referencia .'/'. $id,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
-        $data['action'] = $this->folder.$this->clase.'sucursales_agregar/' . $id .'/'.$origen;
+        $data['action'] = $this->folder.$this->clase.'sucursales_agregar/' . $id .'/'.$origen.'/'.$referencia;
 	
         if ( ( $sucursal = $this->input->post() ) ) {
             $sucursal['id_cliente'] = $id;
             if( $this->s->save($sucursal) > 0 ){
-                if(!empty($origen) && $origen == 'pedido'){
+                if(!empty($origen) && $origen == 'pedido' && empty($referencia)){
                     redirect('ventas/pedidos/pedidos_agregar/'.$id.'/'.$this->db->insert_id());
+                }elseif(!empty($origen) && $origen == 'pedido' && !empty($referencia)){
+                    redirect('ventas/pedidos/pedidos_editar/'.$referencia.'/'.$id.'/'.$this->db->insert_id());
                 }
                 $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
             }else
@@ -413,7 +417,7 @@ class Clientes extends CI_Controller{
         $this->load->view('ventas/clientes/contactos_lista', $data);
     }
     
-    public function contactos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $origen = NULL ) {
+    public function contactos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $origen = NULL, $referencia = NULL ) {
         if (empty($id_cliente) OR empty($id_sucursal)) {
             redirect($this->folder.$this->clase.'contactos');
         }
@@ -427,16 +431,20 @@ class Clientes extends CI_Controller{
         $data['titulo'] = 'Contactos <small>Registro nuevo</small>';
         if(empty($origen))
             $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. trim($data['sucursal']->estado).'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
-        elseif($origen == 'pedido')
+        elseif($origen == 'pedido' && empty($referencia))
             $data['link_back'] = anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        elseif($origen == 'pedido' && !empty($referencia))
+            $data['link_back'] = anchor('ventas/pedidos/pedidos_editar/' . $referencia .'/'. $id_cliente .'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
-        $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$origen;
+        $data['action'] = 'ventas/clientes/contactos_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$origen.'/'.$referencia;
 	
         if ( ( $contacto = $this->input->post() ) ) {
             $contacto['id_cliente_sucursal'] = $id_sucursal;
             if( $this->co->save($contacto) > 0 ){
-                if(!empty($origen) && $origen == 'pedido'){
+                if(!empty($origen) && $origen == 'pedido' && empty($referencia)){
                     redirect('ventas/pedidos/pedidos_agregar/'.$id_cliente.'/'.$id_sucursal.'/'.$this->db->insert_id());
+                }elseif(!empty($origen) && $origen == 'pedido' && !empty($referencia)){
+                    redirect('ventas/pedidos/pedidos_editar/'.$referencia.'/'.$id_cliente.'/'.$id_sucursal.'/'.$this->db->insert_id());
                 }
                 $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
             }else

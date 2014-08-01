@@ -204,7 +204,16 @@ class Pedidos extends CI_Controller {
         }
     }
     
-    public function pedidos_editar( $id = NULL ){
+    public function pedidos_editar( $id = NULL, $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ){
+        // Nueva sucursal
+        if(!empty($id_sucursal) && $id_sucursal == 'nuevo'){
+            redirect('ventas/clientes/sucursales_agregar/'.$id_cliente.'/pedido/'.$id);
+        }
+        // Nuevo contacto
+        if(!empty($id_contacto) && $id_contacto == 'nuevo'){
+            redirect('ventas/clientes/contactos_agregar/'.$id_cliente.'/'.$id_sucursal.'/pedido/'.$id);
+        }
+        
         $this->load->model('pedido','p');
         
         $datos = $this->p->get_by_id($id);
@@ -221,13 +230,18 @@ class Pedidos extends CI_Controller {
         
         $data['titulo'] = 'Pedido <small>Editar</small>';
     	$data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
-        $data['action'] = site_url($this->folder.$this->clase.'pedidos_editar');
+        $data['action'] = site_url($this->folder.$this->clase.'pedidos_editar/'.$id);
         
         $pedido = $datos->row();
         $data['pedido'] = $pedido;
-        $data['sucursal'] = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        
+        $sucursal = !empty($id_sucursal) ? $id_sucursal : $pedido->id_cliente_sucursal;
+        $contacto = !empty($id_contacto) ? $id_contacto : $pedido->id_contacto;
+
+        $data['sucursal'] = $this->s->get_by_id($sucursal)->row();
         $data['cliente'] = $this->c->get_by_id($data['sucursal']->id_cliente)->row();
-        $data['contacto'] = $this->co->get_by_id($pedido->id_contacto)->row();
+        if(!(!empty($id_sucursal) && empty($id_contacto)))
+            $data['contacto'] = $this->co->get_by_id($contacto)->row();
         $data['ruta'] = $this->r->get_by_id($pedido->id_ruta)->row();
         
         $data['rutas'] = $this->r->get_all()->result();

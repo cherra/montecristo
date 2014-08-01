@@ -323,10 +323,15 @@ $(document).ready(function(){
     <?php if(isset($pedido)){ ?>
             $('input, textarea, select, button[id!="editar"][id!="duplicar"]').attr('disabled',true);
             edicion = false;
-    <?php }?>
+    <?php }
+          if(isset($sucursal) && !isset($contacto)){
+    ?>
+              $('input[id="contacto"]').removeAttr('disabled');
+    <?php }
+          ?>
         
     $('#editar').click(function(){
-        $('input[id!="cliente"][id!="sucursal"][id!="contacto"], textarea, select, button').removeAttr('disabled');
+        $('input[id!="cliente"], textarea, select, button').removeAttr('disabled');
         $('#autorizar').hide();
         edicion = true;
         $('#cantidad').focus();
