@@ -82,6 +82,11 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_by_factura($id) {
+        $this->db->where('id_factura', $id);
+        return $this->db->get($this->tbl);
+    }
+    
     function get_presentaciones( $id ){
         $this->db->select('pp.*, IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
