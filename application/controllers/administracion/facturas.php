@@ -158,6 +158,7 @@ class Facturas extends CI_Controller {
         $this->load->model('factura','f');
         //$this->load->model('cliente','c');
         $this->load->model('sucursal','s');
+        $this->load->model('producto_presentacion','pp');
         
         $pedido = $this->p->get_by_id($id)->row();
         $presentaciones = $this->p->get_presentaciones($id)->result();
@@ -175,14 +176,16 @@ class Facturas extends CI_Controller {
             
             $id_factura = $this->f->save($factura);
             if($id_factura){
-                foreach($presentaciones as $presentacion){
+                foreach($presentaciones as $dato){
+                    $presentacion = $this->pp->get_by_id($dato->id_producto_presentacion)->row();
                     $concepto = array(
                         'id_factura' => $id_factura,
-                        'concepto' => $presentacion->producto,
-                        'cantidad' => $presentacion->cantidad,
-                        'precio' => $presentacion->precio,
-                        'tasa_iva' => $presentacion->iva,
-                        'id_producto_presentacion' => $presentacion->id_producto_presentacion
+                        'concepto' => $dato->producto,
+                        'cantidad' => $dato->cantidad,
+                        'precio' => $dato->precio,
+                        'tasa_iva' => $dato->iva,
+                        'id_producto_presentacion' => $dato->id_producto_presentacion,
+                        'unidad' => $presentacion->unidad
                     );
                     if( !($this->f->save_concepto($concepto)) ){
                         $respuesta = 'Error';
