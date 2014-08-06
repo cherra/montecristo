@@ -57,7 +57,7 @@ class Pedidos extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('E','Número','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Total', '', '','','', '');
+    	$this->table->set_heading('E','Número','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Total', '', '','','');
     	foreach ($datos as $d) {
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
@@ -76,8 +76,7 @@ class Pedidos extends CI_Controller {
                         array('data' => anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 ? anchor($this->folder.$this->clase.'pedidos_duplicar/' . $d->id, '<i class="icon-copy"></i>', array('class' => 'btn btn-small', 'title' => 'Duplicar')) :  '<a class="btn btn-small" disabled><i class="icon-copy"></i></a>'), 'style' => 'text-align: right;'),
-                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;'),
-                        array('data' => ($d->estado >= 5 ? anchor($this->folder.$this->clase.'pedidos_exportar_buzon_fiscal/' . $d->id, '<i class="icon-share"></i>', array('class' => 'btn btn-small', 'title' => 'Exportar a buzón fiscal')) :  '<a class="btn btn-small" disabled><i class="icon-share"></i></a>'), 'style' => 'text-align: right;')
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
     		);
                 if($d->estado == 0)
                     $this->table->add_row_class('muted');
