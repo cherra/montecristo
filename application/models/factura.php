@@ -84,6 +84,13 @@ class Factura extends CI_Model {
             return 0;
         }
     }
+    
+    function get_conceptos($id){
+        $this->db->select('fl.*');
+        $this->db->join('Facturas f', 'fl.id_factura = f.id');
+        $this->db->where('f.id', $id);
+        return $this->db->get($this->tbl.' f');
+    }
         
     /**
     * Alta

@@ -90,5 +90,117 @@ class Facturas extends CI_Controller {
         }
         redirect($this->folder.$this->clase.'index');
     }
+    
+    // Genera el formato de factura para impresión
+    private function facturas_render_template($id){
+        $this->load->model('factura','f');
+        $this->load->model('pedido', 'p');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('preferencias/usuario','u');
+            
+        $factura = $this->f->get_by_id($id)->row();
+        $pedido = $this->p->get_by_factura($id)->row();
+        $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        $cliente = $this->c->get_by_id($factura->id_cliente)->row();
+        $usuario = $this->u->get_by_id($factura->id_usuario)->row();
+        
+        $this->load->library('tbs');
+        $this->load->library('numero_letras');
+
+        // Nombres de meses en español (config/sitio.php)
+        $meses = $this->config->item('meses');
+
+        // Se carga el template predefinido para las facturas (tabla Configuracion)
+        $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_facturas'));
+
+        //Logotipo
+        $logo = $this->configuracion->get_valor('img_path').$this->configuracion->get_valor('logotipo');
+        $this->tbs->VarRef['logo'] = base_url($logo);
+        
+        // Se sustituyen los campos en el template
+        $this->tbs->VarRef['folio'] = $factura->folio;
+        $fecha = date_create($factura->fecha);
+        $this->tbs->VarRef['fecha'] = date_format($fecha,'d/m/Y');
+        /*$this->tbs->VarRef['dia'] = date_format($fecha,'d');
+        $this->tbs->VarRef['mes'] = $meses[date_format($fecha,'n')-1];
+        $this->tbs->VarRef['ano'] = date_format($fecha,'Y');
+         */
+        $this->tbs->VarRef['usuario'] = $usuario->nombre;
+        
+        $this->tbs->VarRef['cliente'] = $cliente->nombre;
+        $this->tbs->VarRef['rfc'] = $cliente->rfc;
+        $this->tbs->VarRef['domicilio'] = $cliente->calle.' '.$cliente->numero_exterior.' '.$cliente->numero_interior;
+        $this->tbs->VarRef['colonia'] = $cliente->colonia;
+        $this->tbs->VarRef['poblacion'] = $cliente->poblacion;
+        $this->tbs->VarRef['municipio'] = $cliente->municipio;
+        $this->tbs->VarRef['estado'] = $cliente->estado;
+        $this->tbs->VarRef['cp'] = $cliente->cp;
+        $this->tbs->VarRef['sucursal'] = $sucursal->numero.' '.$sucursal->nombre;
+//        $this->tbs->VarRef['domicilio_sucursal'] = $sucursal->calle.' '.$sucursal->numero_exterior.' '.$sucursal->numero_interior;
+//        $this->tbs->VarRef['colonia_sucursal'] = $sucursal->colonia;
+//        $this->tbs->VarRef['poblacion_sucursal'] = $sucursal->poblacion;
+//        $this->tbs->VarRef['municipio_sucursal'] = $sucursal->municipio;
+//        $this->tbs->VarRef['estado_sucursal'] = $sucursal->estado;
+//        $this->tbs->VarRef['cp_sucursal'] = $sucursal->cp;
+        $this->tbs->VarRef['pedido'] = $pedido->id;
+        
+        $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
+
+        $conceptos = $this->f->get_conceptos($id)->result_array();
+        foreach($conceptos as $key => $value){
+//            $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $presentaciones[$key]['id_producto_presentacion'])->row();
+//            $presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
+            
+            $conceptos[$key]['cantidad'] = number_format($conceptos[$key]['cantidad'],2,'.',',');
+            $conceptos[$key]['precio'] = number_format($conceptos[$key]['precio'],2,'.',',');
+            //$presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
+            $conceptos[$key]['importe'] = number_format($conceptos[$key]['cantidad'] * $conceptos[$key]['precio'],2,'.',',');
+            //$presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
+            //$presentaciones[$key]['concepto'] = $conceptos[$key]['concepto'];
+        }
+        $this->tbs->MergeBlock('conceptos', $conceptos);
+        $importes = $this->f->get_importes($id);
+        $this->tbs->VarRef['subtotal'] = number_format($importes->subtotal,2,'.',',');
+        $this->tbs->VarRef['iva'] = number_format($importes->iva,2,'.',',');
+        //$total = $this->p->get_importe($pedido->id);
+        $this->tbs->VarRef['total'] = number_format($importes->total,2,'.',',');
+        $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($importes->total);
+        //$this->tbs->VarRef['peso'] = number_format($this->p->get_peso($pedido->id),2,'.',',').'kg';
+        //$this->tbs->VarRef['piezas'] = number_format($this->p->get_piezas($pedido->id),2,'.',',');
+        // Render sin desplegar en navegador
+        $this->tbs->Show(TBS_NOTHING);
+        // Se regresa el render
+        return $this->tbs->Source;
+    }
+    
+    // Impresión de facturas
+    public function facturas_documento( $id = null ){
+        if(!empty($id)){
+            $this->layout = "template_pdf";
+            $this->load->model('pedido', 'p');
+            $pedido = $this->p->get_by_id($id)->row();
+            if( $this->session->flashdata('pdf') ){
+            //if(true){
+                if($pedido){
+                    $data['contenido'] = $this->facturas_render_template($id);                    
+                    $this->load->view('documento', $data);
+                }else{
+                    redirect($this->folder.$this->clase.'index');
+                }
+            }else{
+                $this->session->set_flashdata('pdf', true);
+                if($pedido){
+                    if($pedido->estado == '0'){  // Se agrega una marca de agua al PDF
+                        $this->session->set_flashdata('watermark', 'Cancelado');
+                    }
+                }
+                redirect($this->folder.$this->clase.'facturas_documento/'.$id); // Se recarga el método para imprimirlo como PDF
+            }
+        }else{
+            redirect($this->folder.$this->clase.'index');
+        }
+    }
+    
 }
 ?>
