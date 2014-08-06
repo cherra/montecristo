@@ -188,6 +188,8 @@ class Facturas extends CI_Controller {
                         $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la factura', 'tipo' => 'alert-error'));
                     }
                 }
+                
+                $this->p->update($id, array('id_factura' => $id_factura));
             }else{
                 $respuesta = 'Error';
                 $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la factura', 'tipo' => 'alert-error'));
