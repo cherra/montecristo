@@ -181,7 +181,8 @@ class Facturas extends CI_Controller {
                         'concepto' => $presentacion->producto,
                         'cantidad' => $presentacion->cantidad,
                         'precio' => $presentacion->precio,
-                        'tasa_iva' => $presentacion->iva
+                        'tasa_iva' => $presentacion->iva,
+                        'id_producto_presentacion' => $presentacion->id_producto_presentacion
                     );
                     if( !($this->f->save_concepto($concepto)) ){
                         $respuesta = 'Error';
