@@ -82,12 +82,20 @@ class Facturas extends CI_Controller {
         }
         
         $this->load->model('factura','f');
+        $this->load->model('pedido','p');
+        $this->db->trans_start();
         $respuesta = $this->f->cancelar($id);
         if($respuesta > 0){
-            $this->session->set_flashdata('mensaje',array('texto' => 'Factura cancelado', 'tipo' => ''));
+            $pedido = $this->p->get_by_factura($id)->row();
+            $respuesta = $this->p->update($pedido->id, array('id_factura' => 0));
+            if($respuesta > 0)
+                $this->session->set_flashdata('mensaje',array('texto' => 'Factura cancelada', 'tipo' => ''));
+            else
+                $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
         }else{
             $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
         }
+        $this->db->trans_complete();
         redirect($this->folder.$this->clase.'index');
     }
     
@@ -380,9 +388,7 @@ class Facturas extends CI_Controller {
             $conceptos[$key]['precio'] = number_format($conceptos[$key]['precio'] / (1 + $conceptos[$key]['tasa_iva']),2,'.','');
             $conceptos[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
             $conceptos[$key]['nombre'] = $conceptos[$key]['concepto'];
-            //$conceptos[$key]['presentacion'] = $presentacion_cliente->presentacion;
-            $conceptos[$key]['codigo_cliente'] = $presentacion_cliente->codigo;
-            //$conceptos[$key]['unidad'] = $presentacion->nombre;
+            //$conceptos[$key]['unidad'] = $conceptos[$key]['unidad'];
         }
         $this->tbs->MergeBlock('conceptos', $conceptos);
         
@@ -407,8 +413,7 @@ class Facturas extends CI_Controller {
             $this->load->model('factura', 'f');
             $factura = $this->f->get_by_id($id)->row();
             if($factura){
-                echo $this->buzon_fiscal_render_template($id);
-                //force_download($factura->id.'-BF.txt', $this->buzon_fiscal_render_template($id));
+                force_download($factura->id.'-BF.txt', $this->buzon_fiscal_render_template($id));
             }else{
                 redirect($this->folder.$this->clase.'index');
             }

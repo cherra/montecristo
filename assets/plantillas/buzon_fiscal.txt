@@ -58,7 +58,7 @@ reNoCliente|
 reEmail|		
 reTelefono|		
 reFax|	
-reComprador|
+reComprador|[onshow.comprador]
 reNIM|			
 
 
@@ -84,7 +84,7 @@ remCodigoPostal|
 [conceptos;block=begin]
 cantidad|[conceptos.cantidad]
 unidad|[conceptos.unidad; noerr]
-numIdentificacion|
+numIdentificacion|[conceptos.codigo]
 descripcion|[conceptos.nombre]
 valorUnitario|[conceptos.precio]
 importe|[conceptos.importe]
