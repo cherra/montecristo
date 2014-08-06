@@ -315,5 +315,103 @@ class Facturas extends CI_Controller {
         }
     }
     
+    // Genera el formato de factura para importar en buzón fiscal
+    private function buzon_fiscal_render_template($id){
+        $this->load->model('factura', 'f');
+        $this->load->model('pedido','p');
+        $this->load->model('cliente','c');
+        $this->load->model('cliente_presentacion','cp');
+        $this->load->model('sucursal','s');
+        $this->load->model('producto_presentacion','pp');
+            
+        $factura = $this->f->get_by_id($id)->row();
+        $pedido = $this->p->get_by_factura($id)->row();
+        //die("Si");
+        $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+        
+        
+        $this->load->library('tbs');
+        $this->load->library('numero_letras');
+
+        // Nombres de meses en español (config/sitio.php)
+        $meses = $this->config->item('meses');
+
+        // Se carga el template predefinido para los recibos (tabla Configuracion)
+        $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_buzon_fiscal'));
+
+        // Se sustituyen los campos en el template
+        $this->tbs->VarRef['asignaFolio'] = 'TRUE';
+        
+        //$this->tbs->VarRef['numero'] = $pedido->id;
+        $fecha = date_create($factura->fecha);
+        //$this->tbs->VarRef['fecha'] = date_format($fecha,'d/m/Y');
+        //$this->tbs->VarRef['observaciones'] = $pedido->observaciones;
+        /*$this->tbs->VarRef['dia'] = date_format($fecha,'d');
+        $this->tbs->VarRef['mes'] = $meses[date_format($fecha,'n')-1];
+        $this->tbs->VarRef['ano'] = date_format($fecha,'Y');
+         */
+        
+        $this->tbs->VarRef['cliente'] = $cliente->nombre;
+        $this->tbs->VarRef['rfc'] = $cliente->rfc;
+        $this->tbs->VarRef['calle'] = $cliente->calle;
+        $this->tbs->VarRef['noexterior'] = $cliente->numero_exterior;
+        $this->tbs->VarRef['nointerior'] = $cliente->numero_interior;
+        $this->tbs->VarRef['colonia'] = $cliente->colonia;
+        $this->tbs->VarRef['poblacion'] = $cliente->poblacion;
+        $this->tbs->VarRef['municipio'] = $cliente->municipio;
+        $this->tbs->VarRef['estado'] = $cliente->estado;
+        $this->tbs->VarRef['pais'] = $cliente->pais;
+        $this->tbs->VarRef['cp'] = $cliente->cp;
+        $this->tbs->VarRef['metodo_pago'] = $cliente->metodo_pago;
+        $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
+        $this->tbs->VarRef['comprador'] = $sucursal->numero;
+
+        $conceptos = $this->f->get_conceptos($id)->result_array();
+        foreach($conceptos as $key => $value){
+            $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $conceptos[$key]['id_producto_presentacion'])->row();
+            $presentacion = $this->pp->get_by_id($conceptos[$key]['id_producto_presentacion'])->row();
+            $conceptos[$key]['importe'] = number_format($conceptos[$key]['cantidad'] * ($conceptos[$key]['precio'] / (1 + $conceptos[$key]['tasa_iva'])),2,'.','');
+            //$conceptos[$key]['cantidad'] = $conceptos[$key]['cantidad'];
+            $conceptos[$key]['precio'] = number_format($conceptos[$key]['precio'] / (1 + $conceptos[$key]['tasa_iva']),2,'.','');
+            $conceptos[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
+            $conceptos[$key]['nombre'] = $conceptos[$key]['concepto'];
+            //$conceptos[$key]['presentacion'] = $presentacion_cliente->presentacion;
+            $conceptos[$key]['codigo_cliente'] = $presentacion_cliente->codigo;
+            //$conceptos[$key]['unidad'] = $presentacion->nombre;
+        }
+        $this->tbs->MergeBlock('conceptos', $conceptos);
+        
+        $this->tbs->VarRef['tasa_iva'] = $this->configuracion->get_valor('iva')*100;
+        $importes = $this->f->get_importes($id);
+        $this->tbs->VarRef['subtotal'] = number_format($importes->subtotal,2,'.','');
+        $this->tbs->VarRef['iva'] = number_format($importes->iva,2,'.','');
+        //$total = $this->p->get_importe($pedido->id);
+        $this->tbs->VarRef['total'] = number_format($importes->total,2,'.','');
+        $this->tbs->VarRef['cantidad_letra'] = $this->numero_letras->convertir($importes->total);
+        // Render sin desplegar en navegador
+        $this->tbs->Show(TBS_NOTHING);
+        // Se regresa el render
+        return $this->tbs->Source;
+    }
+    
+    // Impresión de pedidos
+    public function facturas_exportar_buzon_fiscal( $id = null ){
+        $this->load->helper('download');
+        if(!empty($id)){
+            $this->layout = "empty";
+            $this->load->model('factura', 'f');
+            $factura = $this->f->get_by_id($id)->row();
+            if($factura){
+                echo $this->buzon_fiscal_render_template($id);
+                //force_download($factura->id.'-BF.txt', $this->buzon_fiscal_render_template($id));
+            }else{
+                redirect($this->folder.$this->clase.'index');
+            }
+        }else{
+            redirect($this->folder.$this->clase.'index');
+        }
+    }
+    
 }
 ?>
