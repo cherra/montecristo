@@ -75,6 +75,64 @@ class Pedido extends CI_Model {
     }
     
     /**
+    * Pedidos sin factura
+    */
+    
+    function count_sin_factura($filtro = NULL, $estado = 5) {
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_factura = 0');
+        $this->db->where('p.estado', $estado);
+        $query = $this->db->get($this->tbl.' p');
+        return $query->num_rows();
+    }
+    
+    function get_sin_factura($limit = NULL, $offset = 0, $filtro = NULL, $estado = 5) {
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_factura = 0');
+        $this->db->where('p.estado', $estado);
+        $this->db->order_by('p.id','desc');
+        return $this->db->get($this->tbl.' p', $limit, $offset);
+    }
+    
+    /**
     * Obtener por id
     */
     function get_by_id($id) {

@@ -7,6 +7,7 @@
 class Factura extends CI_Model {
     
     private $tbl = 'Facturas';
+    private $tbl_conceptos = 'FacturaLinea';
     
     /*
      * Cuenta todos los registros utilizando un filtro de busqueda
@@ -97,6 +98,11 @@ class Factura extends CI_Model {
     */
     function save( $datos ) {
         $this->db->insert($this->tbl, $datos);
+        return $this->db->insert_id();
+    }
+    
+    function save_concepto( $datos ){
+        $this->db->insert($this->tbl_conceptos, $datos);
         return $this->db->insert_id();
     }
 
