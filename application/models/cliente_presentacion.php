@@ -82,7 +82,7 @@ class Cliente_presentacion extends CI_Model {
     }
     
     function get_productos( $limit = NULL, $offset = 0, $filtro = NULL, $id = NULL ){
-        $this->db->select('IF(LENGTH(cp.producto) > 0, cp.producto, p.nombre) AS producto, 
+        $this->db->select('p.nombre AS producto, 
             p.id,
             MAX(pre.id) AS precio', FALSE);
         $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
