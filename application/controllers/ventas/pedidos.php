@@ -977,6 +977,7 @@ class Pedidos extends CI_Controller {
             $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
             $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
             $presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
+            $presentaciones[$key]['sku'] = $presentacion_cliente->sku ? $presentacion_cliente->sku : $presentacion->sku;
             $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
             $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
         }
