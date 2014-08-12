@@ -145,8 +145,10 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
-    function get_presentaciones( $id ){
-        $this->db->select('pp.*, IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto');
+    function get_presentaciones( $id, $agrupar_codigo = FALSE ){
+        $this->db->select('pp.id, pp.id_pedido, pp.id_producto_presentacion, SUM(pp.cantidad) AS cantidad, pp.precio, pp.iva, pp.observaciones, 
+            IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto,
+            IF( LENGTH( cp.codigo ) >0, cp.codigo, CONCAT( pro.codigo, ppr.codigo ) ) AS codigo');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->join('ProductoPresentaciones ppr', 'pp.id_producto_presentacion = ppr.id');
         $this->db->join('Productos pro', 'ppr.id_producto = pro.id');
@@ -155,6 +157,8 @@ class Pedido extends CI_Model {
         $this->db->join('Clientes c', 'cs.id_cliente = c.id');
         $this->db->join('ClientePresentaciones cp', 'ppr.id = cp.id_producto_presentacion AND c.id = cp.id_cliente', 'left');
         $this->db->where('p.id', $id);
+        if($agrupar_codigo)
+            $this->db->group_by('codigo');
         $this->db->order_by('producto, pre.nombre');
         return $this->db->get($this->tbl.' p');
     }

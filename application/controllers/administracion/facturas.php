@@ -164,12 +164,16 @@ class Facturas extends CI_Controller {
     public function pedidos_facturar($id){
         $this->load->model('pedido','p');
         $this->load->model('factura','f');
-        //$this->load->model('cliente','c');
+        $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
         $this->load->model('producto_presentacion','pp');
         
         $pedido = $this->p->get_by_id($id)->row();
-        $presentaciones = $this->p->get_presentaciones($id)->result();
+        $cliente = $this->c->get_by_id($pedido->id_cliente)->row();
+        $agrupar_por_codigo = FALSE;
+        if($cliente->agrupar_codigos_factura)
+            $agrupar_por_codigo = TRUE;
+        $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
         $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
         
         if(!empty($pedido)){

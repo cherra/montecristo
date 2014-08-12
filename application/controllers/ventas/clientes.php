@@ -203,8 +203,10 @@ class Clientes extends CI_Controller{
     	$data['action'] = $this->folder.$this->clase.'clientes_editar/' . $id;
     	 
     	if ( ($datos = $this->input->post()) ) {
-    		$this->c->update($id, $datos);
-    		$data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
+            if(!isset($datos['agrupar_codigos_factura']))
+                $datos['agrupar_codigos_factura'] = FALSE;
+            $this->c->update($id, $datos);
+            $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>¡Registro modificado!</div>';
     	}
 
         $data['grupos'] = $this->g->get_all()->result();

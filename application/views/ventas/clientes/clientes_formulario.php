@@ -142,6 +142,12 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="agrupar_codigos_factura">Agrupar por código en facturas</label>
+            <div class="controls">
+              <input type="checkbox" name="agrupar_codigos_factura" value="1" <?php if(isset($datos->agrupar_codigos_factura) && $datos->agrupar_codigos_factura == 1) echo 'checked'; ?>>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label hidden-phone" for="precio_incremento">Incremento de precio</label>
             <div class="controls">
               <input type="text" name="precio_incremento" placeholder="% de incremento en el precio" value="<?php echo (isset($datos->precio_incremento) ? $datos->precio_incremento : ''); ?>">
