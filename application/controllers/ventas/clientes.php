@@ -271,7 +271,7 @@ class Clientes extends CI_Controller{
                             $sucursal->telefono2,
                             array('data' => $sucursal->telefono3, 'class' => 'hidden-phone'),
                             array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id . '/'. $sucursal->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
-                            array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$estado.'/'.$sucursal->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
+                            array('data' => anchor($this->folder.$this->clase.'contactos/' . $id.'/'.$estado.'/'.$sucursal->id, '<i class="icon-user"></i>', array('class' => 'btn btn-small', 'title' => 'Contactos')), 'style' => 'text-align: right;'),
                             array('data' => anchor($this->folder.$this->clase.'sucursales_editar/' . $sucursal->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                     );
                 }
@@ -405,7 +405,8 @@ class Clientes extends CI_Controller{
                                 $contacto->telefono,
                                 $contacto->celular,
                                 $contacto->email,
-                                array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
+                                //array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
+                                array('data' => anchor('ventas/clientes/llamadas_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Llamada')), 'style' => 'text-align: right;'),
                                 array('data' => anchor('ventas/clientes/contactos_editar/' . $contacto->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                         );
                     }
@@ -538,6 +539,44 @@ class Clientes extends CI_Controller{
         }
         
         $this->load->view('ventas/clientes/productos_lista', $data);
+    }
+    
+    public function llamadas_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
+        if (empty($id_cliente) OR empty($id_sucursal) OR empty($id_contacto)) {
+            redirect($this->folder.$this->clase.'contactos');
+        }
+
+        $this->load->model('cliente', 'c');
+        $this->load->model('sucursal', 's');
+        $this->load->model('contacto','co');
+        $this->load->model('llamada','ll');
+        $data['cliente'] = $this->c->get_by_id($id_cliente)->row();
+        $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
+        $data['contacto'] = $this->co->get_by_id($id_contacto)->row();
+        
+        $data['titulo'] = 'Llamada <small>Registro nuevo</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. trim($data['sucursal']->estado).'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['mensaje'] = '';
+        $data['action'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto;
+        $data['action_pedido'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto.'/'.TRUE;
+	
+        if ( ( $llamada = $this->input->post() ) ) {
+            $llamada['id_cliente_sucursal_contacto'] = $id_contacto;
+            $pedido = $llamada['pedido'];
+            unset($llamada['pedido']);
+            $llamada['fecha'] = $llamada['fecha'].' '.$llamada['hora'];
+            unset($llamada['hora']);
+            if( $this->ll->save($llamada) > 0 ){
+                if(!empty($pedido))
+                    redirect('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $id_contacto .'/'.$this->db->insert_id());
+                else
+                    redirect($this->folder.$this->clase.'clientes');
+                $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
+            }else
+                $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
+        }
+        
+        $this->load->view('ventas/clientes/llamadas_formulario', $data);
     }
     
     /*

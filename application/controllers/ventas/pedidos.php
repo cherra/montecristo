@@ -88,7 +88,7 @@ class Pedidos extends CI_Controller {
     	$this->load->view('ventas/lista', $data);
     }
     
-    public function pedidos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
+    public function pedidos_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL, $id_llamada = NULL ) {
         // Nuevo cliente
         if(!empty($id_cliente) && $id_cliente == 'nuevo'){
             redirect('ventas/clientes/clientes_agregar/pedido');
@@ -117,6 +117,9 @@ class Pedidos extends CI_Controller {
                 $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
                 if(!empty($id_contacto)){
                     $data['contacto'] = $this->co->get_by_id($id_contacto)->row();
+                    if(!empty($id_llamada)){
+                        $data['id_llamada'] = $id_llamada;
+                    }
                 }
             }
         }
@@ -138,6 +141,7 @@ class Pedidos extends CI_Controller {
                     'id_cliente_sucursal' => $datos['id_cliente_sucursal'],
                     'id_contacto' => $datos['id_contacto'],
                     'id_ruta' => $datos['id_ruta'],
+                    'id_llamada' => $datos['id_llamada'],
                     'observaciones' => $datos['observaciones']
                 );
                 $this->db->trans_start();

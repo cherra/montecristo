@@ -41,6 +41,7 @@ if(isset($pedido)){
             <input type="hidden" id="id_cliente" value="<?php if(isset($cliente)) echo $cliente->id; ?>" />
             <input type="hidden" id="id_sucursal" value="<?php if(isset($sucursal)) echo $sucursal->id; ?>" />
             <input type="hidden" id="id_contacto" value="<?php if(isset($contacto)) echo $contacto->id; ?>" />
+            <input type="hidden" id="id_llamada" value="<?php echo isset($id_llamada) ? $id_llamada : '0'; ?>" />
             
             <label><strong>Buscar cliente</strong></label>
             <input type="text" id="cliente" class="input-block-level" placeholder="Cliente" value="<?php echo (isset($cliente) ? $cliente->nombre : ''); ?>">
@@ -709,7 +710,7 @@ $(document).ready(function(){
                 $.ajax({
                     url: "<?php echo (isset($pedido) ? site_url('ventas/pedidos/pedidos_guardar/'.$pedido->id) : site_url('ventas/pedidos/pedidos_guardar')); ?>",
                     type: 'post',
-                    data: {id_cliente_sucursal: $('#id_sucursal').val(), id_contacto: $('#id_contacto').val(), id_ruta: $('#id_ruta').val(), 
+                    data: {id_cliente_sucursal: $('#id_sucursal').val(), id_contacto: $('#id_contacto').val(), id_ruta: $('#id_ruta').val(), id_llamada: $('#id_llamada').val(),
                             observaciones: $('#observaciones').val(),
                             productos: productos},
                     dataType: 'text'
