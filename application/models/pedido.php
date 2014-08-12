@@ -159,6 +159,8 @@ class Pedido extends CI_Model {
         $this->db->where('p.id', $id);
         if($agrupar_codigo)
             $this->db->group_by('codigo');
+        else
+            $this->db->group_by('pp.id');
         $this->db->order_by('producto, pre.nombre');
         return $this->db->get($this->tbl.' p');
     }

@@ -16,6 +16,7 @@ class Facturas extends CI_Controller {
     public function index( $offset = 0 ){
         $this->load->model('factura','f');
         $this->load->model('cliente','c');
+        $this->load->model('pedido','p');
         $this->load->model('preferencias/usuario','u');
         
         $this->config->load("pagination");
@@ -46,13 +47,15 @@ class Facturas extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Folio','Fecha','Cliente','Subtotal','IVA','Total', '', '','');
+    	$this->table->set_heading('Folio','Pedido', 'Fecha','Cliente','Subtotal','IVA','Total', '', '','');
     	foreach ($datos as $d) {
             $cliente = $this->c->get_by_id($d->id_cliente)->row();
+            $pedido = $this->p->get_by_factura($d->id)->row();
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importes = $this->f->get_importes($d->id);
     		$this->table->add_row(
                         $d->folio,
+                        !empty($pedido) ? $pedido->id : '',
                         $d->fecha,
                         $cliente->nombre,
                         array('data' => number_format($importes->subtotal,2), 'style' => 'text-align: right;'),
@@ -169,12 +172,13 @@ class Facturas extends CI_Controller {
         $this->load->model('producto_presentacion','pp');
         
         $pedido = $this->p->get_by_id($id)->row();
-        $cliente = $this->c->get_by_id($pedido->id_cliente)->row();
-        $agrupar_por_codigo = FALSE;
-        if($cliente->agrupar_codigos_factura)
-            $agrupar_por_codigo = TRUE;
-        $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
         $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+        $agrupar_por_codigo = FALSE;
+        if($cliente->agrupar_codigos_factura == '1'){
+            $agrupar_por_codigo = TRUE;
+        }
+        $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
         
         if(!empty($pedido)){
             
@@ -197,7 +201,7 @@ class Facturas extends CI_Controller {
                         'precio' => $dato->precio,
                         'tasa_iva' => $dato->iva,
                         'id_producto_presentacion' => $dato->id_producto_presentacion,
-                        'unidad' => $presentacion->unidad
+                        'unidad' => $presentacion->nombre
                     );
                     if( !($this->f->save_concepto($concepto)) ){
                         $respuesta = 'Error';
