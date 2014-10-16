@@ -386,6 +386,7 @@ class Facturas extends CI_Controller {
         $this->tbs->VarRef['metodo_pago'] = $cliente->metodo_pago;
         $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
         $this->tbs->VarRef['comprador'] = $sucursal->numero;
+        $this->tbs->VarRef['orden_compra'] = $pedido->orden_compra;
 
         $conceptos = $this->f->get_conceptos($id)->result_array();
         foreach($conceptos as $key => $value){

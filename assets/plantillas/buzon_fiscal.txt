@@ -176,7 +176,7 @@ descuentoPorcentaje|
 descuentoMonto|
 descuentoMotivo|	
 cargos|
-totalConceptos||[onshow.total]
+totalConceptos|[onshow.total]
 pagoForma|Pago en una sola exhibición
 pagoCondiciones|
 pagoMetodo|[onshow.metodo_pago]
@@ -206,7 +206,7 @@ fob|Destino
 [Datos Comerciales del Comprobante a nivel global]	Datos adicionales de tipo comercial comnmente usados.
 refID|
 tipoDocumento|Factura
-ordenCompra|
+ordenCompra|[onshow.orden_compra]
 agente|			
 observaciones|		
 nombreMoneda|	
