@@ -4,7 +4,7 @@ HOJA
                             
 
 [Datos Generales]
-serie|
+serie|A
 folio|
 asignaFolio|[onshow.asignaFolio]
 
@@ -12,7 +12,7 @@ asignaFolio|[onshow.asignaFolio]
 
 [Datos del Emisor]
 emRegimen| 
-emRfc|
+emRfc|OMO090529EN9
 emNombre|
 emCalle|
 emNoExterior|
@@ -205,7 +205,7 @@ fob|Destino
 
 [Datos Comerciales del Comprobante a nivel global]	Datos adicionales de tipo comercial comnmente usados.
 refID|
-tipoDocumento|
+tipoDocumento|Factura
 ordenCompra|
 agente|			
 observaciones|		
