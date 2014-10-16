@@ -14,9 +14,12 @@ class Cliente_presentacion extends CI_Model {
      */
     function count_all( $filtro = null, $id = NULL ) {
         //$this->db->select('IFNULL(cp.producto, p.nombre) AS producto, IFNULL(cp.presentacion, pr.nombre) AS presentacion, IFNULL(cp.codigo, pr.sku) AS sku');
-        $this->db->join('ProductoPresentaciones pp','cp.id_producto_presentacion = pp.id','left');
-        $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id AND cp.id_cliente = '.$id,'left');
-        $this->db->join('Productos p', 'pp.id_producto = p.id','left');
+        $this->db->join('ProductoPresentaciones pp','p.id = pp.id_producto','left');
+        $this->db->join('Presentaciones pr', 'pp.id_presentacion = pr.id','left');
+        $this->db->join('ClientePresentaciones cp', 'cp.id_producto_presentacion = pp.id AND cp.id_cliente = '.$id,'left');
+        $this->db->join('Clientes c','cp.id_cliente = c.id  OR c.id = '.$id,'left');
+        $this->db->join('Listas l','c.id_lista = l.id','left');
+        $this->db->join('Precios pre','l.id = pre.id_lista AND pp.id = pre.id_producto_presentacion','left');
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
@@ -24,8 +27,11 @@ class Cliente_presentacion extends CI_Model {
                 $this->db->or_like('p.nombre',$f);
             }
         }
-        $this->db->where('cp.id_cliente', $id);
-        $query = $this->db->get($this->tbl.' cp');
+        //$this->db->where('cp.id_cliente', $id);
+        $this->db->having('precio > 0');
+        $this->db->order_by('producto, presentacion','asc');
+        $query = $this->db->get('Productos p');
+        //$query = $this->db->get($this->tbl.' cp');
         return $query->num_rows();
     }
     
