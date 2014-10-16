@@ -74,6 +74,7 @@ class Pedidos extends CI_Controller {
                         $usuario->nombre,
                         array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
                         array('data' => anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_excel/' . $d->id, '<i class="icon-list-alt"></i>', array('class' => 'btn btn-small', 'title' => 'Exportar a excel')), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 ? anchor($this->folder.$this->clase.'pedidos_duplicar/' . $d->id, '<i class="icon-copy"></i>', array('class' => 'btn btn-small', 'title' => 'Duplicar')) :  '<a class="btn btn-small" disabled><i class="icon-copy"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
@@ -973,6 +974,7 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['contacto'] = $contacto->nombre . ' ('. $contacto->puesto . ')';
         
         $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
+        $this->tbs->VarRef['orden_compra'] = $pedido->orden_compra;
 
         $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
         foreach($presentaciones as $key => $value){
@@ -1027,6 +1029,99 @@ class Pedidos extends CI_Controller {
         }else{
             redirect($this->folder.$this->clase.'pedidos_proceso_ruta');
         }
+    }
+    
+    public function pedidos_excel( $id ){
+        
+        $this->load->model('pedido', 'p');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('contacto','co');
+        $this->load->model('cliente_presentacion','cp');
+        $this->load->model('producto_presentacion','pp');
+        $this->load->model('preferencias/usuario','u');
+            
+        $pedido = $this->p->get_by_id($id)->row();
+        $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+        $contacto = $this->co->get_by_id($pedido->id_contacto)->row();
+        $usuario = $this->u->get_by_id($pedido->id_usuario)->row();
+        
+        $this->load->library('excel');
+        //activate worksheet number 1
+        $this->excel->setActiveSheetIndex(0);
+        //name the worksheet
+        $this->excel->getActiveSheet()->setTitle('PEDIDO');
+        
+        //Logotipo
+        $logo = $this->configuracion->get_valor('img_path').$this->configuracion->get_valor('logotipo');
+        
+//        $objDrawing = new PHPExcel_Worksheet_Drawing();
+//        $objDrawing->setName('Logo');
+//        $objDrawing->setDescription('Logo');
+//        $objDrawing->setPath(base_url($logo));
+//        $objDrawing->setHeight(36);
+//        $objDrawing->setCoordinates('B15');
+//        $objDrawing->setOffsetX(110);
+//        $objDrawing->setRotation(25);
+//        $objDrawing->getShadow()->setVisible(true);
+//        $objDrawing->getShadow()->setDirection(45);
+//
+//        $objDrawing->setWorksheet($this->excel->getActiveSheet());
+        
+        $this->excel->getActiveSheet()->setCellValue('A1', 'Folio');
+        $this->excel->getActiveSheet()->setCellValue('B1', 'Fecha');
+        $this->excel->getActiveSheet()->setCellValue('C1', 'Caja');
+        $this->excel->getActiveSheet()->setCellValue('D1', 'Cajero');
+        $this->excel->getActiveSheet()->setCellValue('E1', 'Cliente');
+        $this->excel->getActiveSheet()->setCellValue('F1', 'Importe');
+
+        $fila = 2;
+        $estatus = 'n';
+        /*foreach($ventas as $v){
+            if($v->cancelada != $estatus){
+                $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Canceladas');
+                $fila++;
+                $estatus = $v->cancelada;
+            }
+            $fecha = date_create($v->fecha);
+            $this->excel->getActiveSheet()->setCellValue('A'.$fila, $v->id_venta);
+            $this->excel->getActiveSheet()->setCellValue('B'.$fila, date_format($fecha,'d/m/Y'));
+            $this->excel->getActiveSheet()->setCellValue('C'.$fila, $v->caja);
+            $this->excel->getActiveSheet()->setCellValue('D'.$fila, $v->usuario);
+            $this->excel->getActiveSheet()->setCellValue('E'.$fila, $v->nombre);
+            $this->excel->getActiveSheet()->setCellValue('F'.$fila, $v->monto);
+
+            $this->excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+
+            $fila++;
+        }*/
+        //set cell A1 content with some text
+//                $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
+//                //change the font size
+//                $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(20);
+//                //make the font become bold
+//                $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+//                //merge cell A1 until D1
+//                $this->excel->getActiveSheet()->mergeCells('A1:D1');
+//                //set aligment to center for that merged cell (A1 to D1)
+//                $this->excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $filename='pedido_'.$pedido->id.'.xls'; //save our workbook as this file name
+        header('Content-Type: application/vnd.ms-excel'); //mime type
+        header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+
+        //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+        //if you want to save it as .XLSX Excel 2007 format
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+        //force user to download the Excel file without writing it to server's HD
+        $objWriter->save('php://output');
     }
     
     // Genera el formato de pedido para impresión
