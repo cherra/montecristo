@@ -85,7 +85,7 @@ remCodigoPostal|
 cantidad|[conceptos.cantidad]
 unidad|[conceptos.unidad; noerr]
 numIdentificacion|[conceptos.codigo]
-descripcion|[conceptos.nombre]
+descripcion|[conceptos.nombre] [conceptos.sku]
 valorUnitario|[conceptos.precio]
 importe|[conceptos.importe]
 [conceptos;block=end]

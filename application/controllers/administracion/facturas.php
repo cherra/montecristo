@@ -396,6 +396,7 @@ class Facturas extends CI_Controller {
             //$conceptos[$key]['cantidad'] = $conceptos[$key]['cantidad'];
             $conceptos[$key]['precio'] = number_format($conceptos[$key]['precio'] / (1 + $conceptos[$key]['tasa_iva']),2,'.','');
             $conceptos[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
+            $conceptos[$key]['sku'] = $presentacion_cliente->sku ? '(SKU: '.$presentacion_cliente->sku.')' : $presentacion->sku;
             $conceptos[$key]['nombre'] = $conceptos[$key]['concepto'];
             $conceptos[$key]['unidad'] = $conceptos[$key]['unidad'];
         }
