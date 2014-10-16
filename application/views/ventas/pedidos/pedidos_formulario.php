@@ -210,6 +210,8 @@ Doble click= borrar">'.
                     }
                     ?>
             </select>
+            <label for="orden_compra">Orden de compra</label>
+            <input type="text" id="orden_compra" name="orden_compra" placeholder="Orden de compra" class="input-block-level" value="<?php echo !empty($pedido->orden_compra) ? $pedido->orden_compra : ''; ?>">
         </div>
         <div class="span9">
             <label for="observaciones">Observaciones</label>
@@ -712,7 +714,8 @@ $(document).ready(function(){
                     type: 'post',
                     data: {id_cliente_sucursal: $('#id_sucursal').val(), id_contacto: $('#id_contacto').val(), id_ruta: $('#id_ruta').val(), id_llamada: $('#id_llamada').val(),
                             observaciones: $('#observaciones').val(),
-                            productos: productos},
+                            productos: productos,
+                            orden_compra: $('#orden_compra').val()},
                     dataType: 'text'
                 }).done(function(respuesta){
                     if(respuesta == 'OK'){

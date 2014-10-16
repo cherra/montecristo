@@ -142,7 +142,8 @@ class Pedidos extends CI_Controller {
                     'id_contacto' => $datos['id_contacto'],
                     'id_ruta' => $datos['id_ruta'],
                     'id_llamada' => $datos['id_llamada'],
-                    'observaciones' => $datos['observaciones']
+                    'observaciones' => $datos['observaciones'],
+                    'orden_compra' => $datos['orden_compra']
                 );
                 $this->db->trans_start();
                 
