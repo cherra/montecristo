@@ -49,7 +49,7 @@ class Ventas extends CI_Controller{
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
     	$this->table->set_heading('Fecha', 'Hora',  'Cliente', 'Tienda', 'Contacto', 'Comentarios');
-    	foreach ($llamadas as $d) {
+    	foreach ($misllamadas as $d) {
             $fecha = new DateTime($d->fecha);
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $contacto = $this->co->get_by_id($d->id_cliente_sucursal_contacto)->row();
