@@ -30,7 +30,7 @@ class Ventas extends CI_Controller{
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
             $this->table->add_row(
                     date_format($fecha,'d/m/Y'),
-                    date_format($fecha,'H:m'),
+                    date_format($fecha,'H:i'),
                     $usuario->nombre,
                     $cliente->nombre,
                     $sucursal->nombre,
@@ -57,7 +57,7 @@ class Ventas extends CI_Controller{
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
             $this->table->add_row(
                     date_format($fecha,'d/m/Y'),
-                    date_format($fecha,'H:m'),
+                    date_format($fecha,'H:i'),
                     $cliente->nombre,
                     $sucursal->nombre,
                     $contacto->nombre,
