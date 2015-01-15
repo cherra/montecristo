@@ -56,7 +56,7 @@ class Salidas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Ruta', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Origen', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Ruta', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
@@ -66,13 +66,13 @@ class Salidas extends CI_Controller {
             $this->table->add_row(
                     '<i class="'.$this->iconos_estado[$d->estado].'"></i>', 
                     $d->id, 
+                    $d->origen, 
                     $d->fecha, 
                     $cliente->nombre, $sucursal->numero . ' ' . $sucursal->nombre, $sucursal->poblacion . ', ' . $sucursal->municipio, 
                     !empty($almacen->nombre) ? $almacen->nombre : '', 
                     $d->fecha_programada, 
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
                     $ruta->nombre,
-                    $d->origen, 
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_salida_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
             if ($d->estado == 0)
@@ -186,7 +186,7 @@ class Salidas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Origen', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
@@ -196,12 +196,12 @@ class Salidas extends CI_Controller {
             $this->table->add_row(
                     '<input type="checkbox" name="salidas[]" value="' . $d->id . '"/>', 
                     $d->id, 
+                    $d->origen, 
                     $d->fecha, 
                     $cliente->nombre, 
                     $sucursal->numero . ' ' . $sucursal->nombre, $sucursal->poblacion . ', ' . $sucursal->municipio, 
                     !empty($almacen->nombre) ? $almacen->nombre : '', $d->fecha_programada,
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
-                    $d->origen, 
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_salida_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
             if ($d->estado == 0)
@@ -316,7 +316,7 @@ class Salidas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Origen', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Piezas', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
@@ -325,12 +325,13 @@ class Salidas extends CI_Controller {
             $piezas = $this->os->get_piezas($d->id);
             $this->table->add_row(
                     '<input type="checkbox" name="salidas[]" value="' . $d->id . '"/>', 
-                    $d->id, $d->fecha, 
+                    $d->id, 
+                    $d->origen, 
+                    $d->fecha, 
                     $cliente->nombre, 
                     $sucursal->numero . ' ' . $sucursal->nombre, $sucursal->poblacion . ', ' . $sucursal->municipio, 
                     !empty($almacen->nombre) ? $almacen->nombre : '', $d->fecha_programada, 
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
-                    $d->origen, 
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_salida_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
             if ($d->estado == 0)
@@ -378,7 +379,7 @@ class Salidas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array('table_open' => '<table class="' . $this->config->item('tabla_css') . '" >');
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E', 'Número', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Fecha de envío', 'Piezas', 'Origen', '');
+        $this->table->set_heading('E', 'Número', 'Origen', 'Fecha', 'Cliente', 'Sucursal', 'Ubicación', 'Almacén', 'Fecha programada', 'Fecha de envío', 'Piezas', '');
         foreach ($datos as $d) {
             $almacen = $this->a->get_by_id($d->id_almacen)->row();
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
@@ -388,6 +389,7 @@ class Salidas extends CI_Controller {
             $this->table->add_row(
                     '<i class="'.$this->iconos_estado[$d->estado].'"></i>', 
                     $d->id, 
+                    $d->origen, 
                     $d->fecha, 
                     $cliente->nombre, 
                     $sucursal->numero . ' ' . $sucursal->nombre, $sucursal->poblacion . ', ' . $sucursal->municipio, 
@@ -395,7 +397,6 @@ class Salidas extends CI_Controller {
                     $d->fecha_programada,
                     $d->fecha_entrega, 
                     array('data' => number_format($piezas, 2), 'style' => 'text-align: right;'), 
-                    $d->origen, 
                     array('data' => ($d->estado > 0 && $d->estado < 4 ? anchor($this->folder . $this->clase . 'ordenes_salida_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) : '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;')
             );
             if ($d->estado == 0)
