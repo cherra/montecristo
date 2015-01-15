@@ -4,9 +4,19 @@ No. de proveedor para clientes (mostrar en el pedido).
 Historial de llamadas (relacionarlas con los pedidos).
 Logo de montecristo en Pedidos.
 Enviar informes por correo.
-Cargar directorio de lowes
 Alta de codigos de barras para clientes
+
 21/ago/2014
 Registrar mermas en pedidos.
 Generar notas de crédito en base a las mermas y poder hacer ajustes.
 Poder generar notas de crédito aisladas.
+
+13/ene/2015
+Agregar en llamadas campo para recordatorio de llamar de nuevo.
+Hacer modulo de widgets para pantallas de inicio
+Mostrar listado de llamadas en widgets.
+Exportar listas de precios a Excel
+Listado de ordenes de salida juntar las columnas de folio de salida y origen.
+Exportar a excel los pedidos.
+Guardar CFDi en el sistema (listado de pedidos).
+En el listado de facturas mostrar la cantidad de plantas.
