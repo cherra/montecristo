@@ -47,6 +47,8 @@ $config['asset_path'] = 'assets/';
 */
 $config['tabla_css'] = 'table table-condensed table-striped';
 
+
+$config['tmp_path'] = 'assets/tmp/';
 /*
 |--------------------------------------------------------------------------
 | Configuración para los gráficos

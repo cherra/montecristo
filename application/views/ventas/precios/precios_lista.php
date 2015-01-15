@@ -38,12 +38,17 @@
 <?php } ?>
 <?php if(isset($pagination)){ ?>
 <div class="row-fluid">
-    <div class="span10">
+    <div class="span8">
         <div class="pagination"><?php echo $pagination; ?></div>
     </div>
     <div class="span2">
         <?php if(isset($link_add)){ ?>
         <p class="text-right"><?php echo $link_add; ?></p>
+        <?php } ?>
+    </div>
+    <div class="span2">
+        <?php if(isset($link_exportar)){ ?>
+        <p class="text-right"><?php echo $link_exportar; ?></p>
         <?php } ?>
     </div>
 </div>

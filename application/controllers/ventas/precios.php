@@ -50,6 +50,7 @@ class Precios extends CI_Controller{
                     $d->nombre,
                     $d->descripcion,
                     array('data' => anchor($this->folder.$this->clase.'index/' . $d->id, '<i class="icon-usd"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;'),
+                    array('data' => anchor($this->folder.$this->clase.'listas_exportar/' . $d->id, '<i class="icon-share"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;'),
                     array('data' => anchor($this->folder.$this->clase.'listas_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small')), 'style' => 'text-align: right;')
             );
     	}
@@ -94,6 +95,43 @@ class Precios extends CI_Controller{
         $this->load->view($this->folder.$this->clase.'listas_formulario', $data);
     }
     
+    public function listas_exportar( $id ){
+        if(!empty($id)){
+            $this->load->model('precio','p');
+            $this->load->model('lista','l');
+            $this->load->model('producto_presentacion', 'pp');
+            $this->load->model('producto','pro');
+            $this->load->model('presentacion','pre');
+            
+            $lista = $this->l->get_by_id($id)->row();
+            $presentaciones = $this->pp->get_all()->result();
+            
+            $path = $this->config->item('tmp_path');
+            if(!file_exists($path)){
+                mkdir($path, 0777, true);
+            }elseif(!is_writable($path)){
+                chmod($path, 0777);
+            }
+            
+            $fp = fopen($path.$lista->nombre.'.csv','w');           
+            
+            fputcsv($fp, array('Lista de precios','','','',''));
+            fputcsv($fp, array($lista->nombre,'','','',''));
+            fputcsv($fp, array('SKU','Código','Producto','Presentación','Precio'));
+            foreach ($presentaciones as $p) {
+                $producto = $this->pro->get_by_id($p->id_producto)->row();
+                $presentacion = $this->pre->get_by_id($p->id_presentacion)->row();
+                $precio = $this->p->get_by_lista_producto_presentacion($id, $p->id)->row();
+                fputcsv($fp, array($p->sku,$p->codigo,$producto->nombre, $presentacion->nombre, empty($precio->precio) ? '0' : $precio->precio));
+            }
+            
+            $this->load->helper('download');
+            $contenido = file_get_contents($path.$lista->nombre.'.csv');
+            unlink($path.$lista->nombre.'.csv');
+            force_download($lista->nombre.'.csv', $contenido);
+        }
+    }
+    
     /*
      * Precios
      */
@@ -108,6 +146,7 @@ class Precios extends CI_Controller{
         
         $data['titulo'] = 'Precios <small>Listado</small>';
         $data['link_back'] = anchor($this->folder.$this->clase.'listas','<i class="icon-arrow-left"></i> Listas',array('class'=>'btn'));
+        $data['link_exportar'] = anchor($this->folder.$this->clase.'listas_exportar/'.$id,'<i class="icon-share"></i> Exportar',array('class'=>'btn'));
         $data['action'] = $this->folder.$this->clase.'index/'.$id;
         
         // Filtro de busqueda (se almacenan en la sesión a través de un hook)

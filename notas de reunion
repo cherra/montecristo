@@ -12,11 +12,11 @@ Generar notas de crédito en base a las mermas y poder hacer ajustes.
 Poder generar notas de crédito aisladas.
 
 13/ene/2015
-Agregar en llamadas campo para recordatorio de llamar de nuevo.
-Hacer modulo de widgets para pantallas de inicio
-Mostrar listado de llamadas en widgets.
-Exportar listas de precios a Excel
-Listado de ordenes de salida juntar las columnas de folio de salida y origen.
+*Agregar en llamadas campo para recordatorio de llamar de nuevo.
+*Hacer modulo de widgets para pantallas de inicio
+*Mostrar listado de llamadas en widgets.
+*Exportar listas de precios a Excel
+*Listado de ordenes de salida juntar las columnas de folio de salida y origen.
 Exportar a excel los pedidos.
 Guardar CFDi en el sistema (listado de pedidos).
-En el listado de facturas mostrar la cantidad de plantas.
+*En el listado de facturas mostrar la cantidad de plantas.
