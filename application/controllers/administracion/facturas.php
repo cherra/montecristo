@@ -47,10 +47,13 @@ class Facturas extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Folio','Pedido', 'Fecha','Cliente','Subtotal','IVA','Total', '', '','');
+    	$this->table->set_heading('Folio','Pedido', 'Fecha','Cliente','Piezas', 'Subtotal','IVA','Total', '', '','');
     	foreach ($datos as $d) {
             $cliente = $this->c->get_by_id($d->id_cliente)->row();
             $pedido = $this->p->get_by_factura($d->id)->row();
+            if(!empty($pedido)){
+                $piezas = $this->p->get_piezas($d->id);
+            }
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importes = $this->f->get_importes($d->id);
     		$this->table->add_row(
@@ -58,6 +61,7 @@ class Facturas extends CI_Controller {
                         !empty($pedido) ? $pedido->id : '',
                         $d->fecha,
                         $cliente->nombre,
+                        $piezas,
                         array('data' => number_format($importes->subtotal,2), 'style' => 'text-align: right;'),
                         array('data' => number_format($importes->iva,2), 'style' => 'text-align: right;'),
                         array('data' => number_format($importes->total,2), 'style' => 'text-align: right;'),
