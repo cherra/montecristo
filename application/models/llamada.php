@@ -26,7 +26,7 @@ class Llamada extends CI_Model {
      *  Obtiene todos los registros de la tabla
      */
     function get_all() {
-        $this->db->order_by('id','asc');
+        $this->db->order_by('id','desc');
         return $this->db->get($this->tbl);
     }
     
@@ -40,7 +40,8 @@ class Llamada extends CI_Model {
                 $this->db->or_like('id',$f);
             }
         }
-        $this->db->order_by('id','asc');
+        $this->db->order_by('marca','desc');
+        $this->db->order_by('fecha', 'desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
@@ -50,6 +51,12 @@ class Llamada extends CI_Model {
     function get_by_id($id) {
         $this->db->where('id', $id);
         return $this->db->get($this->tbl);
+    }
+    
+    function get_by_id_usuario($id, $limit = NULL, $offset = 0){
+        $this->db->where('id_usuario', $id);
+        $this->db->order_by('fecha','desc');
+        return $this->db->get($this->tbl, $limit, $offset);
     }
     
     /**

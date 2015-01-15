@@ -406,8 +406,8 @@ class Clientes extends CI_Controller{
                                 $contacto->celular,
                                 $contacto->email,
                                 //array('data' => anchor('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-shopping-cart"></i>', array('class' => 'btn btn-small', 'title' => 'Pedido')), 'style' => 'text-align: right;'),
-                                array('data' => anchor('ventas/clientes/llamadas_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Llamada')), 'style' => 'text-align: right;'),
-                                array('data' => anchor('ventas/clientes/contactos_editar/' . $contacto->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
+                                array('data' => anchor($this->folder.$this->clase.'llamadas_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $contacto->id, '<i class="icon-phone"></i>', array('class' => 'btn btn-small', 'title' => 'Llamada')), 'style' => 'text-align: right;'),
+                                array('data' => anchor($this->folder.$this->clase.'contactos_editar/' . $contacto->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')), 'style' => 'text-align: right;')
                         );
                     }
 
@@ -541,7 +541,7 @@ class Clientes extends CI_Controller{
         $this->load->view('ventas/clientes/productos_lista', $data);
     }
     
-    public function llamadas_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL ) {
+    public function llamadas_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL, $link_back = NULL ) {
         if (empty($id_cliente) OR empty($id_sucursal) OR empty($id_contacto)) {
             redirect($this->folder.$this->clase.'contactos');
         }
@@ -555,7 +555,10 @@ class Clientes extends CI_Controller{
         $data['contacto'] = $this->co->get_by_id($id_contacto)->row();
         
         $data['titulo'] = 'Llamada <small>Registro nuevo</small>';
-        $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. trim($data['sucursal']->estado).'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        if(!empty($link_back))
+            $data['link_back'] = anchor($link_back,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        else
+            $data['link_back'] = anchor($this->folder.$this->clase.'contactos/' . $id_cliente . '/'. trim($data['sucursal']->estado).'/'. $id_sucursal,'<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
         $data['mensaje'] = '';
         $data['action'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto;
         $data['action_pedido'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto.'/'.TRUE;
@@ -566,6 +569,8 @@ class Clientes extends CI_Controller{
             unset($llamada['pedido']);
             $llamada['fecha'] = $llamada['fecha'].' '.$llamada['hora'];
             unset($llamada['hora']);
+            
+            $llamada['id_usuario'] = $this->session->userdata('userid');
             if( $this->ll->save($llamada) > 0 ){
                 if(!empty($pedido))
                     redirect('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $id_contacto .'/'.$this->db->insert_id());
@@ -578,6 +583,16 @@ class Clientes extends CI_Controller{
         
         $this->load->view('ventas/clientes/llamadas_formulario', $data);
     }
+    
+    public function llamadas_desmarcar($id){
+        if(empty($id)){
+            redirect(site_url());
+        }
+        $this->load->model('llamada','ll');
+        $this->ll->update($id, array('marca' => '0'));
+        redirect($this->folder.'ventas');
+    }
+            
     
     /*
      * Editar Alias de los productos por cliente

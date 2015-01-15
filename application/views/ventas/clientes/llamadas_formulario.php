@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <div class="page-header">
         <h2><?php echo $titulo; ?></h2> 
-        <?php echo $link_back; ?>
+        <a href="javascript:history.back(-1)" class="btn"><i class="icon-arrow-left"></i> Regresar</a>
     </div>
 </div>
 <div class="row-fluid">
@@ -47,6 +47,12 @@
             <label class="control-label hidden-phone" for="comentarios">Comentarios</label>
             <div class="controls">
                 <textarea rows="3" name="comentarios" placeholder="Comentarios"><?php echo (isset($datos->comentarios) ? $datos->comentarios : ''); ?></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label hidden-phone" for="marca">Marcar</label>
+            <div class="controls">
+              <input type="checkbox" name="marca" id="marca" value="1" <?php echo ((isset($datos->marca) && $datos->marca == '1') ? 'checked' : ''); ?>>
             </div>
         </div>
         <div class="control-group">
