@@ -1048,11 +1048,16 @@ class Pedidos extends CI_Controller {
         $usuario = $this->u->get_by_id($pedido->id_usuario)->row();
         
         $this->load->library('excel');
+        
+        $this->excel->getDefaultStyle()->getFont()->setName('Arial');
+        $this->excel->getDefaultStyle()->getFont()->setSize(10);
+
         //activate worksheet number 1
         $this->excel->setActiveSheetIndex(0);
         //name the worksheet
         $this->excel->getActiveSheet()->setTitle('PEDIDO');
         
+        $fila = 1;
         //Logotipo
         $logo = $this->configuracion->get_valor('img_path').$this->configuracion->get_valor('logotipo');
         
@@ -1068,29 +1073,92 @@ class Pedidos extends CI_Controller {
 //        $objDrawing->getShadow()->setDirection(45);
 //
 //        $objDrawing->setWorksheet($this->excel->getActiveSheet());
+//        
+//        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'PEDIDO');
+        $fila++;
         
-        $this->excel->getActiveSheet()->setCellValue('A1', 'Folio');
-        $this->excel->getActiveSheet()->setCellValue('B1', 'Fecha');
-        $this->excel->getActiveSheet()->setCellValue('C1', 'Caja');
-        $this->excel->getActiveSheet()->setCellValue('D1', 'Cajero');
-        $this->excel->getActiveSheet()->setCellValue('E1', 'Cliente');
-        $this->excel->getActiveSheet()->setCellValue('F1', 'Importe');
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Cliente');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $cliente->nombre);
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Núm:');
+        $this->excel->getActiveSheet()->mergeCells('F'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, $pedido->id);
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'RFC');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $cliente->rfc);
+        $fecha = date_create($pedido->fecha);
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Fecha:');
+        $this->excel->getActiveSheet()->mergeCells('F'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, date_format($fecha,'d/m/Y'));
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Domicilio');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $cliente->calle.' '.$cliente->numero_exterior.' '.$cliente->numero_interior);
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Promotor:');
+        $this->excel->getActiveSheet()->mergeCells('F'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, $usuario->nombre);
+        $fila++;
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $cliente->colonia);
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'No. proveedor:');
+        $this->excel->getActiveSheet()->mergeCells('F'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, $cliente->num_proveedor);
+        $fila++;
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $cliente->poblacion.', '.$cliente->municipio.', '.$cliente->estado.', '.$cliente->cp);
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Orden compra:');
+        $this->excel->getActiveSheet()->mergeCells('F'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, $pedido->orden_compra);
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Tienda');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $sucursal->numero.' '.$sucursal->nombre);
+        $fila++;
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $sucursal->calle.' '.$sucursal->numero_exterior.' '.$sucursal->numero_interior.' '.$sucursal->colonia);
+        $fila++;
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $sucursal->poblacion.', '.$sucursal->municipio.', '.$sucursal->estado.', '.$sucursal->cp);
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Contacto');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':D'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $contacto->nombre);
+        $fila+=2;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Codigo');
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, 'SKU');
+        $this->excel->getActiveSheet()->setCellValue('C'.$fila, 'Cantidad');
+        $this->excel->getActiveSheet()->setCellValue('D'.$fila, 'Descripción');
+        $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Presentación');
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, 'Precio');
+        $this->excel->getActiveSheet()->setCellValue('G'.$fila, 'Importe');
 
-        $fila = 2;
-        $estatus = 'n';
-        /*foreach($ventas as $v){
-            if($v->cancelada != $estatus){
-                $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Canceladas');
-                $fila++;
-                $estatus = $v->cancelada;
-            }
-            $fecha = date_create($v->fecha);
-            $this->excel->getActiveSheet()->setCellValue('A'.$fila, $v->id_venta);
-            $this->excel->getActiveSheet()->setCellValue('B'.$fila, date_format($fecha,'d/m/Y'));
-            $this->excel->getActiveSheet()->setCellValue('C'.$fila, $v->caja);
-            $this->excel->getActiveSheet()->setCellValue('D'.$fila, $v->usuario);
-            $this->excel->getActiveSheet()->setCellValue('E'.$fila, $v->nombre);
-            $this->excel->getActiveSheet()->setCellValue('F'.$fila, $v->monto);
+        $fila++;
+        $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
+        foreach($presentaciones as $key => $value){
+            $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $presentaciones[$key]['id_producto_presentacion'])->row();
+            $presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
+            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * $presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
+            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
+            $presentaciones[$key]['sku'] = $presentacion_cliente->sku ? $presentacion_cliente->sku : $presentacion->sku;
+            $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
+            $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
+            
+            $this->excel->getActiveSheet()->setCellValue('A'.$fila, $presentaciones[$key]['codigo']);
+            $this->excel->getActiveSheet()->setCellValue('B'.$fila, $presentaciones[$key]['sku']);
+            $this->excel->getActiveSheet()->setCellValue('C'.$fila, $presentaciones[$key]['cantidad']);
+            $this->excel->getActiveSheet()->setCellValue('D'.$fila, $presentaciones[$key]['nombre']);
+            $this->excel->getActiveSheet()->setCellValue('E'.$fila, $presentaciones[$key]['presentacion']);
+            $this->excel->getActiveSheet()->setCellValue('F'.$fila, $presentaciones[$key]['precio']);
+            $this->excel->getActiveSheet()->setCellValue('G'.$fila, $presentaciones[$key]['importe']);
 
             $this->excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
             $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -1098,9 +1166,34 @@ class Pedidos extends CI_Controller {
             $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
             $this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
             $this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+            $this->excel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
 
             $fila++;
-        }*/
+        }
+        
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, 'Subtotal');
+        $this->excel->getActiveSheet()->setCellValue('G'.$fila, $this->p->get_subtotal($pedido->id));
+        $fila++;
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, 'IVA');
+        $this->excel->getActiveSheet()->setCellValue('G'.$fila, $this->p->get_iva($pedido->id));
+        $fila++;
+        $this->excel->getActiveSheet()->setCellValue('F'.$fila, 'Total');
+        $this->excel->getActiveSheet()->setCellValue('G'.$fila, $this->p->get_importe($pedido->id));
+        $fila+=2;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Piezas:');
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $this->p->get_piezas($pedido->id));
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Peso:');
+        $this->excel->getActiveSheet()->setCellValue('B'.$fila, $this->p->get_peso($pedido->id));
+        $fila++;
+        
+        $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Observaciones:');
+        $this->excel->getActiveSheet()->mergeCells('B'.$fila.':G'.$fila);
+        $this->excel->getActiveSheet()->setCellValue('G'.$fila, $pedido->observaciones);
+        $fila++;
+        
         //set cell A1 content with some text
 //                $this->excel->getActiveSheet()->setCellValue('A1', 'This is just some text value');
 //                //change the font size
