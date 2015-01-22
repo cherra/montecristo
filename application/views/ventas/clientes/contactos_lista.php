@@ -43,7 +43,7 @@
                 <option value="">Selecciona una sucursal...</option>
                 <?php
                 foreach($sucursales as $s){ ?>
-                    <option value="<?php echo $s->id; ?>" <?php if(!empty($sucursal->id)) echo ($sucursal->id == $s->id ? 'selected' : ''); ?>><?php echo $s->nombre; ?></option>
+                    <option value="<?php echo $s->id; ?>" <?php if(!empty($sucursal->id)) echo ($sucursal->id == $s->id ? 'selected' : ''); ?>><?php echo $s->numero.' '.$s->nombre; ?></option>
                 <?php
                 }
                 ?>
