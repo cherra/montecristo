@@ -40,8 +40,7 @@ class Llamada extends CI_Model {
                 $this->db->or_like('id',$f);
             }
         }
-        $this->db->order_by('marca','desc');
-        $this->db->order_by('fecha', 'desc');
+        $this->db->order_by('fecha','desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
@@ -55,6 +54,7 @@ class Llamada extends CI_Model {
     
     function get_by_id_usuario($id, $limit = NULL, $offset = 0){
         $this->db->where('id_usuario', $id);
+        $this->db->order_by('marca','desc');
         $this->db->order_by('fecha','desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }

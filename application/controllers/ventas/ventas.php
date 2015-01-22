@@ -63,7 +63,7 @@ class Ventas extends CI_Controller{
     	foreach ($misllamadas as $d) {
             $fecha = new DateTime($d->fecha);
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
-            //$contacto = $this->co->get_by_id($d->id_cliente_sucursal_contacto)->row();
+            $contacto = $this->co->get_by_id($d->id_cliente_sucursal_contacto)->row();
             $sucursal = $this->s->get_by_id($contacto->id_cliente_sucursal)->row();
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
             $pedido = $this->p->get_by_llamada($d->id)->row();

@@ -150,6 +150,16 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_paged_list_by_sucursal($id, $limit = NULL, $offset = 0) {
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        $this->db->where('p.id_cliente_sucursal', $id);
+        $this->db->order_by('p.id','desc');
+        return $this->db->get($this->tbl.' p', $limit, $offset);
+    }
+    
     function get_presentaciones( $id, $agrupar_codigo = FALSE ){
         $this->db->select('pp.id, pp.id_pedido, pp.id_producto_presentacion, SUM(pp.cantidad) AS cantidad, pp.precio, pp.iva, pp.observaciones, 
             IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto,
@@ -541,7 +551,7 @@ class Pedido extends CI_Model {
         return $this->db->affected_rows();
     }
     
-    function duplicar( $id ){
+    function duplicar( $id, $id_llamada = NULL ){
         $this->db->where('id', $id);
         $query = $this->db->get($this->tbl);  // Se obtiene el pedido
         $this->db->where('id_pedido', $id);
@@ -553,6 +563,7 @@ class Pedido extends CI_Model {
             unset($pedido['id']);  // Quitamos el ID para que se genere uno nuevo
             unset($pedido['fecha']);  // Quitamos la fecha para poner la fecha actual
             $pedido['estado'] = '1';
+            $pedido['id_llamada'] = $id_llamada;
             $this->db->trans_start();
             $this->db->insert($this->tbl, $pedido);
             $id_pedido = $this->db->insert_id();

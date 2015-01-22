@@ -541,7 +541,7 @@ class Clientes extends CI_Controller{
         $this->load->view('ventas/clientes/productos_lista', $data);
     }
     
-    public function llamadas_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL, $link_back = NULL ) {
+    public function llamadas_agregar( $id_cliente = NULL, $id_sucursal = NULL, $id_contacto = NULL, $link_back = NULL) {
         if (empty($id_cliente) OR empty($id_sucursal) OR empty($id_contacto)) {
             redirect($this->folder.$this->clase.'contactos');
         }
@@ -550,6 +550,8 @@ class Clientes extends CI_Controller{
         $this->load->model('sucursal', 's');
         $this->load->model('contacto','co');
         $this->load->model('llamada','ll');
+        $this->load->model('pedido','p');
+        $this->load->model('preferencias/usuario','u');
         $data['cliente'] = $this->c->get_by_id($id_cliente)->row();
         $data['sucursal'] = $this->s->get_by_id($id_sucursal)->row();
         $data['contacto'] = $this->co->get_by_id($id_contacto)->row();
@@ -562,11 +564,13 @@ class Clientes extends CI_Controller{
         $data['mensaje'] = '';
         $data['action'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto;
         $data['action_pedido'] = 'ventas/clientes/llamadas_agregar/' . $id_cliente . '/' . $id_sucursal .'/'.$id_contacto.'/'.TRUE;
-	
+        
         if ( ( $llamada = $this->input->post() ) ) {
             $llamada['id_cliente_sucursal_contacto'] = $id_contacto;
             $pedido = $llamada['pedido'];
+            $duplicar = $llamada['duplicar'];
             unset($llamada['pedido']);
+            unset($llamada['duplicar']);
             $llamada['fecha'] = $llamada['fecha'].' '.$llamada['hora'];
             unset($llamada['hora']);
             
@@ -574,12 +578,50 @@ class Clientes extends CI_Controller{
             if( $this->ll->save($llamada) > 0 ){
                 if(!empty($pedido))
                     redirect('ventas/pedidos/pedidos_agregar/' . $id_cliente . '/'. $id_sucursal . '/'. $id_contacto .'/'.$this->db->insert_id());
+                elseif(!empty($duplicar))
+                    redirect($this->folder.'pedidos/pedidos_duplicar/'.$duplicar.'/1/pedidos_editar/'.$this->db->insert_id());
                 else
                     redirect($this->folder.$this->clase.'clientes');
+                
                 $data['mensaje'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Registro exitoso</div>';
             }else
                 $data['mensaje'] = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Ocurrió un error!</div>';
         }
+        
+        $datos = $this->p->get_paged_list_by_sucursal($id_sucursal, 5, 0)->result();
+        
+        // generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Número','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Total', '', '');
+    	foreach ($datos as $d) {
+            // Si el pedido no está cancelado
+            if($d->estado > 0){
+                $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
+                $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+                $usuario = $this->u->get_by_id($d->id_usuario)->row();
+                $importe = $this->p->get_importe($d->id);
+                    $this->table->add_row(
+                            $d->id,
+                            $d->fecha,
+                            $cliente->nombre,
+                            $sucursal->numero.'.- '.$sucursal->nombre,
+                            $sucursal->municipio,
+                            $sucursal->estado,
+                            $usuario->nombre,
+                            array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                            array('data' => anchor_popup($this->folder.'pedidos/pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                            '<button class="btn btn-small duplicar" pedido="'.$d->id.'"><i class="icon-copy"></i></button>'
+                    );
+                    if($d->estado == 0)
+                        $this->table->add_row_class('muted');
+                    else
+                        $this->table->add_row_class('');
+            }
+    	}
+    	$data['table'] = $this->table->generate();
         
         $this->load->view('ventas/clientes/llamadas_formulario', $data);
     }

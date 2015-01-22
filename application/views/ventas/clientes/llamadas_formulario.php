@@ -16,7 +16,7 @@
         <div class="control-group">
             <label class="control-label hidden-phone" for="cliente_sucursal">Sucursal</label>
             <div class="controls">
-              <input type="text" id="cliente_sucursal" class="required" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" readonly>
+              <input type="text" id="cliente_sucursal" class="required" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->numero.' '.$sucursal->nombre : ''); ?>" readonly>
             </div>
         </div>
         <div class="control-group">
@@ -58,6 +58,7 @@
         <div class="control-group">
             <div class="controls">
                 <input type="hidden" name="pedido" id="pedido" value="0" />
+                <input type="hidden" name="duplicar" id="duplicar" value="0" />
               <button type="submit" class="btn btn-primary">Guardar</button>
               <button type="button" id="btn_pedido" class="btn btn-success">Pedido</button>
             </div>
@@ -65,6 +66,13 @@
     <?php echo form_close(); ?>
     </div>
 </div>
+<?php if(isset($table)){ ?>
+<div class="row-fluid">
+    <div class="span12">
+        <div class="data"><?php echo $table; ?></div>
+    </div>
+</div>
+<?php } ?>
 <?php
 if(!empty($mensaje)){
 ?>
@@ -83,6 +91,12 @@ $(document).ready(function(){
     
     $('#btn_pedido').click(function(){
         $('#pedido').val('1');
+        $('form').submit();
+    });
+    
+    $('.duplicar').click(function(){
+        $('#duplicar').val($(this).attr('pedido'));
+        //alert($(this).attr('pedido'));
         $('form').submit();
     });
 });

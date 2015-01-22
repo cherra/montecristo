@@ -297,10 +297,11 @@ class Pedidos extends CI_Controller {
         redirect('ventas/pedidos/index');
     }
     
-    public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index' ){
+    public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index', $id_llamada = NULL ){
         if(!empty($id)){
             $this->load->model('pedido','p');
-            $respuesta = $this->p->duplicar( $id );   // Debe regresar el id del pedido nuevo
+            
+            $respuesta = $this->p->duplicar( $id, $id_llamada );   // Debe regresar el id del pedido nuevo
             if($respuesta){
                 $this->session->set_flashdata('mensaje',array('texto' => 'Pedido duplicado', 'tipo' => ''));
             }else{
