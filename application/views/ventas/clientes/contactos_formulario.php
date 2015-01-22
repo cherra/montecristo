@@ -16,7 +16,7 @@
         <div class="control-group">
             <label class="control-label hidden-phone" for="cliente_sucursal">Sucursal</label>
             <div class="controls">
-              <input type="text" id="cliente_sucursal" class="required" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->nombre : ''); ?>" readonly>
+              <input type="text" id="cliente_sucursal" class="required" placeholder="Sucursal" value="<?php echo (isset($sucursal) ? $sucursal->numero.' '.$sucursal->nombre : ''); ?>" readonly>
             </div>
         </div>
         <div class="control-group">
