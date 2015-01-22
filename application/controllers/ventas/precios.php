@@ -106,29 +106,61 @@ class Precios extends CI_Controller{
             $lista = $this->l->get_by_id($id)->row();
             $presentaciones = $this->pp->get_all()->result();
             
-            $path = $this->config->item('tmp_path');
-            if(!file_exists($path)){
-                mkdir($path, 0777, true);
-            }elseif(!is_writable($path)){
-                chmod($path, 0777);
-            }
+            $this->load->library('excel');
+        
+            $this->excel->getDefaultStyle()->getFont()->setName('Arial');
+            $this->excel->getDefaultStyle()->getFont()->setSize(10);
+
+            //activate worksheet number 1
+            $this->excel->setActiveSheetIndex(0);
+            //name the worksheet
+            $this->excel->getActiveSheet()->setTitle('PEDIDO');
             
-            $fp = fopen($path.$lista->nombre.'.csv','w');           
+            $fila = 1;
             
-            fputcsv($fp, array('Lista de precios','','','',''));
-            fputcsv($fp, array($lista->nombre,'','','',''));
-            fputcsv($fp, array('SKU','Código','Producto','Presentación','Precio'));
+            $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Lista de precios');
+            $fila++;
+            $this->excel->getActiveSheet()->setCellValue('A'.$fila, $lista->nombre);
+            $fila++;
+            
+            $this->excel->getActiveSheet()->setCellValue('A'.$fila, 'Codigo');
+            $this->excel->getActiveSheet()->setCellValue('B'.$fila, 'SKU');
+            $this->excel->getActiveSheet()->setCellValue('C'.$fila, 'Producto');
+            $this->excel->getActiveSheet()->setCellValue('D'.$fila, 'Presentación');
+            $this->excel->getActiveSheet()->setCellValue('E'.$fila, 'Precio');
+            $fila++;
+            
             foreach ($presentaciones as $p) {
-                $producto = $this->pro->get_by_id($p->id_producto)->row();
-                $presentacion = $this->pre->get_by_id($p->id_presentacion)->row();
                 $precio = $this->p->get_by_lista_producto_presentacion($id, $p->id)->row();
-                fputcsv($fp, array($p->sku,$p->codigo,$producto->nombre, $presentacion->nombre, empty($precio->precio) ? '0' : $precio->precio));
+                if(!empty($precio->precio)){
+                    $producto = $this->pro->get_by_id($p->id_producto)->row();
+                    $presentacion = $this->pre->get_by_id($p->id_presentacion)->row();
+                    $this->excel->getActiveSheet()->setCellValue('A'.$fila, $p->codigo);
+                    $this->excel->getActiveSheet()->setCellValue('B'.$fila, $p->sku);
+                    $this->excel->getActiveSheet()->setCellValue('C'.$fila, $producto->nombre);
+                    $this->excel->getActiveSheet()->setCellValue('D'.$fila, $presentacion->nombre);
+                    $this->excel->getActiveSheet()->setCellValue('E'.$fila, $precio->precio);
+                    
+                    $this->excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+                    $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+                    $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+                    $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+                    $this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            
+                    $fila++;
+                }
             }
             
-            $this->load->helper('download');
-            $contenido = file_get_contents($path.$lista->nombre.'.csv');
-            unlink($path.$lista->nombre.'.csv');
-            force_download($lista->nombre.'.csv', $contenido);
+            $filename='lista_'.$lista->nombre.'.xls'; //save our workbook as this file name
+            header('Content-Type: application/vnd.ms-excel'); //mime type
+            header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+            header('Cache-Control: max-age=0'); //no cache
+
+            //save it to Excel5 format (excel 2003 .XLS file), change this to 'Excel2007' (and adjust the filename extension, also the header mime type)
+            //if you want to save it as .XLSX Excel 2007 format
+            $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');  
+            //force user to download the Excel file without writing it to server's HD
+            $objWriter->save('php://output');
         }
     }
     
