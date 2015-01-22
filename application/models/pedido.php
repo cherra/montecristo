@@ -145,6 +145,11 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_by_llamada($id) {
+        $this->db->where('id_llamada', $id);
+        return $this->db->get($this->tbl);
+    }
+    
     function get_presentaciones( $id, $agrupar_codigo = FALSE ){
         $this->db->select('pp.id, pp.id_pedido, pp.id_producto_presentacion, SUM(pp.cantidad) AS cantidad, pp.precio, pp.iva, pp.observaciones, 
             IF( LENGTH( cp.producto ) >0, cp.producto, pro.nombre ) AS producto,
