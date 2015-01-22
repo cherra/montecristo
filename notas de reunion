@@ -22,7 +22,7 @@ Guardar CFDi en el sistema (listado de pedidos).
 *En el listado de facturas mostrar la cantidad de plantas.
 
 15/ene/2015
-Mostrar ultimos pedidos de la sucursal en el formulario de llamada y poder duplicar algún pedido y relacionarlo con la llamada.
+*Mostrar ultimos pedidos de la sucursal en el formulario de llamada y poder duplicar algún pedido y relacionarlo con la llamada.
 *Revisar acentos en el archivo de Excel al exportar las listas de precios.
 *Agregar el código en las listas de precios al exportarlos a excel.
 *Solo mostrar los artículos que tengan precios en el archivo de excel.

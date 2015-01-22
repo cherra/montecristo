@@ -1145,9 +1145,9 @@ class Pedidos extends CI_Controller {
         foreach($presentaciones as $key => $value){
             $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $presentaciones[$key]['id_producto_presentacion'])->row();
             $presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
-            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * $presentaciones[$key]['precio'],2,'.',',');
-            $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
-            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
+            $presentaciones[$key]['importe'] = number_format($presentaciones[$key]['cantidad'] * $presentaciones[$key]['precio'],2,'.','');
+            $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.','');
+            $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.','');
             $presentaciones[$key]['codigo'] = $presentacion_cliente->codigo ? $presentacion_cliente->codigo : $presentacion->codigo;
             $presentaciones[$key]['sku'] = $presentacion_cliente->sku ? $presentacion_cliente->sku : $presentacion->sku;
             $presentaciones[$key]['nombre'] = $presentacion_cliente->producto;
