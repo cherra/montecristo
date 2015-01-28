@@ -176,8 +176,6 @@ class Reportes extends CI_Controller {
             $total_piezas = 0;
             $total_importe = 0;
             foreach ($clientes as $c){
-                $sucursal = $this->s->get_by_id_cliente($c->id)->row();
-                $contacto = $this->co->get_by_id_cliente_sucursal($sucursal->id)->row();
                 $pedidos = $this->p->get_by_cliente($c->id, $post['desde'], $post['hasta'])->result();
                 
                 //die($this->db->last_query());
@@ -195,6 +193,8 @@ class Reportes extends CI_Controller {
                     foreach($pedidos as $p){
                         $fecha = date_create($p->fecha);
                         $usuario = $this->u->get_by_id($p->id_usuario)->row();
+                        $sucursal = $this->s->get_by_id($p->id_cliente_sucursal)->row();
+                        $contacto = $this->co->get_by_id($p->id_contacto)->row();
                         $piezas = $this->p->get_piezas($p->id);
                         $importe = $this->p->get_importe($p->id);
                         $total_piezas_cliente += $piezas;
