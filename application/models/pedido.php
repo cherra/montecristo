@@ -83,7 +83,15 @@ class Pedido extends CI_Model {
         $this->db->join('Clientes c','cs.id_cliente = c.id');
         $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
         $this->db->where('c.id', $id);
-        $this->db->where('p.estado > 0');
+        $this->db->where('p.fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        $this->db->order_by('p.id','desc');
+        return $this->db->get($this->tbl.' p');
+    }
+    
+    function get_by_usuario($id, $desde = NULL, $hasta = NULL){
+        $this->db->select('p.*');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        $this->db->where('u.id_usuario', $id);
         $this->db->where('p.fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
         $this->db->order_by('p.id','desc');
         return $this->db->get($this->tbl.' p');
