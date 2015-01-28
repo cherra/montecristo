@@ -57,6 +57,11 @@ class Contacto extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_by_id_cliente_sucursal($id){
+        $this->db->where('id_cliente_sucursal', $id);
+        return $this->db->get($this->tbl);
+    }
+    
     /**
     * Alta
     */

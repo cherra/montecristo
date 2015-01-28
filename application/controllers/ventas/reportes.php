@@ -147,5 +147,137 @@ class Reportes extends CI_Controller {
         $data['titulo'] = 'Reporte <small>Llamadas</small>';
         $this->load->view('reporte', $data);
     }
+    
+    //Ventas por cliente
+    public function pedidos_cliente(){
+        $data['reporte'] = '';
+        if( ($post = $this->input->post()) ){
+            
+            $data['desde'] = $post['desde'];
+            $data['hasta'] = $post['hasta'];
+            $data['filtro'] = $post['filtro'];
+            
+            $this->load->model('cliente','c');
+            $this->load->model('sucursal','s');
+            $this->load->model('contacto','co');
+            $this->load->model('pedido','p');
+            $this->load->model('preferencias/usuario','u');
+            
+            $clientes = $this->c->get_paged_list(NULL, 0, $post['filtro'])->result();
+            
+            // generar tabla
+            $this->load->library('table');
+            $this->table->set_empty('&nbsp;');
+            
+            $tmpl = array ( 'table_open' => '<table class="table table-condensed" >' );
+            $this->table->set_template($tmpl);
+            $this->table->set_heading('Folio', 'Fecha', 'Sucursal', 'Vendedor', 'Piezas', 'Importe');
+            
+            $total_piezas = 0;
+            $total_importe = 0;
+            foreach ($clientes as $c){
+                $sucursal = $this->s->get_by_id_cliente($c->id)->row();
+                $contacto = $this->co->get_by_id_cliente_sucursal($sucursal->id)->row();
+                $pedidos = $this->p->get_by_cliente($c->id, $post['desde'], $post['hasta'])->result();
+                
+                //die($this->db->last_query());
+                if(!empty($pedidos)){
+                    $clase = '';
+                    // Fila con el nombre del cliente
+                    $this->table->add_row(
+                        array('data' => $c->nombre, 'class' => $clase, 'colspan' => '6')
+                    );
+                    $this->table->add_row_class($clase);
+
+                    $total_piezas_cliente = 0;
+                    $total_importe_cliente = 0;
+                    // Filas con los pedidos del cliente
+                    foreach($pedidos as $p){
+                        $fecha = date_create($p->fecha);
+                        $usuario = $this->u->get_by_id($p->id_usuario)->row();
+                        $piezas = $this->p->get_piezas($p->id);
+                        $importe = $this->p->get_importe($p->id);
+                        $total_piezas_cliente += $piezas;
+                        $total_importe_cliente += $importe;
+                        $this->table->add_row(
+                            array('data' => $p->id,'class' => $clase),
+                            array('data' => date_format($fecha,'d/m/Y h:i'),'class' => $clase),
+                            array('data' => $sucursal->numero.' '.$sucursal->nombre,'class' => $clase),
+                            array('data' => $usuario->nombre,'class' => $clase),
+                            array('data' => number_format($piezas,0),'class' => $clase, 'style' => 'text-align: right'),
+                            array('data' => number_format($importe,2),'class' => $clase, 'style' => 'text-align: right')
+                        );
+                        $this->table->add_row_class($clase);
+                    }
+                    $clase = 'resaltado';
+                    // Totales por cliente
+                    $this->table->add_row(
+                        array('data' => 'TOTAL','class' => $clase, 'colspan' => '4'),
+                        array('data' => number_format($total_piezas_cliente,0),'class' => $clase, 'style' => 'text-align: right'),
+                        array('data' => number_format($total_importe_cliente,2),'class' => $clase, 'style' => 'text-align: right')
+                    );
+                    $this->table->add_row_class($clase);
+                    
+                    $this->table->add_row(
+                        array('data' => '','class' => $clase, 'colspan' => '6')
+                    );
+                    $this->table->add_row_class($clase);
+            
+                    $total_piezas += $total_piezas_cliente;
+                    $total_importe += $total_importe_cliente;
+                }
+            }
+            // Totales
+            $this->table->add_row(
+                array('data' => '','class' => $clase, 'colspan' => '6')
+            );
+            $this->table->add_row_class($clase);
+            
+            $this->table->add_row(
+                array('data' => 'TOTAL','class' => $clase, 'colspan' => '4'),
+                array('data' => number_format($total_piezas,0),'class' => $clase, 'style' => 'text-align: right'),
+                array('data' => number_format($total_importe,2),'class' => $clase, 'style' => 'text-align: right')
+            );
+            $this->table->add_row_class($clase);
+                        
+            $tabla = $this->table->generate();
+            
+            //$tabla.= '</tbody></table>';
+            $this->load->library('tbs');
+            $this->load->library('pdf');
+            
+            // Se obtiene la plantilla (2° parametro se pone false para evitar que haga conversión de caractéres con htmlspecialchars() )
+            $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_reportes'), false);
+
+            // Se sustituyen los campos en el template
+            $this->tbs->VarRef['titulo'] = 'Pedidos por cliente';
+            date_default_timezone_set('America/Mexico_City'); // Zona horaria
+            $this->tbs->VarRef['fecha'] = date('d/m/Y H:i:s');
+            $desde = date_create($post['desde']);
+            $hasta = date_create($post['hasta']);
+            $this->tbs->VarRef['subtitulo'] = 'Del '.date_format($desde, 'd/m/Y').' al '.date_format($hasta, 'd/m/Y');
+            $this->tbs->VarRef['contenido'] = $tabla;
+            
+            $this->tbs->Show(TBS_NOTHING);
+            
+            // Se regresa el render
+            $output = $this->tbs->Source;
+            
+            $view = str_replace("{contenido_vista}", $output, $this->template);
+//            
+//            // PDF
+            $this->pdf->pagenumSuffix = '/';
+            $this->pdf->SetHeader('{PAGENO}{nbpg}');
+            $pdf = $this->pdf->render($view);
+//            $pdf = $view;
+            
+            $fp = fopen($this->configuracion->get_valor('asset_path').$this->configuracion->get_valor('tmp_path').'pedidos_cliente.pdf','w');
+            fwrite($fp, $pdf);
+            fclose($fp);
+            $data['reporte'] = 'pedidos_cliente.pdf';
+        }
+        $data['titulo'] = 'Reporte <small>Pedidos por cliente</small>';
+        $this->load->view('reporte', $data);
+    }
 }
 ?>

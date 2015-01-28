@@ -74,6 +74,21 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl.' p', $limit, $offset);
     }
     
+    /*
+     * Pedidos por rango de fecha y cliente
+     */
+    function get_by_cliente($id, $desde = NULL, $hasta = NULL){
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        $this->db->where('c.id', $id);
+        $this->db->where('p.estado > 0');
+        $this->db->where('p.fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        $this->db->order_by('p.id','desc');
+        return $this->db->get($this->tbl.' p');
+    }
+    
     /**
     * Pedidos sin factura
     */
