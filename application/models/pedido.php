@@ -173,6 +173,19 @@ class Pedido extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_total_by_producto($id, $desde = NULL, $hasta = NULL) {
+        $this->db->select('pr.nombre, pr.codigo');
+        $this->db->select('SUM(pep.cantidad) AS cantidad');
+        $this->db->select('SUM(pep.cantidad * precio) AS importe');
+        $this->db->join('PedidoPresentacion pep', 'p.id = pep.id_pedido');
+        $this->db->join('ProductoPresentaciones pp', 'pep.id_producto_presentacion = pp.id');
+        $this->db->join('Productos pr', 'pp.id_producto = pr.id');
+        $this->db->where('pr.id', $id);
+        $this->db->where('p.fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        $this->db->group_by('pr.id');
+        return $this->db->get($this->tbl.' p');
+    }
+    
     function get_paged_list_by_sucursal($id, $limit = NULL, $offset = 0) {
         $this->db->select('p.*');
         $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');

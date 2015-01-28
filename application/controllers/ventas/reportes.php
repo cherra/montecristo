@@ -282,7 +282,7 @@ class Reportes extends CI_Controller {
         $this->load->view('reporte', $data);
     }
     
-    //Ventas por cliente
+    //Ventas por usuario
     public function pedidos_usuario(){
         $data['reporte'] = '';
         if( ($post = $this->input->post()) ){
@@ -411,6 +411,101 @@ class Reportes extends CI_Controller {
             $data['reporte'] = 'pedidos_usuario.pdf';
         }
         $data['titulo'] = 'Reporte <small>Pedidos por usuario</small>';
+        $this->load->view('reporte', $data);
+    }
+    
+    //Ventas por usuario
+    public function pedidos_producto(){
+        $data['reporte'] = '';
+        if( ($post = $this->input->post()) ){
+            
+            $data['desde'] = $post['desde'];
+            $data['hasta'] = $post['hasta'];
+            $data['filtro'] = $post['filtro'];
+            
+            $this->load->model('pedido','p');
+            $this->load->model('preferencias/usuario','u');
+            $this->load->model('producto','pr');
+            $this->load->model('producto_presentacion','pp');
+            
+            $productos = $this->pr->get_paged_list(NULL, 0, $post['filtro'])->result();
+            
+            // generar tabla
+            $this->load->library('table');
+            $this->table->set_empty('&nbsp;');
+            
+            $tmpl = array ( 'table_open' => '<table class="table table-condensed" >' );
+            $this->table->set_template($tmpl);
+            $this->table->set_heading('Código', 'Producto', 'Piezas', 'Importe');
+            
+            $total_piezas = 0;
+            $total_importe = 0;
+            foreach ($productos as $p){
+                $totales = $this->p->get_total_by_producto($p->id, $post['desde'], $post['hasta'])->row();
+                
+                //die($this->db->last_query());
+                if(!empty($totales)){
+                    $clase = '';
+                    
+                    $piezas = $totales->cantidad;
+                    $importe = $totales->importe;
+                    $total_piezas += $piezas;
+                    $total_importe += $importe;
+                    $this->table->add_row(
+                        array('data' => $totales->codigo,'class' => $clase),
+                        array('data' => $totales->nombre,'class' => $clase),
+                        array('data' => number_format($totales->cantidad,0),'class' => $clase, 'style' => 'text-align: right'),
+                        array('data' => number_format($totales->importe,2),'class' => $clase, 'style' => 'text-align: right')
+                    );
+                    $this->table->add_row_class($clase);
+                }
+            }
+            
+            $clase = 'resaltado';
+            $this->table->add_row(
+                array('data' => 'TOTAL','class' => $clase, 'colspan' => '2'),
+                array('data' => number_format($total_piezas,0),'class' => $clase, 'style' => 'text-align: right'),
+                array('data' => number_format($total_importe,2),'class' => $clase, 'style' => 'text-align: right')
+            );
+            $this->table->add_row_class($clase);
+                        
+            $tabla = $this->table->generate();
+            
+            //$tabla.= '</tbody></table>';
+            $this->load->library('tbs');
+            $this->load->library('pdf');
+            
+            // Se obtiene la plantilla (2° parametro se pone false para evitar que haga conversión de caractéres con htmlspecialchars() )
+            $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_reportes'), false);
+
+            // Se sustituyen los campos en el template
+            $this->tbs->VarRef['titulo'] = 'Productos pedidos';
+            date_default_timezone_set('America/Mexico_City'); // Zona horaria
+            $this->tbs->VarRef['fecha'] = date('d/m/Y H:i:s');
+            $desde = date_create($post['desde']);
+            $hasta = date_create($post['hasta']);
+            $this->tbs->VarRef['subtitulo'] = 'Del '.date_format($desde, 'd/m/Y').' al '.date_format($hasta, 'd/m/Y');
+            $this->tbs->VarRef['contenido'] = $tabla;
+            
+            $this->tbs->Show(TBS_NOTHING);
+            
+            // Se regresa el render
+            $output = $this->tbs->Source;
+            
+            $view = str_replace("{contenido_vista}", $output, $this->template);
+//            
+//            // PDF
+            $this->pdf->pagenumSuffix = '/';
+            $this->pdf->SetHeader('{PAGENO}{nbpg}');
+            $pdf = $this->pdf->render($view);
+//            $pdf = $view;
+            
+            $fp = fopen($this->configuracion->get_valor('asset_path').$this->configuracion->get_valor('tmp_path').'productos_pedidos.pdf','w');
+            fwrite($fp, $pdf);
+            fclose($fp);
+            $data['reporte'] = 'productos_pedidos.pdf';
+        }
+        $data['titulo'] = 'Reporte <small>Total por producto pedido</small>';
         $this->load->view('reporte', $data);
     }
 }
