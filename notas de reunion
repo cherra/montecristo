@@ -30,3 +30,7 @@ Guardar CFDi en el sistema (listado de pedidos).
 *Truncar las cadenas y hacer mas pequeña la letra en el listado de llamadas.
 *Mostrar número de tienda en busqueda de sucursales.
 Reporte de llamadas ordenada por vendedor, mostrar total de pedidos y plantas.
+
+22/ene/2015
+Revisar al duplicar un pedido desde una llamada porque no lo relaciona con la llamada.
+Exportar listas de precios desde lista de clientes.

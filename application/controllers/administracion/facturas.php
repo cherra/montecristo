@@ -47,7 +47,7 @@ class Facturas extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Folio','Pedido', 'Fecha','Cliente','Piezas', 'Subtotal','IVA','Total', '', '','');
+    	$this->table->set_heading('Folio interno','Pedido', 'Fecha','Cliente','Piezas', 'Subtotal','IVA','Total', '', '','');
     	foreach ($datos as $d) {
             $cliente = $this->c->get_by_id($d->id_cliente)->row();
             $pedido = $this->p->get_by_factura($d->id)->row();
@@ -57,7 +57,7 @@ class Facturas extends CI_Controller {
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importes = $this->f->get_importes($d->id);
     		$this->table->add_row(
-                        $d->folio,
+                        $d->id,
                         !empty($pedido) ? $pedido->id : '',
                         $d->fecha,
                         $cliente->nombre,
@@ -119,7 +119,7 @@ class Facturas extends CI_Controller {
     	
         $data['titulo'] = 'Pedidos por facturar <small>Lista</small>';
         //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
-    	$data['action'] = $this->folder.$this->clase.'pedidos_facturar';
+    	$data['action'] = $this->folder.$this->clase.'pedidos_sin_factura';
         
         // Filtro de busqueda (se almacenan en la sesión a través de un hook)
         $filtro = $this->session->userdata('filtro');

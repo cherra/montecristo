@@ -49,6 +49,7 @@ class Factura extends CI_Model {
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
                 $this->db->where("(
+                    f.id LIKE '%".$f."%' OR
                     f.folio LIKE '%".$f."%' OR
                     c.nombre LIKE '%".$f."%' OR
                     c.rfc LIKE '%".$f."%' OR
