@@ -180,6 +180,7 @@ class Pedido extends CI_Model {
         $this->db->join('PedidoPresentacion pep', 'p.id = pep.id_pedido');
         $this->db->join('ProductoPresentaciones pp', 'pep.id_producto_presentacion = pp.id');
         $this->db->join('Productos pr', 'pp.id_producto = pr.id');
+        $this->db->where('p.estado > 0');
         $this->db->where('pr.id', $id);
         $this->db->where('p.fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
         $this->db->group_by('pr.id');
