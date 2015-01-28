@@ -57,7 +57,7 @@ class Reportes extends CI_Controller {
                     array('data' => $f->id,'class' => $clase),
                     array('data' => date_format($fecha,'d/m/Y h:i'),'class' => $clase),
                     array('data' => $cliente->nombre,'class' => $clase),
-                    array('data' => $sucursal->nombre,'class' => $clase),
+                    array('data' => $sucursal->numero.' '.$sucursal->nombre,'class' => $clase),
                     array('data' => $usuario->nombre,'class' => $clase)
     		);
                 
@@ -78,25 +78,27 @@ class Reportes extends CI_Controller {
                 $total_llamada = 0;
                 $total_pedido = 0;
                 $total_importe = 0;
-                foreach($llamadas as $ll){
-                    $total_llamada++;
-                    $total_llamadas++;
-                    $pedido = $this->p->get_by_llamada($ll->id)->row();
-                    if(!empty($pedido)){
-                        $total_pedido++;
-                        $total_pedidos++;
-                        $total_importe += $this->p->get_importe($pedido->id);
-                        $total_importes += $this->p->get_importe($pedido->id);
+                if(!empty($llamadas)){
+                    foreach($llamadas as $ll){
+                        $total_llamada++;
+                        $total_llamadas++;
+                        $pedido = $this->p->get_by_llamada($ll->id)->row();
+                        if(!empty($pedido)){
+                            $total_pedido++;
+                            $total_pedidos++;
+                            $total_importe += $this->p->get_importe($pedido->id);
+                            $total_importes += $this->p->get_importe($pedido->id);
+                        }
                     }
+                    $this->table->add_row(
+                        array('data' => $v->nombre,'class' => $clase),
+                        array('data' => $total_llamada,'class' => $clase),
+                        array('data' => $total_pedido,'class' => $clase),
+                        array('data' => number_format($total_importe,2),'class' => $clase, 'style' => 'text-align:right')
+                    );
+
+                    $this->table->add_row_class($clase);
                 }
-                $this->table->add_row(
-                    array('data' => $v->nombre,'class' => $clase),
-                    array('data' => $total_llamada,'class' => $clase),
-                    array('data' => $total_pedido,'class' => $clase),
-                    array('data' => number_format($total_importe,2),'class' => $clase, 'style' => 'text-align:right')
-    		);
-                
-                $this->table->add_row_class($clase);
             }
             $this->table->add_row(
                 array('data' => 'TOTAL','class' => $clase),
