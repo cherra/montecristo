@@ -44,6 +44,31 @@ class Llamada extends CI_Model {
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
+    function get_by_fecha($desde, $hasta, $filtro = NULL){
+        $this->db->where('fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->or_like('id',$f);
+            }
+        }
+        $this->db->order_by('fecha','desc');
+        return $this->db->get($this->tbl);
+    }
+    
+    function get_by_vendedor($id_vendedor, $desde, $hasta, $filtro = NULL){
+        $this->db->where('id_usuario', $id_vendedor);
+        $this->db->where('fecha BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->or_like('id',$f);
+            }
+        }
+        $this->db->order_by('fecha','desc');
+        return $this->db->get($this->tbl);
+    }
+    
     /**
     * Obtener por id
     */
