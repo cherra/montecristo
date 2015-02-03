@@ -37,7 +37,7 @@ class Reportes extends CI_Controller {
             $this->load->model('contacto','co');
             $this->load->model('pedido','p');
             $this->load->model('preferencias/usuario','u');
-            $llamadas = $this->ll->get_by_fecha( $post['desde'], $post['hasta'], $post['filtro'] )->result();
+            $llamadas = $this->ll->get_by_fecha( $post['desde'], $post['hasta'].' 23:59:59', $post['filtro'] )->result();
             
             // generar tabla
             $this->load->library('table');
@@ -176,7 +176,7 @@ class Reportes extends CI_Controller {
             $total_piezas = 0;
             $total_importe = 0;
             foreach ($clientes as $c){
-                $pedidos = $this->p->get_by_cliente($c->id, $post['desde'], $post['hasta'])->result();
+                $pedidos = $this->p->get_by_cliente($c->id, $post['desde'], $post['hasta'].' 23:59:59')->result();
                 
                 //die($this->db->last_query());
                 if(!empty($pedidos)){
@@ -310,7 +310,7 @@ class Reportes extends CI_Controller {
             $total_piezas = 0;
             $total_importe = 0;
             foreach ($usuarios as $u){
-                $pedidos = $this->p->get_by_usuario($u->id_usuario, $post['desde'], $post['hasta'])->result();
+                $pedidos = $this->p->get_by_usuario($u->id_usuario, $post['desde'], $post['hasta'].' 23:59:59')->result();
                 
                 //die($this->db->last_query());
                 if(!empty($pedidos)){
@@ -441,7 +441,7 @@ class Reportes extends CI_Controller {
             $total_piezas = 0;
             $total_importe = 0;
             foreach ($productos as $p){
-                $totales = $this->p->get_total_by_producto($p->id, $post['desde'], $post['hasta'])->row();
+                $totales = $this->p->get_total_by_producto($p->id, $post['desde'], $post['hasta'].' 23:59:59')->row();
                 
                 //die($this->db->last_query());
                 if(!empty($totales)){
