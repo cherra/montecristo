@@ -28,7 +28,7 @@ class Reportes extends CI_Controller {
         if( ($post = $this->input->post()) ){
             
             $data['desde'] = $post['desde'];
-            $data['hasta'] = $post['hasta'].' 23:59:59';
+            $data['hasta'] = $post['hasta'];
             $data['filtro'] = $post['filtro'];
             
             $this->load->model('llamada','ll');
@@ -154,7 +154,7 @@ class Reportes extends CI_Controller {
         if( ($post = $this->input->post()) ){
             
             $data['desde'] = $post['desde'];
-            $data['hasta'] = $post['hasta'].' 23:59:59';
+            $data['hasta'] = $post['hasta'];
             $data['filtro'] = $post['filtro'];
             
             $this->load->model('cliente','c');
@@ -288,7 +288,7 @@ class Reportes extends CI_Controller {
         if( ($post = $this->input->post()) ){
             
             $data['desde'] = $post['desde'];
-            $data['hasta'] = $post['hasta'].' 23:59:59';
+            $data['hasta'] = $post['hasta'];
             $data['filtro'] = $post['filtro'];
             
             $this->load->model('cliente','c');
@@ -420,7 +420,7 @@ class Reportes extends CI_Controller {
         if( ($post = $this->input->post()) ){
             
             $data['desde'] = $post['desde'];
-            $data['hasta'] = $post['hasta'].' 23:59:59';
+            $data['hasta'] = $post['hasta'];
             $data['filtro'] = $post['filtro'];
             
             $this->load->model('pedido','p');
