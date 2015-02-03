@@ -588,7 +588,7 @@ class Pedido extends CI_Model {
         return $this->db->affected_rows();
     }
     
-    function duplicar( $id, $id_llamada = NULL ){
+    function duplicar( $id, $id_llamada = 0 ){
         $this->db->where('id', $id);
         $query = $this->db->get($this->tbl);  // Se obtiene el pedido
         $this->db->where('id_pedido', $id);
