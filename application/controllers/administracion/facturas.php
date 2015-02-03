@@ -52,7 +52,7 @@ class Facturas extends CI_Controller {
             $cliente = $this->c->get_by_id($d->id_cliente)->row();
             $pedido = $this->p->get_by_factura($d->id)->row();
             if(!empty($pedido)){
-                $piezas = $this->p->get_piezas($d->id);
+                $piezas = $this->p->get_piezas($pedido->id);
             }
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importes = $this->f->get_importes($d->id);
