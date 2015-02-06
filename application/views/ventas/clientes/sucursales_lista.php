@@ -63,7 +63,24 @@
     </div>
 </div>
 <?php } ?>
-
+<div id="info_llamada" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Llamada</h3>
+    </div>
+    <div class="modal-body">
+        <p>Fecha: <span id="fecha"></span></p>
+        <p>Usuario: <span id="usuario"></span></p>
+        <p>Sucursal: <span id="sucursal"></span></p>
+        <p>Contacto: <span id="contacto"></span></p>
+        <p>Observaciones: <span id="observaciones"></span></p>
+        <p>Pedido: <span id="pedido"></span></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Cerrar</a>
+<!--        <a href="#" class="btn btn-primary">Save changes</a>-->
+    </div>
+</div>
 <script>
 $(document).ready(function(){
     var url = "<?php echo site_url(); ?>/ventas/clientes/sucursales";
@@ -76,6 +93,17 @@ $(document).ready(function(){
     $('#estado').on('change',function(){
        //if($(this).val() > 0)
            $(location).attr('href',url+'/'+$('#id_cliente').val()+'/'+$(this).val());
+    });
+    
+    $('a[href="#info_llamada"]').click(function(){
+        $('#usuario').text($(this).attr('usuario'));
+        $('#fecha').text($(this).attr('fecha'));
+        $('#sucursal').text($(this).attr('sucursal'));
+        $('#observaciones').text($(this).attr('observaciones'));
+        $('#contacto').text($(this).attr('contacto'));
+        if($(this).attr('id_pedido') !== '0'){
+            $('#pedido').text($(this).attr('id_pedido'));
+        }
     });
 });
 </script>

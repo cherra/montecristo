@@ -222,6 +222,10 @@ class Clientes extends CI_Controller{
     public function sucursales($id = NULL, $estado = NULL, $offset = 0) {
         $this->load->model('cliente', 'c');
         $this->load->model('sucursal', 's');
+        $this->load->model('contacto', 'co');
+        $this->load->model('llamada', 'll');
+        $this->load->model('pedido', 'p');
+        $this->load->model('preferencias/usuario', 'u');
         $data['clientes'] = $this->c->get_all()->result();
         
         $data['titulo'] = 'Sucursales <small>Listado</small>';
@@ -260,13 +264,27 @@ class Clientes extends CI_Controller{
                 $this->table->set_empty('&nbsp;');
                 $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
                 $this->table->set_template($tmpl);
-                $this->table->set_heading('Núm', 'Nombre', 'Municipio', 'Estado', 'Teléfono', 'Teléfono 2', array('data' => 'Teléfono 3', 'class' => 'hidden-phone'), '','');
+                $this->table->set_heading('Núm', 'Nombre', 'Municipio', 'Estado', 'Última llamada', 'Teléfono', 'Teléfono 2', array('data' => 'Teléfono 3', 'class' => 'hidden-phone'), '','');
                 foreach ($sucursales as $sucursal) {
+                    $ultima_llamada = $this->ll->get_last_by_id_sucursal($sucursal->id);
+                    if(!empty($ultima_llamada)){
+                        $fecha_llamada = date_create($ultima_llamada->fecha);
+                        $usuario = $this->u->get_by_id($ultima_llamada->id_usuario)->row();
+                        $contacto = $this->co->get_by_id($ultima_llamada->id_cliente_sucursal_contacto)->row();
+                        $sucursal = $this->s->get_by_id($contacto->id_cliente_sucursal)->row();
+                        $pedido = $this->p->get_by_llamada($ultima_llamada->id)->row();
+                        if(!empty($pedido)){
+                            $id_pedido = $pedido->id;
+                        }else{
+                            $id_pedido = 0;
+                        }
+                    }
                     $this->table->add_row(
                             $sucursal->numero, 
                             $sucursal->nombre,
                             $sucursal->municipio,
                             $sucursal->estado,
+                            !empty($ultima_llamada) ? '<a href="#info_llamada" data-toggle="modal" id_llamada="'.$ultima_llamada->id.'" fecha="'.date_format($fecha_llamada, 'd/m/Y h:i:s').'" contacto="'.$contacto->nombre.'" observaciones="'.$ultima_llamada->comentarios.'" sucursal="'.$sucursal->numero.' '.$sucursal->nombre.'" usuario="'.$usuario->nombre.'" id_pedido="'.$id_pedido.'">'.date_format($fecha_llamada, 'd/m/Y h:i:s').'</a>' : '',
                             $sucursal->telefono,
                             $sucursal->telefono2,
                             array('data' => $sucursal->telefono3, 'class' => 'hidden-phone'),
@@ -693,6 +711,24 @@ class Clientes extends CI_Controller{
                 if($query->num_rows() > 0){
                     $clientes = $query->result();
                     echo json_encode($clientes);
+                }else{
+                    echo json_encode(FALSE);
+                }
+            }else{
+                echo json_encode(FALSE);
+            }
+        }
+    }
+    
+    public function get_llamada($id){
+        if($this->input->is_ajax_request()){
+            if( ($filtro = $this->input->get('id')) ){
+                $this->load->model('llamada','ll');
+                $query = $this->ll->get_by_id($id);
+                
+                if($query->num_rows() > 0){
+                    $llamada = $query->row();
+                    echo json_encode($llamada);
                 }else{
                     echo json_encode(FALSE);
                 }

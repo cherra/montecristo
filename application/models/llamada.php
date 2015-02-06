@@ -84,6 +84,15 @@ class Llamada extends CI_Model {
         return $this->db->get($this->tbl, $limit, $offset);
     }
     
+    function get_last_by_id_sucursal($id){
+        $this->db->select('ll.*');
+        $this->db->join('ClienteSucursalContactos csc', 'll.id_cliente_sucursal_contacto = csc.id');
+        $this->db->join('ClienteSucursales cs', 'csc.id_cliente_sucursal = cs.id');
+        $this->db->where('cs.id', $id);
+        $this->db->order_by('ll.fecha', 'desc');
+        return $this->db->get($this->tbl.' ll', '1')->row();
+    }
+    
     /**
     * Alta
     */
