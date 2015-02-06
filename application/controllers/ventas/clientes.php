@@ -284,7 +284,7 @@ class Clientes extends CI_Controller{
                             $sucursal->nombre,
                             $sucursal->municipio,
                             $sucursal->estado,
-                            !empty($ultima_llamada) ? '<a href="#info_llamada" data-toggle="modal" id_llamada="'.$ultima_llamada->id.'" fecha="'.date_format($fecha_llamada, 'd/m/Y h:i:s').'" contacto="'.$contacto->nombre.'" observaciones="'.$ultima_llamada->comentarios.'" sucursal="'.$sucursal->numero.' '.$sucursal->nombre.'" usuario="'.$usuario->nombre.'" id_pedido="'.$id_pedido.'">'.date_format($fecha_llamada, 'd/m/Y h:i:s').'</a>' : '',
+                            !empty($ultima_llamada) ? '<a href="#info_llamada" data-toggle="modal" id_llamada="'.$ultima_llamada->id.'" fecha="'.date_format($fecha_llamada, 'd/m/Y H:i:s').'" contacto="'.$contacto->nombre.'" observaciones="'.$ultima_llamada->comentarios.'" sucursal="'.$sucursal->numero.' '.$sucursal->nombre.'" usuario="'.$usuario->nombre.'" id_pedido="'.$id_pedido.'">'.date_format($fecha_llamada, 'd/m/Y h:i:s').'</a>' : '',
                             $sucursal->telefono,
                             $sucursal->telefono2,
                             array('data' => $sucursal->telefono3, 'class' => 'hidden-phone'),

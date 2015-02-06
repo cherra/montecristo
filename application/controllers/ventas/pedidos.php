@@ -300,8 +300,8 @@ class Pedidos extends CI_Controller {
     public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index', $id_llamada = 0 ){
         if(!empty($id)){
             $this->load->model('pedido','p');
-            
-            $respuesta = $this->p->duplicar( $id, $id_llamada );   // Debe regresar el id del pedido nuevo
+            $id_usuario = $this->session->userdata('userid');
+            $respuesta = $this->p->duplicar( $id, $id_llamada, $id_usuario );   // Debe regresar el id del pedido nuevo
             if($respuesta){
                 $this->session->set_flashdata('mensaje',array('texto' => 'Pedido duplicado', 'tipo' => ''));
             }else{

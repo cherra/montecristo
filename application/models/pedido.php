@@ -588,7 +588,7 @@ class Pedido extends CI_Model {
         return $this->db->affected_rows();
     }
     
-    function duplicar( $id, $id_llamada = 0 ){
+    function duplicar( $id, $id_llamada = 0, $id_usuario = NULL ){
         $this->db->where('id', $id);
         $query = $this->db->get($this->tbl);  // Se obtiene el pedido
         $this->db->where('id_pedido', $id);
@@ -601,6 +601,9 @@ class Pedido extends CI_Model {
             unset($pedido['fecha']);  // Quitamos la fecha para poner la fecha actual
             $pedido['estado'] = '1';
             $pedido['id_llamada'] = $id_llamada;
+            if(!empty($id_usuario)){
+                $pedido['id_usuario'] = $id_usuario;
+            }
             $this->db->trans_start();
             $this->db->insert($this->tbl, $pedido);
             $id_pedido = $this->db->insert_id();
