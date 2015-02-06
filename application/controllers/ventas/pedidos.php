@@ -297,7 +297,7 @@ class Pedidos extends CI_Controller {
         redirect('ventas/pedidos/index');
     }
     
-    public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index', $id_llamada = NULL ){
+    public function pedidos_duplicar( $id = NULL, $incluir_id = FALSE, $origen = 'index', $id_llamada = 0 ){
         if(!empty($id)){
             $this->load->model('pedido','p');
             
