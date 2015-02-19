@@ -494,6 +494,10 @@ class Ordenes_compra extends CI_Controller{
 
         // Nombres de meses en español (config/sitio.php)
         $meses = $this->config->item('meses');
+        
+        //Logotipo
+        $logo = $this->configuracion->get_valor('img_path').$this->configuracion->get_valor('logotipo');
+        $this->tbs->VarRef['logo'] = base_url($logo);
 
         // Se carga el template predefinido para los recibos (tabla Configuracion)
         $this->tbs->LoadTemplate($this->configuracion->get_valor('template_path').$this->configuracion->get_valor('template_ordenes_compra'));

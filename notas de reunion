@@ -37,11 +37,11 @@ Reporte de llamadas ordenada por vendedor, mostrar total de pedidos y plantas.
 
 3/feb/2015
 *Agregar información de última llamada en el listado de tiendas.
-Agregar campo para tipo de tienda. (ALTER TABLE `ClienteSucursales` ADD `tipo` VARCHAR( 32 ) NOT NULL)
-Al duplicar pedidos desde una llamada se registra a nombre del vendedor que registró el pedido original.
+*Agregar campo para tipo de tienda. (ALTER TABLE `ClienteSucursales` ADD `tipo` VARCHAR( 32 ) NOT NULL)
+*Al duplicar pedidos desde una llamada se registra a nombre del vendedor que registró el pedido original.
 Agrupar codigos en facturas cuando se exporta a Excel.
 Compras:
-Plantilla para ordenes de compra similar al de pedidos.
+*Plantilla para ordenes de compra similar al de pedidos.
 Reporte de listado de ordenes de compra.
 Reporte de variedades por proveedor.
 Reporte de total por variedad.
