@@ -134,6 +134,12 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label hidden-phone" for="tipo">Tipo</label>
+            <div class="controls">
+              <input type="text" name="tipo" placeholder="Tipo" value="<?php echo (isset($datos->tipo) ? $datos->tipo : ''); ?>">
+            </div>
+        </div>
+        <div class="control-group">
             <div class="controls">
               <button type="submit" class="btn btn-primary">Guardar</button>
             </div>

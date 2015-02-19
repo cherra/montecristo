@@ -264,7 +264,7 @@ class Clientes extends CI_Controller{
                 $this->table->set_empty('&nbsp;');
                 $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '">' );
                 $this->table->set_template($tmpl);
-                $this->table->set_heading('Núm', 'Nombre', 'Municipio', 'Estado', 'Última llamada', 'Teléfono', 'Teléfono 2', array('data' => 'Teléfono 3', 'class' => 'hidden-phone'), '','');
+                $this->table->set_heading('Núm', 'Nombre', 'Tipo', 'Municipio', 'Estado', 'Última llamada', 'Teléfono', 'Teléfono 2', array('data' => 'Teléfono 3', 'class' => 'hidden-phone'), '','');
                 foreach ($sucursales as $sucursal) {
                     $ultima_llamada = $this->ll->get_last_by_id_sucursal($sucursal->id);
                     if(!empty($ultima_llamada)){
@@ -282,6 +282,7 @@ class Clientes extends CI_Controller{
                     $this->table->add_row(
                             $sucursal->numero, 
                             $sucursal->nombre,
+                            $sucursal->tipo,
                             $sucursal->municipio,
                             $sucursal->estado,
                             !empty($ultima_llamada) ? '<a href="#info_llamada" data-toggle="modal" id_llamada="'.$ultima_llamada->id.'" fecha="'.date_format($fecha_llamada, 'd/m/Y H:i:s').'" contacto="'.$contacto->nombre.'" observaciones="'.$ultima_llamada->comentarios.'" sucursal="'.$sucursal->numero.' '.$sucursal->nombre.'" usuario="'.$usuario->nombre.'" id_pedido="'.$id_pedido.'">'.date_format($fecha_llamada, 'd/m/Y h:i:s').'</a>' : '',

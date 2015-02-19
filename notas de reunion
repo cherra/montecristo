@@ -32,12 +32,12 @@ Guardar CFDi en el sistema (listado de pedidos).
 Reporte de llamadas ordenada por vendedor, mostrar total de pedidos y plantas.
 
 22/ene/2015
-Revisar al duplicar un pedido desde una llamada porque no lo relaciona con la llamada.
-Exportar listas de precios desde lista de clientes.
+*Revisar al duplicar un pedido desde una llamada porque no lo relaciona con la llamada.
+*Exportar listas de precios desde lista de clientes.
 
 3/feb/2015
-Agregar información de última llamada en el listado de tiendas.
-Agregar campo para tipo de tienda.
+*Agregar información de última llamada en el listado de tiendas.
+Agregar campo para tipo de tienda. (ALTER TABLE `ClienteSucursales` ADD `tipo` VARCHAR( 32 ) NOT NULL)
 Al duplicar pedidos desde una llamada se registra a nombre del vendedor que registró el pedido original.
 Agrupar codigos en facturas cuando se exporta a Excel.
 Compras:
