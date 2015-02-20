@@ -131,7 +131,7 @@ class Facturas extends CI_Controller {
     	
         // generar paginacion
     	$this->load->library('pagination');
-    	$config['base_url'] = site_url($this->folder.$this->clase.'pedidos_facturar');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'pedidos_sin_factura');
     	$config['total_rows'] = $this->p->count_sin_factura($filtro);
     	$config['per_page'] = $page_limit;
     	$config['uri_segment'] = 4;

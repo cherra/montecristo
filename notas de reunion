@@ -42,6 +42,6 @@ Reporte de llamadas ordenada por vendedor, mostrar total de pedidos y plantas.
 Agrupar codigos en facturas cuando se exporta a Excel.
 Compras:
 *Plantilla para ordenes de compra similar al de pedidos.
-Reporte de listado de ordenes de compra.
+*Reporte de listado de ordenes de compra.
 Reporte de variedades por proveedor.
-Reporte de total por variedad.
+*Reporte de total por variedad.
