@@ -163,6 +163,20 @@ class Compra extends CI_Model {
         }
     }
     
+    function get_total_by_producto($id, $desde = NULL, $hasta = NULL) {
+        $this->db->select('pr.nombre, pr.codigo');
+        $this->db->select('SUM(cp.cantidad) AS cantidad');
+        $this->db->select('SUM(cp.cantidad * precio) AS importe');
+        $this->db->join('CompraPresentacion cp', 'c.id = cp.id_compra');
+        $this->db->join('ProductoPresentaciones pp', 'cp.id_producto_presentacion = pp.id');
+        $this->db->join('Productos pr', 'pp.id_producto = pr.id');
+        $this->db->where('c.estado > 0');
+        $this->db->where('pr.id', $id);
+        $this->db->where('c.fecha_orden_compra BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        $this->db->group_by('pr.id');
+        return $this->db->get($this->tbl.' c');
+    }
+    
     /**
     * Alta
     */
