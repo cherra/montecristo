@@ -73,6 +73,16 @@ class Compra extends CI_Model {
         return $this->db->get($this->tbl);
     }
     
+    function get_by_proveedor($id, $desde = NULL, $hasta = NULL){
+        $this->db->select('c.*');
+        $this->db->join('Proveedores p','c.id_proveedor = p.id');
+        $this->db->join('Usuarios u','c.id_usuario = u.id_usuario');
+        $this->db->where('p.id', $id);
+        $this->db->where('c.fecha_orden_compra BETWEEN "'.$desde.'" AND "'.$hasta.'"');
+        $this->db->order_by('c.id','desc');
+        return $this->db->get($this->tbl.' c');
+    }
+    
     function get_presentaciones( $id ){
         $this->db->select('cp.*');
         $this->db->join('CompraPresentacion cp','c.id = cp.id_compra');
@@ -139,9 +149,9 @@ class Compra extends CI_Model {
     }
     
     function get_piezas($id){
-        $this->db->select('SUM(pp.cantidad) AS piezas', FALSE);
-        $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
-        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->select('SUM(cp.cantidad) AS piezas', FALSE);
+        $this->db->join('CompraPresentacion cp','p.id = cp.id_compra');
+        $this->db->join('ProductoPresentaciones ppr','cp.id_producto_presentacion = ppr.id');
         $this->db->where('p.id',$id);
         $this->db->group_by('p.id');
         $query = $this->db->get($this->tbl.' p');
