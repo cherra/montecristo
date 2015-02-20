@@ -599,6 +599,7 @@ class Pedido extends CI_Model {
             $presentaciones = $query_presentaciones->result_array();
             unset($pedido['id']);  // Quitamos el ID para que se genere uno nuevo
             unset($pedido['fecha']);  // Quitamos la fecha para poner la fecha actual
+            unset($pedido['id_factura']);  // Quitamos la factura
             $pedido['estado'] = '1';
             $pedido['id_llamada'] = $id_llamada;
             if(!empty($id_usuario)){
