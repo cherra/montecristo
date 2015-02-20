@@ -949,7 +949,9 @@ class Pedidos extends CI_Controller {
         // Se sustituyen los campos en el template
         $this->tbs->VarRef['numero'] = $pedido->id;
         $fecha = date_create($pedido->fecha);
+        $fecha_impresion = date_create();
         $this->tbs->VarRef['fecha'] = date_format($fecha,'d/m/Y');
+        $this->tbs->VarRef['fecha_impresion'] = date_format($fecha_impresion,'d/m/Y');
         $this->tbs->VarRef['observaciones'] = $pedido->observaciones;
         /*$this->tbs->VarRef['dia'] = date_format($fecha,'d');
         $this->tbs->VarRef['mes'] = $meses[date_format($fecha,'n')-1];
