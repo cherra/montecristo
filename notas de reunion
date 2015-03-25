@@ -47,3 +47,5 @@ Reporte de variedades por proveedor.
 *Reporte de total por variedad.
 *Reporte de variedades por ruta.
 *Reporte de pedidos por ruta.
+ALTER TABLE `Compras` ADD `tipo` ENUM( 'compra', 'gasto' ) NOT NULL ;
+ALTER TABLE `CompraPresentacion` ADD `descripcion` VARCHAR( 128 ) NOT NULL AFTER `id_producto_presentacion` ;

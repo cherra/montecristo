@@ -61,7 +61,7 @@ class Compra extends CI_Model {
         }
         $estados .= ")";
         $this->db->where($estados);
-        $this->db->order_by('id','asc');
+        $this->db->order_by('id','desc');
         return $this->db->get($this->tbl, $limit, $offset);
     }
     

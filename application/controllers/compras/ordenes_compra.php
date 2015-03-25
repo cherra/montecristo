@@ -125,7 +125,8 @@ class Ordenes_compra extends CI_Controller{
                             'id_producto_presentacion' => $producto[0],
                             'cantidad' => $producto[1],
                             'precio' => $producto[2],
-                            'observaciones' => $producto[3]
+                            'observaciones' => $producto[3],
+                            'descripcion' => $producto[4]
                         );
                         if( !($this->c->save_presentacion($presentacion)) ){
                             $respuesta = 'Error';
@@ -179,17 +180,19 @@ class Ordenes_compra extends CI_Controller{
         $presentaciones = $this->c->get_presentaciones($id)->result();
         foreach($presentaciones as $p){
             $pp = $this->pp->get_by_id($p->id_producto_presentacion)->row();
-            if($pp){
-                $producto = $this->pro->get_by_id($pp->id_producto)->row();
-                $presentacion = $this->pre->get_by_id($pp->id_presentacion)->row();
+            if($pp or $compra->tipo == 'gasto'){
+                if($pp){
+                    $producto = $this->pro->get_by_id($pp->id_producto)->row();
+                    $presentacion = $this->pre->get_by_id($pp->id_presentacion)->row();
+                }
                 $data['presentaciones'][] = (object)array(
                     'id_producto_presentacion' => $p->id_producto_presentacion,
                     'cantidad' => $p->cantidad,
                     'precio' => $p->precio,
-                    'producto' => $producto->nombre,
-                    'id_producto' => $producto->id,
-                    'presentacion' => $presentacion->nombre,
-                    'codigo' => $pp->codigo,
+                    'producto' => !empty($producto->nombre) ? $producto->nombre : $p->descripcion,
+                    'id_producto' => !empty($producto->id) ? $producto->id : '',
+                    'presentacion' => !empty($presentacion->nombre) ? $presentacion->nombre : '',
+                    'codigo' => !empty($pp->codigo) ? $pp->codigo : '',
                     'observaciones' => $p->observaciones);
             }
         }
@@ -533,7 +536,8 @@ class Ordenes_compra extends CI_Controller{
             $presentaciones[$key]['cantidad'] = number_format($presentaciones[$key]['cantidad'],2,'.',',');
             $presentaciones[$key]['precio'] = number_format($presentaciones[$key]['precio'],2,'.',',');
             $presentaciones[$key]['codigo'] = $producto_presentacion->codigo;
-            $presentaciones[$key]['nombre'] = $producto->nombre;
+            //$presentaciones[$key]['nombre'] = $producto->nombre;
+            $presentaciones[$key]['nombre'] = $presentaciones[$key]['descripcion'];
             $presentaciones[$key]['presentacion'] = $presentacion->nombre;
         }
         $this->tbs->MergeBlock('presentaciones', $presentaciones);

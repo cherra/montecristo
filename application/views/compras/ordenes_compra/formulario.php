@@ -33,6 +33,13 @@ if(isset($compra)){
             <input type="hidden" id="id_orden_compra" value="<?php if(isset($compra)) echo $compra->id; ?>" />
             <input type="hidden" id="id_proveedor" value="<?php if(isset($proveedor)) echo $proveedor->id; ?>" />
             
+            <label><strong>Tipo</strong></label>
+            <select name="tipo" id="tipo" class="input-block-level required">
+                <option value="">Selecciona tipo...</option>
+                <option value="compra" <?php if(isset($compra) && $compra->tipo == 'compra') echo "selected"; ?>>Productos</option>
+                <option value="gasto" <?php if(isset($compra) && $compra->tipo == 'gasto') echo "selected"; ?>>Gasto o insumos</option>
+            </select>
+            
             <label><strong>Buscar proveedor</strong></label>
             <input type="text" id="proveedor" class="input-block-level" placeholder="Proveedor" value="<?php echo (isset($proveedor) ? $proveedor->nombre : ''); ?>">
         </div>
@@ -243,7 +250,7 @@ $(document).ready(function(){
         $('#cantidad').focus();
     });
     
-    $('#proveedor').focus();
+    $('#tipo').focus();
     
     // Se anulan los submit de formularios con clase .no-submit
     $('form.no-submit').submit(function(event){
@@ -263,6 +270,10 @@ $(document).ready(function(){
     <?php } ?>
         
     calcula_totales();
+    
+    $('#tipo').change(function(){
+        $('#proveedor').focus();
+    });
     
     var arreglo = new Array();
     $( "#proveedor" ).autocomplete({
@@ -298,9 +309,10 @@ $(document).ready(function(){
         $('#cantidad').focus();
       }
     });
-    
+     
     $( "#producto" ).autocomplete({
       source: function(request, response){
+          if($('#tipo option:selected').val() === 'compra'){
             arreglo = [];
             var datos;
             $.get('<?php echo site_url('compras/productos/get_productos'); ?>', { filtro: request.term, limit: 10 }, function(data) {
@@ -316,6 +328,7 @@ $(document).ready(function(){
                 // Se devuelve el array
                 response(arreglo);
             });
+          }
       },
       select: function(event, ui){ // Cuando se selecciona un item
         event.preventDefault();  // Cancelamos el evento default
@@ -350,6 +363,8 @@ $(document).ready(function(){
         //var producto = $('#nombre').val();
         //var codigo = $('#codigo').val();
         var codigo = $('#presentacion option:selected').attr('codigo');
+        if(codigo === undefined) 
+            codigo = '';
         var presentacion = $('#presentacion option:selected').text();
         var cantidad = Number($('#cantidad').val()).toFixed(2);
         var id_producto = $('#id_producto').val();
@@ -360,7 +375,7 @@ $(document).ready(function(){
         var fila = "";
         var seleccionada = false;
         
-        if($.isNumeric(cantidad) && id_producto_presentacion.length > 0){
+        if($.isNumeric(cantidad) && producto.length > 0 && (id_producto_presentacion.length > 0 || $('#tipo option:selected').val() === 'gasto')){
             fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" codigo="'+codigo+'" observaciones="'+observaciones+'" producto="'+producto+'" id_producto="'+id_producto+'" title="Click= editar\nDoble click= borrar">'+
             '<td style="text-align: right;">'+
             Globalize.format(cantidad,'n')+'</td><td>'+
@@ -469,12 +484,13 @@ $(document).ready(function(){
         var i = new Number(0);
 
         $("#lineas tr").each(function(){
-            if($(this).attr("id_producto_presentacion")){
+            if($(this).attr("id_producto_presentacion") || $('#tipo option:selected').val() === 'gasto'){
                 productos[i] = new Array(4);
                 productos[i][0] = $(this).attr("id_producto_presentacion");
                 productos[i][1] = $(this).attr("cantidad");
                 productos[i][2] = $(this).attr("precio");
                 productos[i][3] = $(this).attr("observaciones");
+                productos[i][4] = $(this).attr("producto");
                 i++;
             }
         });
@@ -493,6 +509,7 @@ $(document).ready(function(){
                     type: 'post',
                     data: { id_proveedor: $('#id_proveedor').val(), 
                             observaciones: $('#observaciones').val(),
+                            tipo: $('#tipo option:selected').val(),
                             productos: productos},
                     dataType: 'text'
                 }).done(function(respuesta){
