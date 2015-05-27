@@ -14,6 +14,127 @@ class Ingresos extends CI_Controller {
         parent::__construct();
     }
     
+    /*
+     * PEdidos por facturar
+     */
+    public function pedidos_sin_factura( $offset = 0 ){
+        $this->load->model('factura','f');
+        $this->load->model('pedido','p');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Pedidos por facturar <small>Lista</small>';
+        //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'pedidos_sin_factura';
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $page_limit = $this->config->item("per_page");
+    	$datos = $this->p->get_sin_factura($page_limit, $offset, $filtro)->result();
+    	
+        // generar paginacion
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'pedidos_sin_factura');
+    	$config['total_rows'] = $this->p->count_sin_factura($filtro);
+    	$config['per_page'] = $page_limit;
+    	$config['uri_segment'] = 4;
+    	$this->pagination->initialize($config);
+    	$data['pagination'] = $this->pagination->create_links();
+    	
+    	// generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Número','Fecha','Cliente','Sucursal','Estado', 'Total', '',  '');
+    	foreach ($datos as $d) {
+            $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
+            $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+            $importe = $this->p->get_importe($d->id);
+    		$this->table->add_row(
+                        $d->id,
+                        $d->fecha,
+                        $cliente->nombre,
+                        $sucursal->numero.'.- '.$sucursal->nombre,
+                        $sucursal->estado,
+                        array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup('ventas/pedidos/'.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        array('data' => anchor($this->folder.$this->clase.'pedidos_facturar/' . $d->id, '<i class="icon-check"></i>', array('class' => 'btn btn-small', 'title' => 'Facturar')) , 'style' => 'text-align: right;')
+    		);
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+    	}
+    	$data['table'] = $this->table->generate();
+    	
+    	$this->load->view('lista', $data);
+    }
+    
+    public function pedidos_facturar($id){
+        $this->load->model('pedido','p');
+        $this->load->model('factura','f');
+        $this->load->model('cliente','c');
+        $this->load->model('sucursal','s');
+        $this->load->model('producto_presentacion','pp');
+        
+        $pedido = $this->p->get_by_id($id)->row();
+        $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
+        $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
+        $agrupar_por_codigo = FALSE;
+        if($cliente->agrupar_codigos_factura == '1'){
+            $agrupar_por_codigo = TRUE;
+        }
+        $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
+        
+        if(!empty($pedido)){
+            
+            $factura = array('id_cliente' => $sucursal->id_cliente,
+                'id_usuario' => $this->session->userdata('userid'),
+                'subtotal' => $this->p->get_subtotal($id),
+                'iva' => $this->p->get_iva($id),
+                'total' => $this->p->get_importe($id));
+            
+            $this->db->trans_start();
+            
+            $id_factura = $this->f->save($factura);
+            if($id_factura){
+                foreach($presentaciones as $dato){
+                    $presentacion = $this->pp->get_by_id($dato->id_producto_presentacion)->row();
+                    $concepto = array(
+                        'id_factura' => $id_factura,
+                        'concepto' => $dato->producto,
+                        'cantidad' => $dato->cantidad,
+                        'precio' => $dato->precio,
+                        'tasa_iva' => $dato->iva,
+                        'id_producto_presentacion' => $dato->id_producto_presentacion,
+                        'unidad' => $presentacion->nombre
+                    );
+                    if( !($this->f->save_concepto($concepto)) ){
+                        $respuesta = 'Error';
+                        $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la factura', 'tipo' => 'alert-error'));
+                    }
+                }
+                
+                $this->p->update($id, array('id_factura' => $id_factura));
+            }else{
+                $respuesta = 'Error';
+                $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la factura', 'tipo' => 'alert-error'));
+            }
+            
+            $this->db->trans_complete();
+            
+            redirect($this->folder.$this->clase.'index');
+        }else{
+            redirect($this->folder.$this->clase.'pedidos_sin_factura');
+        }
+    }
+    
     public function facturas( $offset = 0 ){
         $this->load->model('factura','f');
         $this->load->model('cliente','c');
