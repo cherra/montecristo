@@ -49,3 +49,14 @@ Reporte de variedades por proveedor.
 *Reporte de pedidos por ruta.
 ALTER TABLE `Compras` ADD `tipo` ENUM( 'compra', 'gasto' ) NOT NULL ;
 ALTER TABLE `CompraPresentacion` ADD `descripcion` VARCHAR( 128 ) NOT NULL AFTER `id_producto_presentacion` ;
+
+26/may/2015
+Módulo de compras y gastos.
+Cuentas por pagar y cobrar.
+Reporte de ventas de variedades por presentación.
+Ordenes de compra con firmas, quien elabora, autoriza y recibe.
+Dividir pedidos no recibidos en varios pedidos o sacar plantas de pedidos como mermas (solo en facturación).
+Reportes para gerencia.
+Corregir filtros de rango de fechas en reportes.
+Corregir filtro de busqueda por nombre.
+Facturas de varios pedidos a la vez
