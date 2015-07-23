@@ -247,8 +247,9 @@ class acl
                         }else
                             redirect('home');
                     }
-                }elseif($permKey != strstr($permKey,'login'))
-                    redirect('login');
+                }
+                //elseif($permKey != strstr($permKey,'login'))
+                    //redirect('login');
 	}
         
         private function check_isvalidated(){

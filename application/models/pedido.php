@@ -459,7 +459,7 @@ class Pedido extends CI_Model {
     }
     
     function get_by_ruta( $id_ruta, $estado = '1', $limit = NULL, $offset = 0, $filtro = NULL){
-        $this->db->select('p.*, SUM(pp.cantidad * ppr.peso) AS peso, SUM(pp.cantidad) AS piezas');
+        $this->db->select('p.*, SUM(pp.cantidad * ppr.peso) AS peso, SUM(pp.cantidad) AS piezas, (select id from PedidosReubicados  where id_pedido = p.id) AS reubicado');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
         $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');

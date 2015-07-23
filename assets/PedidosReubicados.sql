@@ -1,0 +1,22 @@
+CREATE TABLE `PedidosReubicados` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_pedido` int(10) unsigned NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_usuario_autoriza` int(11) NOT NULL,
+  `id_cliente_sucursal` int(11) NOT NULL,
+  `id_ruta` int(11) NOT NULL,
+  `id_orden_salida` int(10) unsigned NOT NULL,
+  `id_factura` int(11) NOT NULL,
+  `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha_vencimiento` date NOT NULL,
+  `numero` int(11) NOT NULL,
+  `id_contacto` int(11) NOT NULL,
+  `observaciones` varchar(256) NOT NULL,
+  `estado` tinyint(4) NOT NULL DEFAULT '1',
+  `id_llamada` int(11) NOT NULL,
+  `orden_compra` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_usuario` (`id_usuario`,`id_usuario_autoriza`,`id_cliente_sucursal`,`id_ruta`,`id_factura`,`id_contacto`),
+  KEY `id_orden_salida` (`id_orden_salida`),
+  KEY `id_llamada` (`id_llamada`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
