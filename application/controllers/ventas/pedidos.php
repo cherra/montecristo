@@ -1042,7 +1042,7 @@ class Pedidos extends CI_Controller {
                     /**
                      * DUDA *****
                      */
-                    $this->os->delete_presentaciones($pedido_reubicado->id_orden_salida);
+                    // $this->os->delete_presentaciones($pedido_reubicado->id_orden_salida);
                     
                     foreach($datos['productos'] as $producto){
                         $data = $this->pr->get_by_id($producto[4])->row();
@@ -1068,6 +1068,7 @@ class Pedidos extends CI_Controller {
                         /**
                          * DUDA *****
                          */
+                        /*
                         if($pedido_reubicado->estado > 1 && $pedido_reubicado->estado < 4){  // Si el estado del pedido es mayor a 1 quiere decir que es una edición de pedido
                             // Presentaciones de la orden de salida
                             $presentacion_os = array(
@@ -1081,7 +1082,8 @@ class Pedidos extends CI_Controller {
                                 $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la orden de salida', 'tipo' => 'alert-error'));
                             }
                         }
-
+                        */
+                       
                         $id_ruta = $pedido_reubicado->id_ruta;
                     }
                 }else{
