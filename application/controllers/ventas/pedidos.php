@@ -884,7 +884,7 @@ class Pedidos extends CI_Controller {
                 // si se encuentra un pedido ya reubicado mostrar link diferente
                 $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedidos_reubicar/' . $d->id, '<i class="icon-random"></i>', array('class' => 'btn btn-small', 'title' => 'Reubicar')), 'style' => 'text-align: right;');
                 if ($d->reubicado)
-                    $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedido_reubicado/' . $d->id, '<i class="icon-random"></i>', array('class' => 'btn btn-small btn-warning', 'title' => 'Reubicado')), 'style' => 'text-align: right;');
+                    $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedidos_reubicados/' . $id_ruta . '/' . $d->id, '<i class="icon-random"></i>', array('class' => 'btn btn-small btn-warning', 'title' => 'Reubicado')), 'style' => 'text-align: right;');
 
                 $this->table->add_row(
                         $d->estado == '4' ? '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>' : '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
@@ -926,6 +926,35 @@ class Pedidos extends CI_Controller {
     
     /**
      * VIEW
+     * mostrar lista de pedidos ya reubicados
+     * @param int $id_ruta
+     * @param int $id_pedido
+     * @return view
+     */
+    public function pedidos_reubicados($id_ruta, $id_pedido) {
+        if (empty($id_pedido)) redirect('ventas/pedidos/pedidos_enviados_ruta/' . $id_ruta);
+
+        $this->load->model('pedido_reubicado', 'pr');
+        
+        // obtener los pedidos reubicados
+        $pedidos_reubicados = $this->pr->getReubicadosByPedido($id_pedido);
+        if (sizeof($pedidos_reubicados) === 0) redirect('ventas/pedidos/pedidos_enviados_ruta/' . $id_ruta);
+
+        // si el pedido aun tiene remanentes de producto mostrar enlace
+        // para agregar pedido reubicado
+        $remanente = $this->pr->hasPedidoRemanentes($id_pedido);
+        $link_add = '';
+        if ($remanente)
+            $link_add = anchor($this->folder.$this->clase.'pedidos_reubicar/' . $id_pedido,'<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+
+        $data['link_add'] = $link_add;
+        $data['pedidos_reubicados'] = $pedidos_reubicados;
+
+        $this->load->view('ventas/pedidos/pedidos_reubicados', $data);
+    }
+
+    /**
+     * VIEW
      * mostrar formulario para reubicar un pedido
      * @param  int $id
      * @param  int $id_cliente
@@ -942,8 +971,19 @@ class Pedidos extends CI_Controller {
         if(!empty($id_contacto) && $id_contacto == 'nuevo'){
             redirect('ventas/clientes/contactos_agregar/'.$id_cliente.'/'.$id_sucursal.'/pedido/'.$id);
         }
-        
+
         $this->load->model('pedido','p');
+        $this->load->model('pedido_reubicado', 'pr');
+        $this->load->model('cliente','c');
+        $this->load->model('ruta','r');
+        $this->load->model('sucursal','s');
+        $this->load->model('contacto','co');
+        $this->load->model('producto','pro');
+        $this->load->model('cliente_presentacion', 'cp');
+
+        $data['titulo'] = 'Pedido <small>Reubicar</small>';
+        $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['action'] = site_url($this->folder.$this->clase.'pedidos_reubicar/'.$id);
 
         // obtener pedido
         $datos = $this->p->get_by_id($id);
@@ -952,17 +992,6 @@ class Pedidos extends CI_Controller {
         if (empty($id) OR $datos->num_rows() <= 0) {
             redirect('ventas/pedidos/pedidos_enviados');
         }
-        
-        $this->load->model('cliente','c');
-        $this->load->model('ruta','r');
-        $this->load->model('sucursal','s');
-        $this->load->model('contacto','co');
-        $this->load->model('producto','pro');
-        $this->load->model('cliente_presentacion', 'cp');
-        
-        $data['titulo'] = 'Pedido <small>Reubicar</small>';
-        $data['link_back'] = anchor($this->folder.$this->clase.'index','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
-        $data['action'] = site_url($this->folder.$this->clase.'pedidos_reubicar/'.$id);
         
         $pedido = $datos->row();
         $data['pedido'] = $pedido;
@@ -975,29 +1004,51 @@ class Pedidos extends CI_Controller {
         if(!(!empty($id_sucursal) && empty($id_contacto)))
             $data['contacto'] = $this->co->get_by_id($contacto)->row();
         $data['ruta'] = $this->r->get_by_id($pedido->id_ruta)->row();
-        
         $data['rutas'] = $this->r->get_all()->result();
         
-        $presentaciones = $this->p->get_presentaciones($id)->result();
-        foreach($presentaciones as $p){
-            $ppc = $this->cp->get_presentacion($data['cliente']->id, $p->id_producto_presentacion)->row();
-            if($ppc){
-                $producto = $this->pro->get_by_id($ppc->id_producto)->row();
-                $data['presentaciones'][] = (object)array(
-                    'id_producto_presentacion' => $p->id_producto_presentacion,
-                    'cantidad' => $p->cantidad,
-                    'precio' => $p->precio,
-                    'producto' => $ppc->producto,
-                    'id_producto' => $producto->id,
-                    'presentacion' => $ppc->presentacion,
-                    'codigo' => $ppc->codigo,
-                    'observaciones' => $p->observaciones);
+        $isPedidoReubicado = $this->pr->isPedidoReubicado($id);
+        if (!$isPedidoReubicado):
+            // si el pedido no tiene pedidos reubicados
+            // mostrar presentaciones del pedido original
+            $presentaciones = $this->p->get_presentaciones($id)->result();
+            foreach($presentaciones as $p){
+                $ppc = $this->cp->get_presentacion($data['cliente']->id, $p->id_producto_presentacion)->row();
+                if($ppc){
+                    $producto = $this->pro->get_by_id($ppc->id_producto)->row();
+                    $data['presentaciones'][] = (object)array(
+                        'id_producto_presentacion' => $p->id_producto_presentacion,
+                        'cantidad' => $p->cantidad,
+                        'precio' => $p->precio,
+                        'producto' => $ppc->producto,
+                        'id_producto' => $producto->id,
+                        'presentacion' => $ppc->presentacion,
+                        'codigo' => $ppc->codigo,
+                        'observaciones' => $p->observaciones);
+                }
             }
-        }
+        else:
+            // si el pedido tiene pedidos reubicados
+            // mostrar remanentes entre el pedido original y los pedidos reubicados
+            $presentaciones = $this->pr->getPedidoRemanentes($id);
+            foreach($presentaciones as $p){
+                $ppc = $this->cp->get_presentacion($data['cliente']->id, $p->id_producto_presentacion)->row();
+                if($ppc){
+                    $producto = $this->pro->get_by_id($ppc->id_producto)->row();
+                    $data['presentaciones'][] = (object)array(
+                        'id_producto_presentacion' => $p->id_producto_presentacion,
+                        'cantidad' => $p->cantidad,
+                        'precio' => $p->precio,
+                        'producto' => $ppc->producto,
+                        'id_producto' => $producto->id,
+                        'presentacion' => $ppc->presentacion,
+                        'codigo' => $ppc->codigo,
+                        'observaciones' => $p->observaciones,
+                        'remanente' => $p->remanente);
+                }
+            }
+        endif;
+
         $data['icono_estado'] = '<i class="'.$this->iconos_estado_pedido[$pedido->estado].' icon-2x"></i>';
-        /*if($data['pedido']->estado == '1')
-            $data['action_estado'] = anchor($this->folder.$this->clase.'siguiente_estado/'.$id, 'Autorizar', array('class' => 'btn btn-success input-block-level', 'id' => 'autorizar'));
-            */
         $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $id, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
         $this->load->view('ventas/pedidos/pedidos_reubicados_formulario', $data);
     }
@@ -1100,6 +1151,64 @@ class Pedidos extends CI_Controller {
                 echo json_encode($response);
             }
         }
+    }
+
+    /**
+     * VIEW
+     * mostrar en pantalla el pedido reubicado
+     * @param  int $id
+     * @return view
+     */
+    public function pedido_reubicado($id) {
+        $this->load->model('pedido','p');
+        $this->load->model('pedido_reubicado', 'pr');
+        $this->load->model('cliente','c');
+        $this->load->model('ruta','r');
+        $this->load->model('sucursal','s');
+        $this->load->model('contacto','co');
+        $this->load->model('producto','pro');
+        $this->load->model('cliente_presentacion', 'cp');
+
+        $data['titulo'] = 'Pedido <small>Reubicado</small>';
+        $data['link_back'] = anchor('javascript:history.go(-1);','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
+        $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $id, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
+        $data['action'] = site_url($this->folder.$this->clase.'pedidos_reubicar/'.$id);
+
+        // obtener pedido reubicado
+        $pedido = $this->pr->get_by_id($id);
+
+        // si no se encuentra redireccionar a pedidos enviados
+        if (empty($id) OR empty($pedido)) {
+            redirect('ventas/pedidos/pedidos_enviados');
+        }
+        
+        $data['pedido'] = $pedido;
+        $sucursal = !empty($id_sucursal) ? $id_sucursal : $pedido->id_cliente_sucursal;
+        $contacto = !empty($id_contacto) ? $id_contacto : $pedido->id_contacto;
+        $data['sucursal'] = $this->s->get_by_id($sucursal)->row();
+        $data['cliente'] = $this->c->get_by_id($data['sucursal']->id_cliente)->row();
+        if(!(!empty($id_sucursal) && empty($id_contacto)))
+            $data['contacto'] = $this->co->get_by_id($contacto)->row();
+        $data['ruta'] = $this->r->get_by_id($pedido->id_ruta)->row();
+        $data['rutas'] = $this->r->get_all()->result();
+        
+        $presentaciones = $this->pr->getPresentaciones($id);
+        foreach($presentaciones as $p){
+            $ppc = $this->cp->get_presentacion($data['cliente']->id, $p->id_producto_presentacion)->row();
+            if($ppc){
+                $producto = $this->pro->get_by_id($ppc->id_producto)->row();
+                $data['presentaciones'][] = (object)array(
+                    'id_producto_presentacion' => $p->id_producto_presentacion,
+                    'cantidad' => $p->cantidad,
+                    'precio' => $p->precio,
+                    'producto' => $ppc->producto,
+                    'id_producto' => $producto->id,
+                    'presentacion' => $ppc->presentacion,
+                    'codigo' => $ppc->codigo,
+                    'observaciones' => $p->observaciones);
+            }
+        }
+        $this->load->view('ventas/pedidos/pedido_reubicado', $data);
     }
 
     // Genera el formato de pedido para impresión

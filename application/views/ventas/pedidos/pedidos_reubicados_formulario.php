@@ -151,7 +151,7 @@ if(isset($pedido)){
 <div class="row-fluid">
     <div class="span12">
        
-            <button class="btn btn-inverse" id="agregar_producto"><i class="icon-plus"></i> Agregar</button>
+            <button class="btn btn-inverse" id="agregar_producto" style="display: none;"><i class="icon-plus"></i> Agregar</button>
        
     </div>
 </div>
@@ -174,8 +174,11 @@ if(isset($pedido)){
                 <?php
                 if(isset($presentaciones)){
                     foreach($presentaciones as $p){
-                        echo '<tr id_producto_presentacion="'.$p->id_producto_presentacion.'" cantidad="'.$p->cantidad.'" precio="'.$p->precio.'" precio_nuevo="0" codigo="'.$p->codigo.'" observaciones="'.$p->observaciones.'" producto="'.$p->producto.'" id_producto="'.$p->id_producto.'" title="Click= editar Doble click= borrar">'.
-                             '<td style="text-align: right;">'.$p->cantidad.'</td><td>'.$p->codigo.'</td><td>'.$p->producto.'</td><td>'.$p->presentacion.'</td><td style="text-align: right;">'.$p->precio.'</td><td style="text-align: right;">0.00</td><td style="text-align: right;">'.number_format($p->cantidad*$p->precio,2).'</td></tr>';
+                        $cantidad = $p->cantidad;
+                        if ($p->remanente > 0)
+                            $cantidad = $p->remanente;
+                        echo '<tr id_producto_presentacion="'.$p->id_producto_presentacion.'" cantidad="'.$cantidad.'" precio="'.$p->precio.'" precio_nuevo="0" codigo="'.$p->codigo.'" observaciones="'.$p->observaciones.'" producto="'.$p->producto.'" id_producto="'.$p->id_producto.'" title="Click= editar Doble click= borrar">'.
+                             '<td style="text-align: right;">'.$cantidad.'</td><td>'.$p->codigo.'</td><td>'.$p->producto.'</td><td>'.$p->presentacion.'</td><td style="text-align: right;">'.$p->precio.'</td><td style="text-align: right;">0.00</td><td style="text-align: right;">'.number_format($cantidad*$p->precio,2).'</td></tr>';
                     }
                 }
                 ?>
@@ -337,7 +340,13 @@ function onlyNumbers(objeto) {
         }
     });
 }
-    
+
+<?php
+if(isset($presentaciones)):
+    echo 'var presentaciones_aux = ' . json_encode($presentaciones);
+endif;
+?>
+
 $(document).ready(function(){
 
     <?php 
@@ -380,16 +389,11 @@ $(document).ready(function(){
     $(window).bind('beforeunload', function(event){
         localStorage.removeItem("ventas/pedidos/edicion");
     });
-    /*
-    <?php if(!isset($presentaciones)){ ?>
-        if(localStorage.getItem("ventas/pedidos/nuevo"))
-            $('#lineas').html(localStorage.getItem("ventas/pedidos/nuevo"));
-    <?php }else{ ?>
-        if(localStorage.getItem("ventas/pedidos/edicion"))
-            $('#lineas').html(localStorage.getItem("ventas/pedidos/edicion"));
-    <?php } ?>
-        */
+    
     calcula_totales();
+
+    // cambiar clase del boton agregar producto
+    $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
     
     var arreglo = new Array();
     $( "#cliente" ).autocomplete({
@@ -585,8 +589,33 @@ $(document).ready(function(){
         var importe = Number(cantidad * precio_nuevo);
         var fila = "";
         var seleccionada = false;
+        var cantidad_exceso = 0;
         
-        if($.isNumeric(cantidad) && id_producto_presentacion.length > 0){
+        if($.isNumeric(cantidad) && id_producto_presentacion.length > 0) {
+
+            // validar que las cantidades no excedan a las originales
+            $.each(presentaciones_aux, function(index, value) {
+                if (value.id_producto_presentacion == id_producto_presentacion) {
+                    console.log('cantidad: ' + cantidad + ' > original: ' + value.cantidad);
+                    if (cantidad > Number(value.cantidad)) {
+                        cantidad_exceso = value.cantidad;
+                        return false;
+                    }
+                }
+            });
+
+            if (cantidad_exceso != 0) {
+                alert('No se puede exceder la cantidad (' + cantidad_exceso + ') del producto:\n' + codigo + ' - ' + producto + ' - ' + presentacion + '\n\nFavor de corregirla.');
+                $('#cantidad').focus();
+                return false;
+            }
+
+            if (precio_nuevo <= 0) {
+                alert('El precio nuevo proporcionado no es válido.');
+                $('#precio_nuevo').focus();
+                return false;
+            }
+
             fila = '<tr id_producto_presentacion="'+id_producto_presentacion+'" cantidad="'+cantidad+'" precio="'+precio+'" precio_nuevo="'+precio_nuevo+'" codigo="'+codigo+'" observaciones="'+observaciones+'" producto="'+producto+'" id_producto="'+id_producto+'" title="Click= editar\nDoble click= borrar">'+
             '<td style="text-align: right;">'+
             Globalize.format(cantidad,'n')+'</td><td>'+
@@ -603,29 +632,31 @@ $(document).ready(function(){
                 if($(this).hasClass('info'))
                     seleccionada = true;
             });
+
             if(seleccionada){
                 $('tr[class="info"]').replaceWith(fila);
             }else
                 $('#lineas').append(fila);
             
-            $('#producto').val('');
-            //$('#presentacion').html('').attr('disabled',true);
-            $('#precio').val('');
-            $('#precio_nuevo').val('');
-            $('#comentarios').val('').attr('disabled',true);
             $('#cantidad').val('');
+            $('#producto').val('').attr('disabled', true);
+            $('#precio').val('').attr('disabled', true);
+            $('#precio_nuevo').val('');
+            $('#presentacion').html('').attr('disabled', true);
             $('#stock').removeClass('text-info').removeClass('text-error').html('-');
-            $('#id_producto_presentacion').val('');
-            
-            $(this).removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
+            $('#comentarios').val('');
+
+            $(this).hide();
             
             calcula_totales();
         }
+
         $('#cantidad').focus();
     });
     
     $('#lineas').on('click','tr',function(){
         if(edicion){
+            /*
             if($(this).hasClass('info')){
                 $(this).removeClass('info');
                 $('#cantidad').val('');
@@ -636,30 +667,41 @@ $(document).ready(function(){
                 $('#comentarios').val('');
                 $('#agregar_producto').removeClass('btn-info').addClass('btn-inverse').html('<i class="icon-plus"></i> Agregar');
             }else{
-                $("#lineas tr").each(function(fila){
-                    $(this).removeClass('info');
-                });
+            */
+           
+            $('#cantidad').val('');
+            $('#producto').val('').attr('disabled', true);
+            $('#precio').val('').attr('disabled', true);
+            $('#precio_nuevo').val('');
+            $('#presentacion').html('').attr('disabled', true);
+            $('#stock').removeClass('text-info').removeClass('text-error').html('-');
+            $('#comentarios').val('');
 
-                $(this).addClass('info');
+            $("#lineas tr").each(function(fila){
+                $(this).removeClass('info');
+            });
 
-                $('#cantidad').val($(this).attr('cantidad'));
-                $('#producto').val($(this).attr('producto'));
-                $('#id_producto_presentacion').val($(this).attr('id_producto_presentacion'));
+            $(this).addClass('info');
 
-                $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
+            $('#cantidad').val($(this).attr('cantidad'));
+            $('#producto').val($(this).attr('producto'));
+            $('#id_producto').val($(this).attr('id_producto'));
+            $('#id_producto_presentacion').val($(this).attr('id_producto_presentacion'));
 
-                get_presentaciones($(this).attr('id_producto'), $(this).attr('id_producto_presentacion'));
+            $('#agregar_producto').removeClass('btn-inverse').addClass('btn-info').html('<i class="icon-refresh"></i> Cambiar');
 
-                $('#presentacion').removeAttr('disabled');
-                $('#presentacion').val($(this).attr('id_producto_presentacion'));
-                
-                // Se obtiene la existencia virtual   
-                get_stock_virtual($(this).attr('id_producto_presentacion')); 
-        
-                $('#precio').val($(this).attr('precio'));
-                $('#precio_nuevo').val($(this).attr('precio_nuevo'));
-                $('#comentarios').val($(this).attr('observaciones')).removeAttr('disabled');
-            }
+            get_presentaciones($(this).attr('id_producto'), $(this).attr('id_producto_presentacion'));
+
+            $('#presentacion').val($(this).attr('id_producto_presentacion'));
+            
+            // Se obtiene la existencia virtual   
+            get_stock_virtual($(this).attr('id_producto_presentacion')); 
+    
+            $('#precio').val($(this).attr('precio'));
+            $('#precio_nuevo').val($(this).attr('precio_nuevo'));
+            $('#comentarios').val($(this).attr('observaciones')).removeAttr('disabled');
+            // }
+            $('#agregar_producto').show();
             $("#cantidad").focus();
         }
     });

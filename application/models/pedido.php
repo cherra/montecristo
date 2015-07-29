@@ -214,7 +214,8 @@ class Pedido extends CI_Model {
         else
             $this->db->group_by('pp.id');
         $this->db->order_by('producto, pre.nombre');
-        return $this->db->get($this->tbl.' p');
+        $presentaciones = $this->db->get($this->tbl.' p');
+        return $presentaciones;
     }
     
     function get_presentaciones_by_cliente( $id_cliente, $id_ruta, $estado = array('1'), $limit = NULL, $offset = 0){
@@ -459,7 +460,7 @@ class Pedido extends CI_Model {
     }
     
     function get_by_ruta( $id_ruta, $estado = '1', $limit = NULL, $offset = 0, $filtro = NULL){
-        $this->db->select('p.*, SUM(pp.cantidad * ppr.peso) AS peso, SUM(pp.cantidad) AS piezas, (select id from PedidosReubicados  where id_pedido = p.id) AS reubicado');
+        $this->db->select('p.*, SUM(pp.cantidad * ppr.peso) AS peso, SUM(pp.cantidad) AS piezas, (select id from PedidosReubicados where id_pedido = p.id limit 1) AS reubicado');
         $this->db->join('PedidoPresentacion pp','p.id = pp.id_pedido');
         $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
         $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
