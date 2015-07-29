@@ -36,6 +36,24 @@ class Pedido_reubicado extends CI_Model {
     }
 
     /**
+     * borrar el pedido reubicado
+     * @param  int $id
+     * @return mixed
+     */
+    function delete($id) {
+        $pedido_reubicado = $this->get_by_id($id);
+        $data = array(
+            'id_pedido' => $pedido_reubicado->id_pedido,
+            'id_ruta'   => $pedido_reubicado->id_ruta
+        );
+        // eliminar registro de PedidosReubicados
+        $this->db->delete($this->tbl_reubicados, array('id' => $id));
+        // eliminar registro(s) de PedidoReubicadoPresentacion
+        $this->db->delete($this->tbl_productos_reubicados, array('id_pedido_reubicado' => $id));
+        return (object) $data;
+    }
+
+    /**
      * validar si el pedido ha sido reubicado
      * @param  int $id_pedido
      * @return bool
@@ -64,6 +82,7 @@ class Pedido_reubicado extends CI_Model {
                 inner join Usuarios u on u.id_usuario = pr.id_usuario
                 inner join PedidoReubicadoPresentacion prp on prp.id_pedido_reubicado = pr.id
                 where pr.id_pedido = ?
+                group by pr.id
                 order by pr.fecha;";
         $query = $this->db->query($sql, array($id_pedido));
         return $query->result();

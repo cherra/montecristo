@@ -170,20 +170,25 @@ if(isset($pedido)){
     </div>
 </div>
 <div class="row-fluid">
-    <div class="span2">
+    <div class="span4">
         <button id="borrar" class="btn btn-danger"><i class="icon-remove"></i> Borrar pedido reubicado</button>
     </div>
-    <div class="offset8 span2">
+    <div class="offset6 span2">
         <p class="text-right"><?php echo $link_imprimir; ?></p>
     </div>
 </div>
 
 <script type="text/javascript">
 $(function () {
+    $('#borrar').click(function (e) {
+        e.preventDefault();
+        deletePedido(<?php echo $pedido->id; ?>);
+    });
+
     calcula_totales();
 });
 
-function calcula_totales(){
+function calcula_totales() {
     var total = new Number(0);
     var total_cantidad = new Number(0);
 
@@ -201,5 +206,32 @@ function calcula_totales(){
 
     // Recorrer el scroll hasta el fondo
     $("#tabla_container").animate({scrollTop:$("#tabla_container")[0].scrollHeight}, 1000);
+}
+
+function deletePedido() {
+    var respuesta;
+    var params;
+    respuesta = confirm('¿Desea borrar el pedido reubicado no. <?php echo $pedido->id; ?>?');
+    if (!respuesta) return false;
+    params = {
+        'id_pedido_reubicado': <?php echo $pedido->id; ?>
+    };
+    a("<?php echo site_url('ventas/pedidos/pedido_reubicado_delete/'); ?>", params)
+    .done(function (d) {
+        window.location.href = "<?php echo site_url('ventas/pedidos/pedidos_enviados'); ?>";
+    })
+    .error(function () {
+        alert('Error al intentar borrar el pedido reubicado.');
+        return false;
+    })
+}
+
+function a(url_, params) {
+    return $.ajax({
+        type: "post",
+        url: url_,
+        dataType: 'json',
+        data: params
+    });
 }
 </script>

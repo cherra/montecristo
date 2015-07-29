@@ -1023,7 +1023,8 @@ class Pedidos extends CI_Controller {
                         'id_producto' => $producto->id,
                         'presentacion' => $ppc->presentacion,
                         'codigo' => $ppc->codigo,
-                        'observaciones' => $p->observaciones);
+                        'observaciones' => $p->observaciones,
+                        'remanente' => 0);
                 }
             }
         else:
@@ -1209,6 +1210,19 @@ class Pedidos extends CI_Controller {
             }
         }
         $this->load->view('ventas/pedidos/pedido_reubicado', $data);
+    }
+
+    /**
+     * AJAX
+     * borrar pedido reubicado
+     * @return json
+     */
+    public function pedido_reubicado_delete() {
+        $id_pedido_reubicado = $this->input->post('id_pedido_reubicado');
+        $this->load->model('pedido_reubicado', 'pr');
+        $data = $this->pr->delete($id_pedido_reubicado);
+        echo json_encode($data);
+        //redirect(site_url('ventas/pedidos/pedidos_reubicados/' . $data->id_ruta . '/' . $data->id_pedido));
     }
 
     // Genera el formato de pedido para impresión
