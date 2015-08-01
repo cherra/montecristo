@@ -169,6 +169,93 @@ class Pedido_reubicado extends CI_Model {
         $query = $this->db->query($sql, array($id));
         return $query->result();
     }
+
+    /**
+     * obtener el subtotal del pedido reubicado
+     * @param  int $id
+     * @return float
+     */
+    public function get_subtotal($id){
+        $this->db->select('SUM(pp.cantidad * pp.precio / (1 + pp.iva) ) AS total', FALSE);
+        $this->db->join('PedidoReubicadoPresentacion pp','p.id = pp.id_pedido_reubicado');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->total;
+        }else{
+            return 0;
+        }
+    }
+
+    /**
+     * obtener el iva del pedido reubicado
+     * @param  int $id
+     * @return float
+     */
+    public function get_iva($id){
+        $this->db->select('SUM(pp.cantidad * pp.precio) - SUM(pp.cantidad * pp.precio / (1 + pp.iva) ) AS iva', FALSE);
+        $this->db->join('PedidoReubicadoPresentacion pp','p.id = pp.id_pedido_reubicado');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->iva;
+        }else{
+            return 0;
+        }
+    }
+
+    /**
+     * obtener el importe del pedido reubicado
+     * @param  int $id 
+     * @return float     
+     */
+    public function get_importe($id){
+        $this->db->select('SUM(pp.cantidad * pp.precio) AS total', FALSE);
+        $this->db->join('PedidoReubicadoPresentacion pp','p.id = pp.id_pedido_reubicado');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->total;
+        }else{
+            return 0;
+        }
+    }
+
+    public function get_peso($id){
+        $this->db->select('SUM(pp.cantidad * ppr.peso) AS peso', FALSE);
+        $this->db->join('PedidoReubicadoPresentacion pp','p.id = pp.id_pedido_reubicado');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->peso;
+        }else{
+            return 0;
+        }
+    }
+    
+    public function get_piezas($id){
+        $this->db->select('SUM(pp.cantidad) AS piezas', FALSE);
+        $this->db->join('PedidoReubicadoPresentacion pp','p.id = pp.id_pedido_reubicado');
+        $this->db->join('ProductoPresentaciones ppr','pp.id_producto_presentacion = ppr.id');
+        $this->db->where('p.id',$id);
+        $this->db->group_by('p.id');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        if($query->num_rows() > 0){
+            $result = $query->row();
+            return $result->piezas;
+        }else{
+            return 0;
+        }
+    }
 }
 
 ?>

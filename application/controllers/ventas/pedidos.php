@@ -1147,7 +1147,7 @@ class Pedidos extends CI_Controller {
 
         $data['titulo'] = 'Pedido <small>Reubicado</small>';
         $data['link_back'] = anchor('javascript:history.go(-1);','<i class="icon-arrow-left"></i> Regresar',array('class'=>'btn'));
-        $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $id, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
+        $data['link_imprimir'] = anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $id . '/' . true, '<i class="icon-print"></i> Imprimir', array('class' => 'btn', 'title' => 'Imprimir'));
         $data['action'] = site_url($this->folder.$this->clase.'pedidos_reubicar/'.$id);
 
         // obtener pedido reubicado
@@ -1201,11 +1201,13 @@ class Pedidos extends CI_Controller {
     }
 
     // Genera el formato de pedido para impresión
-    private function pedidos_render_template($id, $reubicado = FALSE){
+    private function pedidos_render_template($id, $reubicado = FALSE) {
+        // cargar modelo correspondiente
         if($reubicado)
             $this->load->model('pedido_reubicado', 'p');
         else
             $this->load->model('pedido', 'p');
+
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
         $this->load->model('contacto','co');
@@ -1233,7 +1235,7 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['logo'] = base_url($logo);
         
         // Se sustituyen los campos en el template
-        $this->tbs->VarRef['numero'] = $pedido->id;
+        $this->tbs->VarRef['numero'] = ($reubicado ? $pedido->id_pedido . '/' : '') . $pedido->id;
         $fecha = date_create($pedido->fecha);
         $fecha_impresion = date_create();
         $this->tbs->VarRef['fecha'] = date_format($fecha,'d/m/Y');
@@ -1265,7 +1267,13 @@ class Pedidos extends CI_Controller {
         $this->tbs->VarRef['num_proveedor'] = $cliente->num_proveedor;
         $this->tbs->VarRef['orden_compra'] = $pedido->orden_compra;
 
-        $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
+        if (!$reubicado) {
+            $presentaciones = $this->p->get_presentaciones($pedido->id)->result_array();
+        }
+        else {
+            $presentaciones = $this->p->getPresentaciones($pedido->id);
+            $presentaciones = json_decode(json_encode($presentaciones), true);
+        }
         foreach($presentaciones as $key => $value){
             $presentacion_cliente = $this->cp->get_presentacion($cliente->id, $presentaciones[$key]['id_producto_presentacion'])->row();
             $presentacion = $this->pp->get_by_id($presentaciones[$key]['id_producto_presentacion'])->row();
@@ -1278,7 +1286,7 @@ class Pedidos extends CI_Controller {
             $presentaciones[$key]['presentacion'] = $presentacion_cliente->presentacion;
         }
         $this->tbs->MergeBlock('presentaciones', $presentaciones);
-        
+
         $this->tbs->VarRef['subtotal'] = number_format($this->p->get_subtotal($pedido->id),2,'.',',');
         $this->tbs->VarRef['iva'] = number_format($this->p->get_iva($pedido->id),2,'.',',');
         $total = $this->p->get_importe($pedido->id);
@@ -1293,14 +1301,18 @@ class Pedidos extends CI_Controller {
     }
     
     // Impresión de pedidos
-    public function pedidos_documento( $id = null ){
+    public function pedidos_documento($id = null, $reubicado = FALSE){
         if(!empty($id)){
             $this->layout = "template_pdf";
-            $this->load->model('pedido', 'p');
+            // cargar modelo correspondiente
+            if (!$reubicado)
+                $this->load->model('pedido', 'p');
+            else
+                $this->load->model('pedido_reubicado', 'p');
             $pedido = $this->p->get_by_id($id)->row();
             if( $this->session->flashdata('pdf') ){
                 if($pedido){
-                    $data['contenido'] = $this->pedidos_render_template($id);                    
+                    $data['contenido'] = $this->pedidos_render_template($id, $reubicado);                    
                     $this->load->view('documento', $data);
                 }else{
                     redirect($this->folder.$this->clase.'pedidos_proceso_ruta');
@@ -1312,7 +1324,7 @@ class Pedidos extends CI_Controller {
                         $this->session->set_flashdata('watermark', 'Cancelado');
                     }
                 }
-                redirect($this->folder.$this->clase.'pedidos_documento/'.$id); // Se recarga el método para imprimirlo como PDF
+                redirect($this->folder.$this->clase.'pedidos_documento/' . $id . '/' . $reubicado); // Se recarga el método para imprimirlo como PDF
             }
         }else{
             redirect($this->folder.$this->clase.'pedidos_proceso_ruta');
