@@ -12,7 +12,7 @@ if(isset($pedido)){
         <p class="lead text-right" style="margin-bottom: 10px;"><strong>Pedido:</strong></p>
     </div>
     <div class="span2">
-        <p class="lead text-info text-right" style="margin-bottom: 10px;"><strong><?php echo $pedido->id; ?></strong></p>
+        <p class="lead text-info text-right" style="margin-bottom: 10px;"><strong><?php echo $pedido->id_pedido . '/' . $pedido->id; ?></strong></p>
     </div>
     <div class="span3">
         <?php if(isset($pedido)){ ?>

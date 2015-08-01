@@ -1087,14 +1087,8 @@ class Pedidos extends CI_Controller {
                 $mensaje = 'Se generó el pedido reubicado no. '.$id_pedido_reubicado;
 
                 if ($id_pedido_reubicado) {
-                    $pedido_reubicado = $this->pre->get_by_id($id_pedido_reubicado);
+                    $pedido_reubicado = $this->pre->get_by_id($id_pedido_reubicado)->row();
                     $tasa_iva = $this->configuracion->get_valor('iva');
-                    //$salida = $this->os->get_by_id($pedido->id_orden_salida)->row();
-                    
-                    /**
-                     * DUDA *****
-                     */
-                    // $this->os->delete_presentaciones($pedido_reubicado->id_orden_salida);
                     
                     foreach($datos['productos'] as $producto){
                         $data = $this->pr->get_by_id($producto[4])->row();
@@ -1116,25 +1110,6 @@ class Pedidos extends CI_Controller {
                             $respuesta = 'Error';
                             $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar el pedido reubicado', 'tipo' => 'alert-error'));
                         }
-
-                        /**
-                         * DUDA *****
-                         */
-                        /*
-                        if($pedido_reubicado->estado > 1 && $pedido_reubicado->estado < 4){  // Si el estado del pedido es mayor a 1 quiere decir que es una edición de pedido
-                            // Presentaciones de la orden de salida
-                            $presentacion_os = array(
-                                'id_orden_salida' => $pedido_reubicado->id_orden_salida,
-                                'id_producto_presentacion' => $producto[0],
-                                'cantidad' => $producto[1],
-                                'observaciones' => $producto[3]
-                            );
-                            if( !($this->os->save_presentacion($presentacion_os)) ){
-                                $respuesta = 'Error';
-                                $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la orden de salida', 'tipo' => 'alert-error'));
-                            }
-                        }
-                        */
                        
                         $id_ruta = $pedido_reubicado->id_ruta;
                     }
@@ -1176,7 +1151,7 @@ class Pedidos extends CI_Controller {
         $data['action'] = site_url($this->folder.$this->clase.'pedidos_reubicar/'.$id);
 
         // obtener pedido reubicado
-        $pedido = $this->pr->get_by_id($id);
+        $pedido = $this->pr->get_by_id($id)->row();
 
         // si no se encuentra redireccionar a pedidos enviados
         if (empty($id) OR empty($pedido)) {
@@ -1226,15 +1201,18 @@ class Pedidos extends CI_Controller {
     }
 
     // Genera el formato de pedido para impresión
-    private function pedidos_render_template($id){
-        $this->load->model('pedido', 'p');
+    private function pedidos_render_template($id, $reubicado = FALSE){
+        if($reubicado)
+            $this->load->model('pedido_reubicado', 'p');
+        else
+            $this->load->model('pedido', 'p');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
         $this->load->model('contacto','co');
         $this->load->model('cliente_presentacion','cp');
         $this->load->model('producto_presentacion','pp');
         $this->load->model('preferencias/usuario','u');
-            
+        
         $pedido = $this->p->get_by_id($id)->row();
         $sucursal = $this->s->get_by_id($pedido->id_cliente_sucursal)->row();
         $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
@@ -1321,7 +1299,6 @@ class Pedidos extends CI_Controller {
             $this->load->model('pedido', 'p');
             $pedido = $this->p->get_by_id($id)->row();
             if( $this->session->flashdata('pdf') ){
-            //if(true){
                 if($pedido){
                     $data['contenido'] = $this->pedidos_render_template($id);                    
                     $this->load->view('documento', $data);

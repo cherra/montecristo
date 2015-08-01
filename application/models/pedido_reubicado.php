@@ -12,7 +12,7 @@ class Pedido_reubicado extends CI_Model {
 	 */
 	function get_by_id($id) {
         $this->db->where('id', $id);
-        return $this->db->get($this->tbl_reubicados)->row();
+        return $this->db->get($this->tbl_reubicados);
     }
 
 	/**
@@ -41,7 +41,7 @@ class Pedido_reubicado extends CI_Model {
      * @return mixed
      */
     function delete($id) {
-        $pedido_reubicado = $this->get_by_id($id);
+        $pedido_reubicado = $this->get_by_id($id)->row();
         $data = array(
             'id_pedido' => $pedido_reubicado->id_pedido,
             'id_ruta'   => $pedido_reubicado->id_ruta
@@ -95,18 +95,23 @@ class Pedido_reubicado extends CI_Model {
      * @return bool
      */
     public function hasPedidoRemanentes($id_pedido) {
-        $remanente = false;
-        $sql = "select pr.id, pr.id_pedido, prp.id_producto_presentacion, prp.cantidad,
-                ((select cantidad from PedidoPresentacion where id_pedido = pr.id_pedido and id_producto_presentacion = prp.id_producto_presentacion) - prp.cantidad) as remanente
+        $remanente = null;
+        $sql = "select
+                pr.id_pedido,
+                (select sum(cantidad) from PedidoPresentacion where id_pedido = pr.id_pedido)
+                -
+                (select sum(cantidad) from PedidoReubicadoPresentacion where id_pedido = pr.id_pedido) as remanente
                 from PedidosReubicados pr
-                inner join PedidoReubicadoPresentacion prp on prp.id_pedido_reubicado = pr.id
-                where 
-                pr.id_pedido = ?
-                and ((select cantidad from PedidoPresentacion where id_pedido = pr.id_pedido and id_producto_presentacion = prp.id_producto_presentacion) - prp.cantidad) > 0
-                limit 1;";
+                where pr.id_pedido = ? 
+                group by pr.id_pedido";
         $query = $this->db->query($sql, array($id_pedido));
-        if ($query->num_rows() > 0) 
-            $remanente = true;
+        $pedido = null;
+        if ($query->num_rows() > 0) {
+            $pedido = $query->row();
+            if ($pedido->remanente > 0) {
+                $remanente = true;
+            }
+        }
         return $remanente;
     }
 
@@ -116,25 +121,24 @@ class Pedido_reubicado extends CI_Model {
      * @return mixed
      */
     public function getPedidoRemanentes($id_pedido)     {
-        $sql = "SELECT 
-                pp.id, pp.id_pedido_reubicado, pp.id_producto_presentacion, SUM(pp.cantidad) AS cantidad, 
+        $sql = "select
+                pp.id_pedido, pp.cantidad, pp.precio, pp.id_producto_presentacion, pp.iva, pp.observaciones,
+                ifnull(prp.cantidad, 0) as cantidad_reubicado, 
+                (pp.cantidad - ifnull(prp.cantidad, 0)) as remanente,
                 pp.precio, pp.iva, pp.observaciones, 
-                IF( LENGTH( cp.producto ) > 0, cp.producto, pro.nombre ) AS producto, 
-                IF( LENGTH( cp.codigo ) > 0, cp.codigo, 
-                CONCAT( pro.codigo, ppr.codigo ) ) AS codigo,
-                ((select cantidad from PedidoPresentacion where id_pedido = p.id_pedido and id_producto_presentacion = pp.id_producto_presentacion) - pp.cantidad) as remanente
-                FROM (PedidosReubicados p) 
-                JOIN PedidoReubicadoPresentacion pp ON p.id = pp.id_pedido_reubicado 
+                IF( LENGTH( cp.producto ) > 0, cp.producto, pro.nombre ) AS producto,
+                IF( LENGTH( cp.codigo ) > 0, cp.codigo, CONCAT( pro.codigo, ppr.codigo ) ) AS codigo 
+                from PedidoPresentacion pp 
+                left join PedidoReubicadoPresentacion prp on prp.id_producto_presentacion = pp.id_producto_presentacion
+                inner join Pedidos p on p.id = pp.id_pedido
                 JOIN ProductoPresentaciones ppr ON pp.id_producto_presentacion = ppr.id 
                 JOIN Productos pro ON ppr.id_producto = pro.id 
                 JOIN Presentaciones pre ON ppr.id_presentacion = pre.id 
                 JOIN ClienteSucursales cs ON p.id_cliente_sucursal = cs.id 
                 JOIN Clientes c ON cs.id_cliente = c.id 
                 LEFT JOIN ClientePresentaciones cp ON ppr.id = cp.id_producto_presentacion AND c.id = cp.id_cliente 
-                WHERE p.id_pedido = ? 
-                and ((select cantidad from PedidoPresentacion where id_pedido = p.id_pedido and id_producto_presentacion = pp.id_producto_presentacion) - pp.cantidad) > 0
-                GROUP BY pp.id 
-                ORDER BY producto, pre.nombre;";
+                where pp.id_pedido = ?
+                and (pp.cantidad - ifnull(prp.cantidad, 0)) > 0;";
         $query = $this->db->query($sql, array($id_pedido));
         return $query->result();
     }

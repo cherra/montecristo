@@ -243,7 +243,7 @@ if(isset($pedido)){
                 <?php
                 }else{
                 ?>
-                <p class="text-right"><?php echo $link_imprimir; ?></p>
+                <!-- <p class="text-right"><?php echo $link_imprimir; ?></p> -->
                 <?php
                 }
                 ?>
