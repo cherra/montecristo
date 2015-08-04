@@ -55,6 +55,12 @@ class Ordenes_compra extends CI_Controller{
             $proveedor = $this->p->get_by_id($d->id_proveedor)->row();
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importe = $this->c->get_importe($d->id);
+
+            // mostrar enlace para confirmar orden de compra
+            $link_aceptar_compra = '';
+            if ($d->estado == 4)
+                $link_aceptar_compra = '<a href="' . site_url('compras/compras/aceptar/' . $d->id) . '" class="btn btn-small aceptar-compra" style="text-align: right; title="Aceptar compra"><i class="icon-shopping-cart"></i></a>';
+
     		$this->table->add_row(
                         '<i class="'.$this->iconos_estado[$d->estado].'"></i>',
                         $d->id,
@@ -67,6 +73,7 @@ class Ordenes_compra extends CI_Controller{
                         $usuario->nombre,
                         array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
                         array('data' => anchor_popup($this->folder.$this->clase.'ordenes_compra_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        $link_aceptar_compra,
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
                         array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'ordenes_compra_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
     		);
