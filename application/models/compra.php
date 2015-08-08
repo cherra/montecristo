@@ -44,7 +44,7 @@ class Compra extends CI_Model {
     /**
     * Cantidad de registros por pagina
     */
-    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL, $estado = array('0','1','2','3','4','5')) {
+    function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL, $estado = array('0','1','2','3','4','5','6')) {
         if(!empty($filtro)){
             $filtro = explode(' ', $filtro);
             foreach($filtro as $f){
