@@ -162,8 +162,7 @@ class Compras extends CI_Controller {
                 $usuario->nombre,
                 array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
                 array('data' => anchor_popup($this->folder.$this->clase_orden_compras.'ordenes_compra_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase_orden_compras.'ordenes_compra_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase_orden_compras.'ordenes_compra_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
+                '<a href="#modal" class="btn btn-small" data-toggle="modal" title="Guardar referencia"><i class="icon-edit"></i></a>'
             );
             if($d->estado == 0)
                 $this->table->add_row_class('muted');
@@ -199,6 +198,7 @@ class Compras extends CI_Controller {
 
         $page_limit = $this->config->item("per_page");
         $datos = $this->c->get_paged_list($page_limit, $offset, $filtro, array('6'))->result();
+
         // generar paginacion
         $this->load->library('pagination');
         $config['base_url'] = site_url($this->folder . $this->clase_orden_compras . 'ordenes_compra_autorizar');
@@ -213,26 +213,32 @@ class Compras extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array ( 'table_open' => '<table id="tabla_compras" class="' . $this->config->item('tabla_css') . '" >' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('E','Número','Fecha','Proveedor','Municipio','Estado','Teléfono','Contacto','Usuario','Total', '', '');
+        $this->table->set_heading('E','Número','Fecha','Proveedor','Teléfono','Usuario','Total', 'No. referencia', 'Pago', 'Fecha Factura', '', '');
         foreach ($datos as $d) {
             $proveedor = $this->p->get_by_id($d->id_proveedor)->row();
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importe = $this->c->get_importe($d->id);
+            
+            // si existe foto_factura mostrar el boton
+            $link_file = '';
+            if ($d->foto_factura != null) 
+                $link_file = array('data' => anchor_popup($this->folder.$this->clase.'ver_foto/'.$d->id, '<i class="icon-file"></i>', array('class' => 'btn btn-small', 'title' => 'Ver factura')), 'style' => 'text-align: right;');
+            
             $this->table->add_row(
                 '<i class="'.$this->iconos_estado[$d->estado].'"></i>',
                 $d->id,
-                $d->fecha_orden_compra,
+                explode(" ", $d->fecha_orden_compra)[0],
                 $proveedor->nombre,
-                $proveedor->municipio,
-                $proveedor->estado,
                 $proveedor->telefono,
-                $proveedor->contacto,
                 $usuario->nombre,
                 array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
+                $d->numero,
+                $d->tipo_pago,
+                $d->fecha_factura,
                 array('data' => anchor_popup($this->folder.$this->clase_orden_compras.'ordenes_compra_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase_orden_compras.'ordenes_compra_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase_orden_compras.'ordenes_compra_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
+                $link_file
             );
+            
             if($d->estado == 0)
                 $this->table->add_row_class('muted');
             else
@@ -249,20 +255,11 @@ class Compras extends CI_Controller {
         $fecha = $this->input->post('fecha');
         $foto_factura = null;
         if ($_FILES['foto_factura']['size'] > 0) {
-            /*
-            $fileName = $_FILES['foto_factura']['name']; // image file name
-            $tmpName = $_FILES['foto_factura']['tmp_name']; // name of the temporary stored file name
-            $fileSize = $_FILES['foto_factura']['size']; // size of the uploaded file
-            $fileType = $_FILES['foto_factura']['type']; // file type
-            $fp = fopen($tmpName, 'r'); // open a file handle of the temporary file
-            $foto_factura = fread($fp, filesize($tmpName)); // read the temp file
-            fclose($fp); // close the file handle
-            */
            $foto_factura = file_get_contents($_FILES['foto_factura']['tmp_name']);
         }
         $data = array(
             'estado' => 6,
-            'referencia' => $referencia,
+            'numero' => $referencia,
             'tipo_pago' => $tipo_pago,
             'fecha_factura' => $fecha,
             'foto_factura' => $foto_factura
@@ -282,7 +279,7 @@ class Compras extends CI_Controller {
         $foto = false;
         if ($compra->foto_factura != null) $foto = true;
         $data = array(
-            'referencia' => $compra->id,
+            'referencia' => $compra->numero,
             'tipo_pago' => $compra->tipo_pago,
             'fecha' => $compra->fecha_factura,
             'foto_factura' => $foto
@@ -296,11 +293,8 @@ class Compras extends CI_Controller {
         $foto = false;
         if ($compra->foto_factura != null) $foto = true;
         if ($foto) {
-            $data['imagen'] = '<img style="width: 100%; height: 100%;" src="data:image/jpeg;base64,'.base64_encode( $compra->foto_factura ).'"/>';
-            $this->load->view('compras/ver_foto', $data);
-        }
-        else {
-            redirect(site_url('compras/compras/por_pagar'));
+            echo '<img style="width: 100%; height: 100%;" src="data:image/jpeg;base64,'.base64_encode($compra->foto_factura).'"/>';
+            die();
         }
     }
 }
