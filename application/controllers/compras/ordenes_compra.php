@@ -14,7 +14,8 @@ class Ordenes_compra extends CI_Controller{
         2 => 'icon-thumbs-up',
         3 => 'icon-share',
         4 => 'icon-check',
-        5 => 'icon-qrcode'
+        5 => 'icon-qrcode',
+        6 => 'icon-shopping-cart',
     );
     
     public function index( $offset = 0 ){

@@ -57,13 +57,22 @@ class Pedidos extends CI_Controller {
     	$this->table->set_empty('&nbsp;');
     	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
     	$this->table->set_template($tmpl);
-    	$this->table->set_heading('E','Número','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Total', '', '','','');
+    	$this->table->set_heading('E','Número','Fecha','Cliente','Sucursal','Municipio','Estado','Vendedor', 'Total', '', '','','', '');
     	foreach ($datos as $d) {
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importe = $this->p->get_importe($d->id);
-    		$this->table->add_row(
+
+            // si se encuentra un pedido ya reubicado mostrar link diferente
+            $link_reubicar = '';
+            $disabled_class = '';
+            if ($d->reubicado) {
+                $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedidos_reubicados/' . $d->ruta_reubicado . '/' . $d->reubicado, '<i class="icon-random"></i>', array('class' => 'btn btn-small btn-warning', 'title' => 'Reubicado')), 'style' => 'text-align: right;');
+                $disabled_class = ' disabled';
+            }
+    		
+            $this->table->add_row(
                         '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
                         $d->id,
                         $d->fecha,
@@ -73,11 +82,12 @@ class Pedidos extends CI_Controller {
                         $sucursal->estado,
                         $usuario->nombre,
                         array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
-                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
-                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_excel/' . $d->id, '<i class="icon-list-alt"></i>', array('class' => 'btn btn-small', 'title' => 'Exportar a excel')), 'style' => 'text-align: right;'),
-                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small', 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
-                        array('data' => ($d->estado > 0 ? anchor($this->folder.$this->clase.'pedidos_duplicar/' . $d->id, '<i class="icon-copy"></i>', array('class' => 'btn btn-small', 'title' => 'Duplicar')) :  '<a class="btn btn-small" disabled><i class="icon-copy"></i></a>'), 'style' => 'text-align: right;'),
-                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;')
+                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small' . $disabled_class, 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'pedidos_excel/' . $d->id, '<i class="icon-list-alt"></i>', array('class' => 'btn btn-small' . $disabled_class, 'title' => 'Exportar a excel')), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_editar/' . $d->id, '<i class="icon-edit"></i>', array('class' => 'btn btn-small' . $disabled_class, 'title' => 'Editar')) :  '<a class="btn btn-small" disabled><i class="icon-edit"></i></a>'), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 ? anchor($this->folder.$this->clase.'pedidos_duplicar/' . $d->id, '<i class="icon-copy"></i>', array('class' => 'btn btn-small' . $disabled_class, 'title' => 'Duplicar')) :  '<a class="btn btn-small" disabled><i class="icon-copy"></i></a>'), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'pedidos_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar' . $disabled_class, 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;'),
+                        $link_reubicar
     		);
                 if($d->estado == 0)
                     $this->table->add_row_class('muted');

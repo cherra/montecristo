@@ -18,7 +18,6 @@ class Facturas extends CI_Controller {
         $this->load->model('cliente','c');
         $this->load->model('pedido','p');
         $this->load->model('preferencias/usuario','u');
-        
         $this->config->load("pagination");
     	
         $data['titulo'] = 'Facturas <small>Lista</small>';

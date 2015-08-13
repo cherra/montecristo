@@ -100,7 +100,7 @@ class Pedido_reubicado extends CI_Model {
                 pr.id_pedido,
                 (select sum(cantidad) from PedidoPresentacion where id_pedido = pr.id_pedido)
                 -
-                (select sum(cantidad) from PedidoReubicadoPresentacion where id_pedido = pr.id_pedido) as remanente
+                (select sum(prp2.cantidad) from PedidosReubicados pr2 inner join PedidoReubicadoPresentacion prp2 on prp2.id_pedido_reubicado = pr2.id where pr2.id_pedido = pr.id_pedido) as remanente 
                 from PedidosReubicados pr
                 where pr.id_pedido = ? 
                 group by pr.id_pedido";

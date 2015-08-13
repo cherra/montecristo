@@ -50,7 +50,7 @@ class Pedido extends CI_Model {
     * Cantidad de registros por pagina
     */
     function get_paged_list($limit = NULL, $offset = 0, $filtro = NULL) {
-        $this->db->select('p.*');
+        $this->db->select('p.*, (select id_ruta from PedidosReubicados where id_pedido = p.id limit 1) as ruta_reubicado, (select id_pedido from PedidosReubicados where id_pedido = p.id limit 1) AS reubicado');
         $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
         $this->db->join('Clientes c','cs.id_cliente = c.id');
         $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');

@@ -248,6 +248,9 @@ class Compras extends CI_Controller {
         $this->load->view('compras/lista_pagar', $data);
     }
 
+    /**
+     * actualizar datos de factura
+     */
     public function guardar_factura() {
         $id_compra = $this->input->post('id_compra');
         $referencia = $this->input->post('referencia');
@@ -272,6 +275,11 @@ class Compras extends CI_Controller {
         redirect(site_url('compras/compras/por_pagar'));
     }
 
+    /**
+     * AJAX
+     * obtener datos de factura de la compra
+     * @return json
+     */
     public function get_factura() {
         $this->load->model('compra', 'c');
         $id = $this->input->post('id');
@@ -287,6 +295,10 @@ class Compras extends CI_Controller {
         echo json_encode($data);
     }
 
+    /**
+     * mostrar en pantalla pop-up imagen almacenada
+     * @param  int $id
+     */
     public function ver_foto($id) {
         $this->load->model('compra', 'c');
         $compra = $this->c->get_by_id($id)->row();
