@@ -837,6 +837,7 @@ class Pedidos extends CI_Controller {
     
     public function pedidos_enviados_ruta( $id_ruta = NULL, $offset = 0 ){
         $this->load->model('pedido','p');
+        $this->load->model('pedido_reubicado', 'pr');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
         $this->load->model('preferencias/usuario','u');
@@ -891,13 +892,19 @@ class Pedidos extends CI_Controller {
                 $usuario = $this->u->get_by_id($d->id_usuario)->row();
                 $importe = $this->p->get_importe($d->id);
 
-                // si se encuentra un pedido ya reubicado mostrar link diferente
                 $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedidos_reubicar/' . $d->id, '<i class="icon-random"></i>', array('class' => 'btn btn-small', 'title' => 'Reubicar')), 'style' => 'text-align: right;');
-                if ($d->reubicado)
+                $checkbox = $d->estado == '4' ? '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>' : '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>';
+                if ($d->reubicado) {
+                    // si se encuentra un pedido ya reubicado mostrar link diferente
                     $link_reubicar = array('data' => anchor($this->folder.$this->clase.'pedidos_reubicados/' . $id_ruta . '/' . $d->id, '<i class="icon-random"></i>', array('class' => 'btn btn-small btn-warning', 'title' => 'Reubicado')), 'style' => 'text-align: right;');
+                    // si se encuetra un pedido ya reubicado no mostrar checkbox en caso de que aun existan remanentes
+                    if ($this->pr->hasPedidoRemanentes($d->id)) {
+                        $checkbox = '';
+                    }
+                }
 
                 $this->table->add_row(
-                        $d->estado == '4' ? '<input type="checkbox" name="pedidos[]" value="'.$d->id.'"/>' : '<i class="'.$this->iconos_estado_pedido[$d->estado].'"></i>',
+                        $checkbox,
                         $d->id,
                         $d->fecha,
                         $cliente->nombre,
