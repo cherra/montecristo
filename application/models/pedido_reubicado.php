@@ -256,6 +256,75 @@ class Pedido_reubicado extends CI_Model {
             return 0;
         }
     }
+
+    public function get_sin_factura($limit = NULL, $offset = 0, $filtro = NULL, $estado = 5) {
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_factura = 0');
+        $this->db->order_by('p.id','desc');
+        return $this->db->get($this->tbl_reubicados.' p', $limit, $offset);
+    }
+
+    public function count_sin_factura($filtro = NULL, $estado = 5) {
+        $this->db->select('p.*');
+        $this->db->join('ClienteSucursales cs','p.id_cliente_sucursal = cs.id');
+        $this->db->join('Clientes c','cs.id_cliente = c.id');
+        $this->db->join('Usuarios u','p.id_usuario = u.id_usuario');
+        if(!empty($filtro)){
+            $filtro = explode(' ', $filtro);
+            foreach($filtro as $f){
+                $this->db->where("(
+                    p.id LIKE '%".$f."%' OR
+                    c.nombre LIKE '%".$f."%' OR
+                    cs.nombre LIKE '%".$f."%' OR
+                    cs.numero LIKE '%".$f."%' OR
+                    cs.municipio LIKE '%".$f."%' OR
+                    cs.estado LIKE '%".$f."%' OR
+                    u.nombre LIKE '%".$f."%' OR
+                    p.fecha LIKE '%".$f."%'
+                    )"
+                );
+            }
+        }
+        $this->db->where('p.id_factura = 0');
+        $query = $this->db->get($this->tbl_reubicados.' p');
+        return $query->num_rows();
+    }
+
+    public function update($id, $datos) {
+        $this->db->where('id', $id);
+        $this->db->update($this->tbl_reubicados, $datos);
+        return $this->db->affected_rows();
+    }
+
+    function get_by_factura($id) {
+        $this->db->where('id_factura', $id);
+        return $this->db->get($this->tbl_reubicados);
+    }
+
+    function get_by_factura_reubicado($id, $id_factura) {
+        $this->db->where('id', $id);
+        $this->db->where('id_factura', $id_factura);
+        return $this->db->get($this->tbl_reubicados);
+    }
 }
 
 ?>

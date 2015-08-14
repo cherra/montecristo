@@ -67,7 +67,7 @@
                 <div class="controls">
                     <select id="tipo_pago" name="tipo_pago" class="input">
                         <option value="EFECTIVO">EFECTIVO</option>
-                        <option value="CRÉDITO">CŔÉDITO</option>
+                        <option value="CHEQUE">CHEQUE</option>
                     </select>
                 </div>
             </div>

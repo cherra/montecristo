@@ -38,6 +38,39 @@
     </div>
 </div>
 <?php } ?>
+
+<?php echo form_open(site_url('administracion/facturas/upload'), array('id' => 'frmFacturasUpload', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) ?>
+<div id="modal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Guardar archivo <span id="lblArchivo"></span></h3>
+    </div>
+    <div class="modal-body">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label for="archivo" class="control-label">Archivo: </label>
+                <div class="controls">
+                    <input type="file" id="archivo" name="archivo" class="input" accept="" />
+                    <input type="hidden" id="id_factura" name="id_factura" value="0" />
+                    <input type="hidden" id="archivo_tipo" name="archivo_tipo" value="" />
+                    <input type="hidden" id="current_url" name="current_url" value="<?php echo current_url(); ?>" />
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button type="button" id="guardar" class="btn btn-info"><i class="icon-check"></i> Guardar</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div id="error"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo form_close(); ?>
+
 <script>
 $(document).ready(function(){
     $('a.cancelar').click(function(event){
@@ -48,3 +81,41 @@ $(document).ready(function(){
     });
 });
 </script>
+
+<?php
+// si es el listado de facturas
+if (strpos(base_url(uri_string()),'administracion/facturas/index') !== false) {
+?>
+<script type="text/javascript">
+$(function () {
+    $('#guardar').click(function(e) {
+        e.preventDefault();
+        doUpload();
+    });
+});
+
+function upload(id, tipo) {
+    $('#id_factura').val(id);
+    if (tipo == 'pdf') {
+        $('#archivo').attr('accept', 'application/pdf');
+        $('#lblArchivo').html('PDF');
+        $('#archivo_tipo').val('pdf');
+    }
+    else {
+        $('#archivo').attr('accept', 'text/xml');
+        $('#lblArchivo').html('XML');
+        $('#archivo_tipo').val('xml');
+    }
+    $('#modal').modal('show');
+}
+
+function doUpload() {
+    var r;
+    r = confirm('¿Archivo correcto?');
+    if (!r) return false;
+    $('#frmFacturasUpload').submit();
+}
+</script>
+<?php
+}
+?>

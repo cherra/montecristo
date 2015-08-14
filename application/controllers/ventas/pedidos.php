@@ -324,7 +324,6 @@ class Pedidos extends CI_Controller {
             redirect('ventas/pedidos/'.$origen);
     }
     
-    
     public function siguiente_estado( $id = NULL ){
         if(!empty($id)){
             $this->load->model('pedido','p');
@@ -1348,8 +1347,7 @@ class Pedidos extends CI_Controller {
         }
     }
     
-    public function pedidos_excel( $id ){
-        
+    public function pedidos_excel( $id ) {
         $this->load->model('pedido', 'p');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
