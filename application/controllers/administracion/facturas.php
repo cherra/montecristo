@@ -202,7 +202,7 @@ class Facturas extends CI_Controller {
         
         $this->config->load("pagination");
         
-        $data['titulo'] = 'Pedidos por facturar <small>Lista</small>';
+        $data['titulo'] = 'Pedidos reubicados por facturar <small>Lista</small>';
         //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
         $data['action'] = $this->folder.$this->clase.'pedidos_reubicados_sin_factura';
         
@@ -228,13 +228,14 @@ class Facturas extends CI_Controller {
         $this->table->set_empty('&nbsp;');
         $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
         $this->table->set_template($tmpl);
-        $this->table->set_heading('Número','Fecha','Cliente','Sucursal','Estado', 'Total', '',  '');
+        $this->table->set_heading('Número', 'Pedido', 'Fecha','Cliente','Sucursal','Estado', 'Total', '',  '');
         foreach ($datos as $d) {
             $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
             $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
             $importe = $this->p->get_importe($d->id);
             $this->table->add_row(
                 $d->id,
+                $d->id_pedido,
                 $d->fecha,
                 $cliente->nombre,
                 $sucursal->numero.'.- '.$sucursal->nombre,
