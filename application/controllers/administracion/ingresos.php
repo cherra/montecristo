@@ -1,133 +1,21 @@
 <?php
+
 /**
- * Description of facturas
+ * Description of ingresos
  *
  * @author cherra
  */
-class Facturas extends CI_Controller {
+class Ingresos extends CI_Controller {
     
     private $folder = 'administracion/';
-    private $clase = 'facturas/';
+    private $clase = 'ingresos/';
     
     function __construct() {
         parent::__construct();
     }
     
-    public function index( $offset = 0 ) {
-        $this->load->model('factura','f');
-        $this->load->model('cliente','c');
-        $this->load->model('pedido','p');
-        $this->load->model('pedido_reubicado', 'pr');
-        $this->load->model('preferencias/usuario','u');
-        $this->config->load("pagination");
-    	
-        $data['titulo'] = 'Facturas <small>Lista</small>';
-        $data['link_add'] = anchor($this->folder.$this->clase.'facturas_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
-    	$data['action'] = $this->folder.$this->clase.'index';
-        
-        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
-        $filtro = $this->session->userdata('filtro');
-        if($filtro)
-            $data['filtro'] = $filtro;
-        
-        $page_limit = $this->config->item("per_page");
-    	$datos = $this->f->get_paged_list($page_limit, $offset, $filtro)->result();
-    	
-        // generar paginacion
-    	$this->load->library('pagination');
-    	$config['base_url'] = site_url($this->folder.$this->clase.'index');
-    	$config['total_rows'] = $this->f->count_all($filtro);
-    	$config['per_page'] = $page_limit;
-    	$config['uri_segment'] = 4;
-    	$this->pagination->initialize($config);
-    	$data['pagination'] = $this->pagination->create_links();
-    	
-    	// generar tabla
-    	$this->load->library('table');
-    	$this->table->set_empty('&nbsp;');
-    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
-    	$this->table->set_template($tmpl);
-    	$this->table->set_heading('Folio interno','Pedido', 'Fecha','Cliente','Piezas', 'Subtotal','IVA','Total', '', '','','','');
-    	foreach ($datos as $d) {
-            $cliente = $this->c->get_by_id($d->id_cliente)->row();
-            $pedido = $this->p->get_by_factura($d->id)->row();
-            
-            $reubicado = false;
-            if(!empty($pedido)) {
-                $piezas = $this->p->get_piezas($pedido->id);
-                $id_pedido = $pedido->id;
-            }
-            else {
-                $reubicado = true;
-                $pedido = $this->pr->get_by_factura($d->id)->row();
-                $piezas = $this->pr->get_piezas($pedido->id);
-                $id_pedido = $pedido->id_pedido . '/' . $pedido->id;
-            }
-
-            $link_pdf = '<a href="#" class="btn btn-small" title="Guardar PDF" style="text-align: right;" onclick="upload(' . $d->id . ',\'pdf\');"><i class="icon-upload"></i> pdf</a>';
-            $link_xml = '<a href="#" class="btn btn-small" title="Guardar XML" style="text-align: right;" onclick="upload(' . $d->id . ',\'xml\');"><i class="icon-upload"></i> xml</a>';
-            if ($d->pdf != null)
-                $link_pdf = anchor_popup($this->folder.$this->clase.'ver/pdf/' . $d->id, '<i class="icon-file"></i> pdf', array('class' => 'btn btn-small btn-info', 'title' => 'Ver PDF'));
-            if ($d->xml != null)
-                $link_xml = anchor_popup($this->folder.$this->clase.'ver/xml/' . $d->id, '<i class="icon-file"></i> xml', array('class' => 'btn btn-small btn-info', 'title' => 'Ver XML'));
-
-            $usuario = $this->u->get_by_id($d->id_usuario)->row();
-            $importes = $this->f->get_importes($d->id);
-    		$this->table->add_row(
-                $d->id,
-                $id_pedido,
-                $d->fecha,
-                $cliente->nombre,
-                $piezas,
-                array('data' => number_format($importes->subtotal,2), 'style' => 'text-align: right;'),
-                array('data' => number_format($importes->iva,2), 'style' => 'text-align: right;'),
-                array('data' => number_format($importes->total,2), 'style' => 'text-align: right;'),
-                array('data' => anchor_popup($this->folder.$this->clase.'facturas_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'facturas_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;'),
-                array('data' => ($d->estado >= 1 ? anchor($this->folder.$this->clase.'facturas_exportar_buzon_fiscal/' . $d->id, '<i class="icon-share"></i>', array('class' => 'btn btn-small', 'title' => 'Exportar a buzón fiscal')) :  '<a class="btn btn-small" disabled><i class="icon-share"></i></a>'), 'style' => 'text-align: right;'),
-                '',
-                $link_pdf,
-                $link_xml
-    		);
-                if($d->estado == 0)
-                    $this->table->add_row_class('muted');
-                else
-                    $this->table->add_row_class('');
-    	}
-    	$data['table'] = $this->table->generate();
-    	
-    	$this->load->view('lista', $data);
-    }
-    
     /*
-     * 
-     * Cancelar facturas
-     */
-    public function facturas_cancelar( $id = NULL ){
-        if(empty($id)){
-            redirect($this->folder.$this->clase.'index');
-        }
-        
-        $this->load->model('factura','f');
-        $this->load->model('pedido','p');
-        $this->db->trans_start();
-        $respuesta = $this->f->cancelar($id);
-        if($respuesta > 0){
-            $pedido = $this->p->get_by_factura($id)->row();
-            $respuesta = $this->p->update($pedido->id, array('id_factura' => 0));
-            if($respuesta > 0)
-                $this->session->set_flashdata('mensaje',array('texto' => 'Factura cancelada', 'tipo' => ''));
-            else
-                $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
-        }else{
-            $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
-        }
-        $this->db->trans_complete();
-        redirect($this->folder.$this->clase.'index');
-    }
-    
-    /*
-     * Pedidos por facturar
+     * PEdidos por facturar
      */
     public function pedidos_sin_factura( $offset = 0 ){
         $this->load->model('factura','f');
@@ -187,79 +75,9 @@ class Facturas extends CI_Controller {
     	
     	$this->load->view('lista', $data);
     }
-
-    /**
-     * VIEW
-     * mostrar lista de pedidos reubicados sin factura
-     * @param  integer $offset
-     * @return view
-     */
-    public function pedidos_reubicados_sin_factura($offset = 0) {
-        $this->load->model('factura','f');
-        $this->load->model('pedido_reubicado','p');
-        $this->load->model('cliente','c');
-        $this->load->model('sucursal','s');
-        
-        $this->config->load("pagination");
-        
-        $data['titulo'] = 'Pedidos reubicados por facturar <small>Lista</small>';
-        //$data['link_add'] = anchor($this->folder.$this->clase.'pedidos_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
-        $data['action'] = $this->folder.$this->clase.'pedidos_reubicados_sin_factura';
-        
-        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
-        $filtro = $this->session->userdata('filtro');
-        if($filtro)
-            $data['filtro'] = $filtro;
-        
-        $page_limit = $this->config->item("per_page");
-        $datos = $this->p->get_sin_factura($page_limit, $offset, $filtro)->result();
-        
-        // generar paginacion
-        $this->load->library('pagination');
-        $config['base_url'] = site_url($this->folder.$this->clase.'pedidos_reubicados_sin_factura');
-        $config['total_rows'] = $this->p->count_sin_factura($filtro);
-        $config['per_page'] = $page_limit;
-        $config['uri_segment'] = 4;
-        $this->pagination->initialize($config);
-        $data['pagination'] = $this->pagination->create_links();
-        
-        // generar tabla
-        $this->load->library('table');
-        $this->table->set_empty('&nbsp;');
-        $tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
-        $this->table->set_template($tmpl);
-        $this->table->set_heading('Número', 'Pedido', 'Fecha','Cliente','Sucursal','Estado', 'Total', '',  '');
-        foreach ($datos as $d) {
-            $sucursal = $this->s->get_by_id($d->id_cliente_sucursal)->row();
-            $cliente = $this->c->get_by_id($sucursal->id_cliente)->row();
-            $importe = $this->p->get_importe($d->id);
-            $this->table->add_row(
-                $d->id,
-                $d->id_pedido,
-                $d->fecha,
-                $cliente->nombre,
-                $sucursal->numero.'.- '.$sucursal->nombre,
-                $sucursal->estado,
-                array('data' => number_format($importe,2), 'style' => 'text-align: right;'),
-                array('data' => anchor_popup('ventas/pedidos/'.'pedidos_documento/' . $d->id . '/' . true, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
-                array('data' => anchor($this->folder.$this->clase.'pedidos_facturar/' . $d->id . '/' . true, '<i class="icon-check"></i>', array('class' => 'btn btn-small', 'title' => 'Facturar')) , 'style' => 'text-align: right;')
-            );
-                if($d->estado == 0)
-                    $this->table->add_row_class('muted');
-                else
-                    $this->table->add_row_class('');
-        }
-        $data['table'] = $this->table->generate();
-        
-        $this->load->view('lista', $data);
-    }
     
-    public function pedidos_facturar($id, $reubicado = false) {
-        if (!$reubicado)
-            $this->load->model('pedido','p');
-        else
-            $this->load->model('pedido_reubicado','p');
-        
+    public function pedidos_facturar($id){
+        $this->load->model('pedido','p');
         $this->load->model('factura','f');
         $this->load->model('cliente','c');
         $this->load->model('sucursal','s');
@@ -272,11 +90,7 @@ class Facturas extends CI_Controller {
         if($cliente->agrupar_codigos_factura == '1'){
             $agrupar_por_codigo = TRUE;
         }
-
-        if (!$reubicado)
-            $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
-        else
-            $presentaciones = $this->p->getPresentaciones($id);
+        $presentaciones = $this->p->get_presentaciones($id, $agrupar_por_codigo)->result();
         
         if(!empty($pedido)){
             
@@ -306,6 +120,7 @@ class Facturas extends CI_Controller {
                         $this->session->set_flashdata('mensaje',array('texto' => 'Error al guardar la factura', 'tipo' => 'alert-error'));
                     }
                 }
+                
                 $this->p->update($id, array('id_factura' => $id_factura));
             }else{
                 $respuesta = 'Error';
@@ -320,6 +135,98 @@ class Facturas extends CI_Controller {
         }
     }
     
+    public function facturas( $offset = 0 ){
+        $this->load->model('factura','f');
+        $this->load->model('cliente','c');
+        $this->load->model('pedido','p');
+        $this->load->model('preferencias/usuario','u');
+        
+        $this->config->load("pagination");
+    	
+        $data['titulo'] = 'Facturas <small>Lista</small>';
+        //$data['link_add'] = anchor($this->folder.$this->clase.'facturas_agregar','<i class="icon-plus icon-white"></i> Nuevo', array('class' => 'btn btn-inverse'));
+    	$data['action'] = $this->folder.$this->clase.'facturas';
+        
+        // Filtro de busqueda (se almacenan en la sesión a través de un hook)
+        $filtro = $this->session->userdata('filtro');
+        if($filtro)
+            $data['filtro'] = $filtro;
+        
+        $page_limit = $this->config->item("per_page");
+    	$datos = $this->f->get_paged_list($page_limit, $offset, $filtro)->result();
+    	
+        // generar paginacion
+    	$this->load->library('pagination');
+    	$config['base_url'] = site_url($this->folder.$this->clase.'facturas');
+    	$config['total_rows'] = $this->f->count_all($filtro);
+    	$config['per_page'] = $page_limit;
+    	$config['uri_segment'] = 4;
+    	$this->pagination->initialize($config);
+    	$data['pagination'] = $this->pagination->create_links();
+    	
+    	// generar tabla
+    	$this->load->library('table');
+    	$this->table->set_empty('&nbsp;');
+    	$tmpl = array ( 'table_open' => '<table class="' . $this->config->item('tabla_css') . '" >' );
+    	$this->table->set_template($tmpl);
+    	$this->table->set_heading('Folio interno','Pedido', 'Fecha','Cliente','Piezas', 'Subtotal','IVA','Total', '', '','');
+    	foreach ($datos as $d) {
+            $cliente = $this->c->get_by_id($d->id_cliente)->row();
+            $pedido = $this->p->get_by_factura($d->id)->row();
+            if(!empty($pedido)){
+                $piezas = $this->p->get_piezas($pedido->id);
+            }
+            $usuario = $this->u->get_by_id($d->id_usuario)->row();
+            $importes = $this->f->get_importes($d->id);
+    		$this->table->add_row(
+                        $d->id,
+                        !empty($pedido) ? $pedido->id : '',
+                        $d->fecha,
+                        $cliente->nombre,
+                        $piezas,
+                        array('data' => number_format($importes->subtotal,2), 'style' => 'text-align: right;'),
+                        array('data' => number_format($importes->iva,2), 'style' => 'text-align: right;'),
+                        array('data' => number_format($importes->total,2), 'style' => 'text-align: right;'),
+                        array('data' => anchor_popup($this->folder.$this->clase.'facturas_documento/' . $d->id, '<i class="icon-print"></i>', array('class' => 'btn btn-small', 'title' => 'Imprimir')), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado > 0 && $d->estado < 5 ? anchor($this->folder.$this->clase.'facturas_cancelar/' . $d->id, '<i class="icon-ban-circle"></i>', array('class' => 'btn btn-small cancelar', 'title' => 'Cancelar')) :  '<a class="btn btn-small" disabled><i class="icon-ban-circle"></i></a>'), 'style' => 'text-align: right;'),
+                        array('data' => ($d->estado >= 1 ? anchor($this->folder.$this->clase.'facturas_exportar_buzon_fiscal/' . $d->id, '<i class="icon-share"></i>', array('class' => 'btn btn-small', 'title' => 'Exportar a buzón fiscal')) :  '<a class="btn btn-small" disabled><i class="icon-share"></i></a>'), 'style' => 'text-align: right;')
+    		);
+                if($d->estado == 0)
+                    $this->table->add_row_class('muted');
+                else
+                    $this->table->add_row_class('');
+    	}
+    	$data['table'] = $this->table->generate();
+    	
+    	$this->load->view('lista', $data);
+    }
+    
+    /*
+     * 
+     * Cancelar facturas
+     */
+    public function facturas_cancelar( $id = NULL ){
+        if(empty($id)){
+            redirect($this->folder.$this->clase.'facturas');
+        }
+        
+        $this->load->model('factura','f');
+        $this->load->model('pedido','p');
+        $this->db->trans_start();
+        $respuesta = $this->f->cancelar($id);
+        if($respuesta > 0){
+            $pedido = $this->p->get_by_factura($id)->row();
+            $respuesta = $this->p->update($pedido->id, array('id_factura' => 0));
+            if($respuesta > 0)
+                $this->session->set_flashdata('mensaje',array('texto' => 'Factura cancelada', 'tipo' => ''));
+            else
+                $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
+        }else{
+            $this->session->set_flashdata('mensaje',array('texto' => 'Ocurrió un error al cancelar la factura', 'tipo' => 'alert-error'));
+        }
+        $this->db->trans_complete();
+        redirect($this->folder.$this->clase.'facturas');
+    }
     
     // Genera el formato de factura para impresión
     private function facturas_render_template($id){
@@ -416,7 +323,7 @@ class Facturas extends CI_Controller {
                     $data['contenido'] = $this->facturas_render_template($id);                    
                     $this->load->view('documento', $data);
                 }else{
-                    redirect($this->folder.$this->clase.'index');
+                    redirect($this->folder.$this->clase.'facturas');
                 }
             }else{
                 $this->session->set_flashdata('pdf', true);
@@ -428,7 +335,7 @@ class Facturas extends CI_Controller {
                 redirect($this->folder.$this->clase.'facturas_documento/'.$id); // Se recarga el método para imprimirlo como PDF
             }
         }else{
-            redirect($this->folder.$this->clase.'index');
+            redirect($this->folder.$this->clase.'facturas');
         }
     }
     
@@ -522,48 +429,11 @@ class Facturas extends CI_Controller {
             if($factura){
                 force_download($factura->id.'-BF.txt', $this->buzon_fiscal_render_template($id));
             }else{
-                redirect($this->folder.$this->clase.'index');
+                redirect($this->folder.$this->clase.'facturas');
             }
         }else{
-            redirect($this->folder.$this->clase.'index');
+            redirect($this->folder.$this->clase.'facturas');
         }
     }
-    
-    public function upload() {
-        $id_factura = $this->input->post('id_factura');
-        $archivo_tipo = $this->input->post('archivo_tipo');
-        $current_url = $this->input->post('current_url');
-        $archivo = null;
-        if ($_FILES['archivo']['size'] > 0) {
-            $archivo = file_get_contents($_FILES['archivo']['tmp_name']);
-        }
-        $data = array(
-            'id' => $id_factura,
-            $archivo_tipo => $archivo
-        );
-        $this->load->model('factura', 'f');
-        $this->f->update($id_factura, $data);
-        redirect($current_url);
-    }
-
-    public function ver($tipo, $id) {
-        $this->load->model('factura', 'f');
-        $factura = $this->f->get_by_id($id)->row();
-        if ($tipo == 'pdf') {
-            if ($factura->pdf != null) {
-                header('Content-type: application/pdf');
-                echo $factura->pdf;
-                die();
-            }
-        }
-        if ($tipo == 'xml') {
-            if ($factura->xml != null) {
-                header('Content-Type: application/xml; charset=utf-8');
-                echo $factura->xml;
-                die();
-            }
-        }
-    }
-
 }
 ?>

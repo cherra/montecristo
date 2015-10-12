@@ -14,7 +14,8 @@ class Ordenes_compra extends CI_Controller{
         2 => 'icon-thumbs-up',
         3 => 'icon-share',
         4 => 'icon-check',
-        5 => 'icon-qrcode'
+        5 => 'icon-qrcode',
+        6 => 'icon-shopping-cart',
     );
     
     public function index( $offset = 0 ){
@@ -55,6 +56,7 @@ class Ordenes_compra extends CI_Controller{
             $proveedor = $this->p->get_by_id($d->id_proveedor)->row();
             $usuario = $this->u->get_by_id($d->id_usuario)->row();
             $importe = $this->c->get_importe($d->id);
+
     		$this->table->add_row(
                         '<i class="'.$this->iconos_estado[$d->estado].'"></i>',
                         $d->id,
