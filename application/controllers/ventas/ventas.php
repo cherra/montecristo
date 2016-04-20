@@ -40,7 +40,7 @@ class Ventas extends CI_Controller{
             $this->table->add_row(
                     date_format($fecha,'d/m/Y'),
                     date_format($fecha,'H:i'),
-                    substr($usuario->nombre,0,15),
+                    !empty($usuario) ? substr($usuario->nombre,0,15) : '',
                     substr($cliente->nombre,0,15),
                     substr($sucursal->numero.' '.$sucursal->nombre,0,15),
                     $d->comentarios,
