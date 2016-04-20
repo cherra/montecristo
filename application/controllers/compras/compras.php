@@ -227,7 +227,7 @@ class Compras extends CI_Controller {
             $this->table->add_row(
                 '<i class="'.$this->iconos_estado[$d->estado].'"></i>',
                 $d->id,
-                explode(" ", $d->fecha_orden_compra)[0],
+                explode(" ", $d->fecha_orden_compra),
                 $proveedor->nombre,
                 $proveedor->telefono,
                 $usuario->nombre,
